@@ -97,13 +97,25 @@ NAVBAR
     display: inline-block;
 }
 
-
-
-.blog-spoiler {
-    height: 400px;
-    overflow: hidden;
+/*
+Set the children height.
+Otherwise with flex-wrap the wrapped elements will overflow, as the parent height will not change.
+*/
+.blog-spoiler > * {
+    height: 256px;
 }
 
+.blog-spoiler-text {
+    overflow: hidden;
+    position: relative;
+}
+
+.blog-thumbnail-img {
+    object-fit: scale-down;
+    width: 100%;
+    height: 100%;
+    object-position: center;
+}
 
 
 .read-further-container {
@@ -114,11 +126,11 @@ NAVBAR
     bottom: 0;
     width: 100%;
     height: 100px;
-    color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
     background-image: linear-gradient(
       to top,
-      rgba(0, 0, 0, 1) 25%,
-      rgba(0, 0, 0, 0) 100%
+      rgba(255, 255, 255, 1) 25%,
+      rgba(255, 255, 255, 0) 100%
     );
 }
 
@@ -132,7 +144,6 @@ NAVBAR
     position: relative;
 }
 
-
 .display-flex {
     display: flex;
 }
@@ -145,6 +156,9 @@ NAVBAR
     align-items: flex-end;
 }
 
+.align-items-start {
+    align-items: flex-start;
+}
 
 .justify-content-center {
     justify-content: center;
@@ -154,8 +168,12 @@ NAVBAR
     text-align: center;
 }
 
-.img-cover {
+.fit-cover {
     object-fit: cover;
+}
+
+.fit-scale-down {
+    object-fit: scale-down;
 }
 
 /*
@@ -192,7 +210,7 @@ ROW COLUMN STUFF
 */
 .row {
     display: flex;
-    /*flex-wrap: wrap;*/
+    flex-wrap: wrap;
 }
 
 .row > * {
@@ -357,12 +375,12 @@ CONTAINERS
 
 @media screen AND (min-width: 768px) {
     .container-md, .container-sm {
-        width: 85%;
+        width: 75%;
     }
 }
 
 @media screen AND (min-width: 1200px) {
     .container-md, .container-sm, .container-xl {
-        width: 80%;
+        width: 70%;
     }
 }
