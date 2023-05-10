@@ -1,7 +1,8 @@
-body {
+ body {
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
     padding-top: 50px;
+    background-color: #121212;
 }
 
 * {
@@ -11,6 +12,14 @@ body {
 h1, h2, h3, h4, h5, h6, p {
     margin-top: 0;
     margin-bottom: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: white;
+}
+
+p {
+    color: rgb(200, 200, 200);
 }
 
 ul {
@@ -102,10 +111,18 @@ Set the children height.
 Otherwise with flex-wrap the wrapped elements will overflow, as the parent height will not change.
 */
 .blog-spoiler > * {
-    height: 256px;
+    height: 225px;
 }
 
-.blog-spoiler-text {
+.blog-spoiler-container {
+    --blog-spoiler-bg-color: 35, 35, 35;
+    background-color: rgb(var(--blog-spoiler-bg-color));
+    padding: 1em;
+    padding-right: 0.5em;
+    border-radius: 12px;
+}
+
+.blog-spoiler-text-container {
     overflow: hidden;
     position: relative;
 }
@@ -114,9 +131,13 @@ Otherwise with flex-wrap the wrapped elements will overflow, as the parent heigh
     object-fit: scale-down;
     width: 100%;
     height: 100%;
-    object-position: center;
+    object-position: top;
 }
 
+.blog-spoiler-text {
+    padding-left: 12px;
+    padding-right: 12px;
+}
 
 .read-further-container {
     display: flex;
@@ -125,18 +146,52 @@ Otherwise with flex-wrap the wrapped elements will overflow, as the parent heigh
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 100px;
+    height: 150px;
     color: rgb(0, 0, 0);
     background-image: linear-gradient(
       to top,
-      rgba(255, 255, 255, 1) 25%,
-      rgba(255, 255, 255, 0) 100%
+      rgba(var(--blog-spoiler-bg-color), 1) 25%,
+      rgba(var(--blog-spoiler-bg-color), 0) 100%
     );
+    padding-left: 12px;
+    padding-right: 12px;
+    border-radius: 12px;
 }
 
 .read-further-text {
     margin-bottom: 0.75em;
 }
+
+@media screen AND (max-width: 767px) {
+    .blog-thumbnail-img-container {
+        height: auto;
+    }
+
+    .blog-spoiler-container {
+        padding: 1em;
+    }
+
+    .blog-spoiler-text {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    .read-further-container {
+        border-radius: 0px;
+    }
+}
+
+
+
+
+.header-text {
+    text-align: center;
+    margin-bottom: 4em;
+    margin-top: 2em;
+}
+
+
+
 
 
 
@@ -245,7 +300,6 @@ COLUMNS
     width: 60%;
 }
 
-
 .col-7 {
     width: 70%;
 }
@@ -282,6 +336,14 @@ COLUMNS
 }
 
 @media screen AND (min-width: 768px) {
+    .col-md-1 {
+        width: 10%;
+    }
+
+    .col-md-2 {
+        width: 20%;
+    }
+
     .col-md-3 {
         width: 30%;
     }
@@ -301,9 +363,25 @@ COLUMNS
     .col-md-7 {
         width: 70%;
     }
+
+    .col-md-8 {
+        width: 80%;
+    }
+
+    .col-md-9 {
+        width: 90%;
+    }
 }
 
 @media screen AND (min-width: 1200px) {
+    .col-xl-1 {
+        width: 10%;
+    }
+
+    .col-xl-2 {
+        width: 20%;
+    }
+
     .col-xl-3 {
         width: 30%;
     }
@@ -322,6 +400,14 @@ COLUMNS
 
     .col-xl-7 {
         width: 70%;
+    }
+
+    .col-xl-8 {
+        width: 80%;
+    }
+
+    .col-xl-9 {
+        width: 90%;
     }
 }
 
@@ -375,12 +461,12 @@ CONTAINERS
 
 @media screen AND (min-width: 768px) {
     .container-md, .container-sm {
-        width: 75%;
+        width: 750px;
     }
 }
 
 @media screen AND (min-width: 1200px) {
     .container-md, .container-sm, .container-xl {
-        width: 70%;
+        width: 1140px;
     }
 }
