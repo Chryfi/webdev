@@ -1,0 +1,14 @@
+/* >= 576px*/
+@media screen AND (min-width: 576px) {
+	-sm
+}
+
+/* >= 768px*/
+@media screen AND (min-width: 768px) {
+	-md
+}
+
+/* >= 1200px*/
+@media screen AND (min-width: 1200px) {
+	-xl
+}

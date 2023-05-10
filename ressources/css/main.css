@@ -1,7 +1,15 @@
- body {
+html {
+    --blog-spoiler-bg-color: 35, 35, 35;
+    --color1: #1e3f4f;
+    --color2: #589579;
+    --color3: hsl(0, 45%, 22%);
+    --color4: #16C172;
+    --color5: #214f3d;
+}
+
+body {
     margin: 0;
     font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-    padding-top: 50px;
     background-color: #121212;
 }
 
@@ -28,74 +36,21 @@ ul {
     padding: 0;
 }
 
+li {
+    color: rgb(190, 190, 190);
+}
+
+a {
+    color: rgb(190, 190, 190);
+}
 
 /*
-NAVBAR
+GENERAL PURPOSE
 */
-.navbar {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-    position: fixed;
-    top: 0;
-    padding: 10px 20px;
-    z-index: 1000;
-    backdrop-filter: blur(6px);
-    background-color: hsla(200, 13%, 14%, 0.699);
-    color: white;
-}
-
-.navbar-list {
-    display: inline-block;
-    list-style-type: none;
-}
-
-.navbar-item {
-    margin-right: 20px;
-    display: inline-block;
-}
-
-.navbar-link {
-    text-decoration: none;
-    color: white;
-    transition: color 0.2s;
-}
-
-.navbar-link:hover {
-    color: #ccc;
-}
-
-.search-container {
-    display: flex;
-    align-items: center;
-}
-
-.search-input {
-    padding: 5px 10px;
-    border: 1px solid rgb(170, 170, 170);
-    border-radius: 3px;
-    height: 30px;
-}
-
-.search-button {
-    background-color: #c0a300;
-    border: none;
-    color: white;
-    cursor: pointer;
-    padding: 5px 10px;
-    border-radius: 3px;
-    transition: background-color 0.2s;
-    height: 30px;
-    margin-left: 0.5em;
-}
-
-.search-button:hover {
-    background-color: #48ad4d;
-}
-
-.search-button:active {
-    background-color: #246627;
+.header-text {
+    text-align: center;
+    margin-bottom: 4em;
+    margin-top: 2em;
 }
 
 
@@ -105,93 +60,6 @@ NAVBAR
     fill: white;
     display: inline-block;
 }
-
-/*
-Set the children height.
-Otherwise with flex-wrap the wrapped elements will overflow, as the parent height will not change.
-*/
-.blog-spoiler > * {
-    height: 225px;
-}
-
-.blog-spoiler-container {
-    --blog-spoiler-bg-color: 35, 35, 35;
-    background-color: rgb(var(--blog-spoiler-bg-color));
-    padding: 1em;
-    padding-right: 0.5em;
-    border-radius: 12px;
-}
-
-.blog-spoiler-text-container {
-    overflow: hidden;
-    position: relative;
-}
-
-.blog-thumbnail-img {
-    object-fit: scale-down;
-    width: 100%;
-    height: 100%;
-    object-position: top;
-}
-
-.blog-spoiler-text {
-    padding-left: 12px;
-    padding-right: 12px;
-}
-
-.read-further-container {
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 150px;
-    color: rgb(0, 0, 0);
-    background-image: linear-gradient(
-      to top,
-      rgba(var(--blog-spoiler-bg-color), 1) 25%,
-      rgba(var(--blog-spoiler-bg-color), 0) 100%
-    );
-    padding-left: 12px;
-    padding-right: 12px;
-    border-radius: 12px;
-}
-
-.read-further-text {
-    margin-bottom: 0.75em;
-}
-
-@media screen AND (max-width: 767px) {
-    .blog-thumbnail-img-container {
-        height: auto;
-    }
-
-    .blog-spoiler-container {
-        padding: 1em;
-    }
-
-    .blog-spoiler-text {
-        padding-left: 0px;
-        padding-right: 0px;
-    }
-
-    .read-further-container {
-        border-radius: 0px;
-    }
-}
-
-
-
-
-.header-text {
-    text-align: center;
-    margin-bottom: 4em;
-    margin-top: 2em;
-}
-
-
-
 
 
 
@@ -314,6 +182,14 @@ COLUMNS
 
 /* >= 576px */
 @media screen AND (min-width: 576px) {
+    .col-sm-1 {
+        width: 10%;
+    }
+
+    .col-sm-2 {
+        width: 20%;
+    }
+
     .col-sm-3 {
         width: 30%;
     }
@@ -332,6 +208,14 @@ COLUMNS
 
     .col-sm-7 {
         width: 70%;
+    }
+
+    .col-sm-8 {
+        width: 80%;
+    }
+
+    .col-sm-9 {
+        width: 90%;
     }
 }
 
@@ -455,18 +339,232 @@ CONTAINERS
 
 @media screen AND (min-width: 576px) {
     .container-sm {
-        width: 540px;
+        max-width: 540px;
     }
 }
 
 @media screen AND (min-width: 768px) {
     .container-md, .container-sm {
-        width: 750px;
+        max-width: 750px;
     }
 }
 
 @media screen AND (min-width: 1200px) {
     .container-md, .container-sm, .container-xl {
-        width: 1140px;
+        max-width: 1140px;
+    }
+}
+
+
+
+
+
+
+.page-wrapper {
+    min-height: 100vh;
+    padding-top: 50px;
+    padding-bottom: 2em;
+}
+
+
+/*
+NAVBAR
+*/
+.navbar {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    padding: 10px 20px;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+    background-color: hsla(207, 15%, 12%, 0.8);
+    box-shadow: 0px 2px 15px rgb(0, 0, 0);
+    color: white;
+}
+
+.navbar-list {
+    display: inline-block;
+    list-style-type: none;
+}
+
+.navbar-item {
+    margin-right: 20px;
+    display: inline-block;
+}
+
+.navbar-link {
+    text-decoration: none;
+    color: white;
+    transition: color 0.2s;
+}
+
+.navbar-link:hover {
+    color: #ccc;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+}
+
+.search-input {
+    padding: 5px 10px;
+    border: 1px solid rgb(170, 170, 170);
+    border-radius: 3px;
+    height: 30px;
+}
+
+.search-button {
+    background-color: #c0a300;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 3px;
+    transition: background-color 0.2s;
+    height: 30px;
+    margin-left: 0.5em;
+}
+
+.search-button:hover {
+    background-color: #48ad4d;
+}
+
+.search-button:active {
+    background-color: #246627;
+}
+
+
+/*
+FOOTER
+*/
+.footer {
+    background-color: rgb(var(--blog-spoiler-bg-color));
+    padding-top: 2em;
+    padding-bottom: 2em;
+}
+
+.footer-col {
+    width: auto;
+    margin-left: 1em;
+    margin-right: 1em;
+    text-align: center;
+}
+
+@media screen AND (max-width: 575px) {
+    .footer-col {
+        width: 50%;
+        margin: 0;
+        margin-top: 1em;
+    }
+}
+
+.copyright-text {
+    width: 200px;
+    text-align: center;
+}
+
+.footer-hr {
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+    border-color: rgb(121, 121, 121);
+}
+
+
+/**
+BLOG SPOILER
+*/
+
+/*
+Set the children height.
+Otherwise with flex-wrap the wrapped elements will overflow, as the parent height will not change.
+*/
+.blog-spoiler > * {
+    height: 225px;
+}
+
+.blog-spoiler-container {
+    background-color: rgb(var(--blog-spoiler-bg-color));
+    box-shadow: 0px 0px 20px black;
+    padding: 1em;
+    padding-right: 0.5em;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.blog-spoiler-container:active {
+    transform: scale(1.015);
+}
+
+.blog-thumbnail-img {
+    object-fit: scale-down;
+    width: 100%;
+    height: 100%;
+    object-position: top;
+}
+
+.blog-spoiler-text-container {
+    overflow: hidden;
+    position: relative;
+}
+
+.blog-spoiler-text {
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+.read-further-container {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 150px;
+    color: rgb(0, 0, 0);
+    background-image: linear-gradient(
+      to top,
+      rgba(var(--blog-spoiler-bg-color), 1) 25%,
+      rgba(var(--blog-spoiler-bg-color), 0) 100%
+    );
+    padding-left: 12px;
+    padding-right: 12px;
+    border-radius: 12px;
+}
+
+.read-further-text {
+    margin-bottom: 0.75em;
+    border: 2px solid transparent;
+    transition: border 0.2s;
+}
+
+.blog-spoiler-container:hover .read-further-text {
+    border-bottom: 2px solid white;
+}
+
+@media screen AND (max-width: 767px) {
+    .blog-thumbnail-img-container {
+        height: auto;
+    }
+
+    .blog-spoiler-container {
+        padding: 1em;
+    }
+
+    .blog-spoiler-text {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    .read-further-container {
+        border-radius: 0px;
+    }
+
+    .blog-spoiler-title {
+        margin-bottom: 0.25em;
     }
 }
