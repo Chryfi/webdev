@@ -1,4 +1,3 @@
-        </div>
         <footer class="container-fluid footer">
             <div class="row justify-content-center">
                 <div class="footer-col">

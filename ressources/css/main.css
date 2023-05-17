@@ -1,16 +1,22 @@
 html {
-    --blog-spoiler-bg-color: 35, 35, 35;
+    --bg-color-0: 18, 18, 18;
+    --bg-color-1: 35, 35, 35;
+    --bg-color-2: 45, 45, 45;
     --color1: #1e3f4f;
     --color2: #589579;
     --color3: hsl(0, 45%, 22%);
     --color4: #16C172;
     --color5: #214f3d;
+    --text-color: rgb(200, 200, 200);
 }
 
 body {
     margin: 0;
     font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-    background-color: #121212;
+    background-color: rgb(var(--bg-color-0));
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
 }
 
 * {
@@ -27,7 +33,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 p {
-    color: rgb(200, 200, 200);
+    color: var(--text-color);
 }
 
 ul {
@@ -37,11 +43,15 @@ ul {
 }
 
 li {
-    color: rgb(190, 190, 190);
+    color: var(--text-color);
 }
 
 a {
-    color: rgb(190, 190, 190);
+    color: var(--text-color);
+}
+
+a:visited {
+    color: var(--text-color);
 }
 
 /*
@@ -59,6 +69,17 @@ GENERAL PURPOSE
     height: 16px;
     fill: white;
     display: inline-block;
+}
+
+.input {
+    display: block;
+    width: 100%;
+    padding: 0.375em 0.75em;
+    color: var(--text-color);
+    background-color: rgb(var(--bg-color-2));
+    border: 1px solid #646464;
+    appearance: none;
+    border-radius: 0.25em;
 }
 
 
@@ -83,8 +104,32 @@ GENERAL PURPOSE
     align-items: flex-start;
 }
 
+.align-content-space-between {
+    align-content: space-between;
+}
+
 .justify-content-center {
     justify-content: center;
+}
+
+.justify-content-end {
+    justify-content: flex-end;
+}
+
+.justify-content-start {
+    justify-content: flex-start;
+}
+
+.justify-content-space-between {
+    justify-content: space-between;
+}
+
+.justify-content-space-around {
+    justify-content: space-around;
+}
+
+.justify-content-space-evenly {
+    justify-content: space-evenly;
 }
 
 .text-center {
@@ -144,6 +189,10 @@ ROW COLUMN STUFF
 /*
 COLUMNS
 */
+.col-auto {
+    width: auto;
+}
+
 .col-1 {
     width: 10%;
 }
@@ -323,6 +372,10 @@ COLUMNS
     }
 }
 
+.lead {
+    font-size: 1.25rem;
+    font-weight: 300;
+}
 
 
 /*
@@ -397,12 +450,17 @@ NAVBAR
 
 .navbar-link {
     text-decoration: none;
-    color: white;
+    color: var(--text-color);
     transition: color 0.2s;
 }
 
+.navbar-link.active {
+    color: #ffffff;
+    border-bottom: 1px solid white;
+}
+
 .navbar-link:hover {
-    color: #ccc;
+    color: #ffffff;
 }
 
 .search-container {
@@ -442,7 +500,7 @@ NAVBAR
 FOOTER
 */
 .footer {
-    background-color: rgb(var(--blog-spoiler-bg-color));
+    background-color: rgb(var(--bg-color-1));
     padding-top: 2em;
     padding-bottom: 2em;
 }
@@ -473,6 +531,82 @@ FOOTER
     border-color: rgb(121, 121, 121);
 }
 
+.round-container {
+    background-color: rgb(var(--bg-color-1));
+    box-shadow: 0px 0px 20px black;
+    padding: 2em;
+    padding-left: 3em;
+    padding-right: 3em;
+    border-radius: 12px;
+}
+
+.register-container {
+    margin-top: 10em;
+}
+
+/**
+BLOG ARTICLE
+*/
+.blog-container {
+    margin-top: 5em;
+}
+
+.stats-container {
+    color: white;
+}
+
+.stats-container > * {
+    padding-left: 0.2em;
+    padding-right: 0.2em;
+    display: inline-block;
+}
+
+.like-button {
+    cursor: pointer;
+    transition: transform 0.25s, color 0.1s;
+}
+
+.like-button:hover {
+    color: rgb(223, 71, 104);
+    transform: scale(1.25);
+}
+
+.like-button:active {
+    color: rgb(255, 46, 91);
+    transform: scale(1.5);
+}
+
+/**
+like button has been pressed
+*/
+.like-button.active {
+    color: rgb(223, 71, 104);
+}
+
+.like-button.active:hover {
+    color: rgb(255, 159, 180);
+    transform: scale(1);
+}
+
+.like-button.active:active {
+    color: white;
+    transform: scale(1);
+}
+
+.blog-info-container {
+    margin-top: 2em;
+    margin-bottom: 1em;
+    row-gap: 0.5em;
+}
+
+.stats-row {
+    justify-content: space-evenly;
+}
+
+.blog-content-container {
+    margin-top: 1em;
+}
+
 
 /**
 BLOG SPOILER
@@ -487,7 +621,7 @@ Otherwise with flex-wrap the wrapped elements will overflow, as the parent heigh
 }
 
 .blog-spoiler-container {
-    background-color: rgb(var(--blog-spoiler-bg-color));
+    background-color: rgb(var(--bg-color-1));
     box-shadow: 0px 0px 20px black;
     padding: 1em;
     padding-right: 0.5em;
@@ -528,8 +662,8 @@ Otherwise with flex-wrap the wrapped elements will overflow, as the parent heigh
     color: rgb(0, 0, 0);
     background-image: linear-gradient(
       to top,
-      rgba(var(--blog-spoiler-bg-color), 1) 25%,
-      rgba(var(--blog-spoiler-bg-color), 0) 100%
+      rgba(var(--bg-color-1), 1) 25%,
+      rgba(var(--bg-color-1), 0) 100%
     );
     padding-left: 12px;
     padding-right: 12px;
