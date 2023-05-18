@@ -49,16 +49,31 @@
     </main>
 </div>
 <script>
-    document.getElementById("like-button").addEventListener("click", e => {
-        let likeCounterElement = document.getElementById("like-counter");
-        let likeButtonElement = document.getElementById("like-button");
+    let likeButtonElement = document.getElementById("like-button");
+    let likeCounterElement = document.getElementById("like-counter");
+
+    /**
+     * When clicking the like button, the hover effect for removing the like should
+     * only appear after leaving and re-entering the like button. Similarily if the user removed the like, 
+     * the hover effects for adding a like should only appear after re-entering the like button.
+     */
+    likeButtonElement.addEventListener("click", e => {
         if (likeButtonElement.classList.contains("active")) {
             likeCounterElement.textContent = parseInt(likeCounterElement.textContent) - 1; 
             likeButtonElement.classList.remove("active");
+            likeButtonElement.classList.remove("like-hover");
         } else {
             likeCounterElement.textContent = parseInt(likeCounterElement.textContent) + 1; 
             likeButtonElement.classList.add("active");
+            likeButtonElement.classList.remove("like-hover");
         }
-        
+    });
+
+    likeButtonElement.addEventListener("mouseleave", e => {
+        likeButtonElement.classList.remove("like-hover");
+    });
+
+    likeButtonElement.addEventListener("mouseenter", e => {
+        likeButtonElement.classList.add("like-hover");
     });
 </script>

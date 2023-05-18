@@ -566,32 +566,33 @@ BLOG ARTICLE
     transition: transform 0.25s, color 0.1s;
 }
 
-.like-button:hover {
+.like-hover {
     color: rgb(223, 71, 104);
-    transform: scale(1.25);
+    transform: scale(1.2);
 }
 
 .like-button:active {
     color: rgb(255, 46, 91);
-    transform: scale(1.5);
+    transform: scale(1.4);
 }
 
 /**
-like button has been pressed
+like button has been pressed - like added
 */
 .like-button.active {
     color: rgb(223, 71, 104);
 }
 
-.like-button.active:hover {
+.like-button.active.like-hover {
     color: rgb(255, 159, 180);
     transform: scale(1);
 }
 
 .like-button.active:active {
-    color: white;
-    transform: scale(1);
+    color: rgb(255, 255, 255);
+    transform: scale(0.85);
 }
+
 
 .blog-info-container {
     margin-top: 2em;
