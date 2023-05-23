@@ -1,0 +1,77 @@
+<div class="page-wrapper">
+    <header>
+        <div class="header-text">
+            <h1>Suche</h1>
+        </div>
+    </header>
+    <main class="container-sm">
+        <div class="search-katzegorien-container">
+            <form class="search-form">
+                <input type="text" class="input" name="text-search" placeholder="Freitextsuche">
+                <input type="text" class="input" name="tag" placeholder="Tag suche">
+                <div class="blog-info-container row align-items-center justify-content-space-between tag-list-container" id="tag-container">
+                    <i class="col-auto fa-solid fa-tags" style="height: 10px;"></i>
+                    <div class="col">
+                        <div class="row tag-list" id="tag-list">
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center submit-row">
+                    <div class="col-sm-4 col-md-3 col-xl-2">
+                        <button type="submit" class="w-100 button button-primary button-accent">Suche</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+</div>
+<script>
+    /* id of element => tag name */
+    let tags = new Map();
+
+    let id = parseInt(Math.random() * 10000);
+    document.getElementById("tag-list").append(buildTag(id, "Meme"));
+    tags.set(id, "Meme");
+
+    id = parseInt(Math.random() * 10000);
+    document.getElementById("tag-list").append(buildTag(id, "Fette chonky Katze"));
+    tags.set(id, "Fette chonky Katze");
+
+
+    let buttons = document.getElementsByClassName("button-remove");
+    
+    for (let i = 0; i < buttons.length; i++) {
+        let button = buttons.item(i);
+
+        if (!("target" in button.dataset) || document.getElementById(button.dataset["target"]) == null) {
+            continue;
+        }
+
+        button.addEventListener("click", e => {
+            document.getElementById(button.dataset["target"]).remove();
+            tags.delete(parseInt(button.dataset["target"]));
+
+            if (tags.size == 0) {
+                document.getElementById("tag-container").style.display = "none";
+            }
+        });
+    }
+
+
+
+
+    function buildTag(id, tagName) {
+        let tagItem = document.createElement("div");
+        tagItem.classList.add("col-auto", "tag-item");
+        tagItem.id = id;
+        tagItem.innerHTML = `
+            <div class="row tag-element-row align-items-center">
+                <p class="col-auto">${tagName}</p>
+                <i class="col-auto fa-solid fa-xmark button-remove" data-target="${id}"></i>
+            </div>
+        `;
+
+        return tagItem;
+    }
+</script>

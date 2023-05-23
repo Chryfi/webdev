@@ -1,12 +1,21 @@
 html {
     --bg-color-0: 18, 18, 18;
     --bg-color-1: 35, 35, 35;
-    --bg-color-2: 45, 45, 45;
+    --bg-color-2: 55, 55, 55;
     --color1: #1e3f4f;
     --color2: #589579;
     --color3: hsl(0, 45%, 22%);
     --color4: #16C172;
     --color5: #214f3d;
+    --accent-color1: hsl(203, 12%, 38%);
+    --accent-color1-hover: hsl(201, 12%, 45%);
+    --accent-color1-active: hsl(202, 12%, 41%);
+    --accent-color2: hsl(138, 30%, 38%);
+    --accent-color2-hover: hsl(138, 30%, 48%);
+    --accent-color2-active: hsl(138, 30%, 42%);
+    --accent-color-red: hsl(0, 50%, 50%);
+    --accent-color-red-hover: hsl(0, 80%, 65%);
+    --accent-color-red-active: hsl(0, 80%, 60%);
     --text-color: rgb(200, 200, 200);
 }
 
@@ -26,6 +35,10 @@ body {
 h1, h2, h3, h4, h5, h6, p {
     margin-top: 0;
     margin-bottom: 0;
+}
+
+.h1, .h2, .h3, .h4, .h5, .h6 {
+    margin-bottom: 0.5em;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -54,6 +67,28 @@ a:visited {
     color: var(--text-color);
 }
 
+i {
+    color: white;
+    display: inline-block;
+}
+
+button, input {
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    border-radius: 0;
+    border-style: none;
+}
+
+button {
+    cursor: pointer;
+}
+
+button, select {
+    text-transform: none;
+}
+
 /*
 GENERAL PURPOSE
 */
@@ -74,7 +109,7 @@ GENERAL PURPOSE
 .input {
     display: block;
     width: 100%;
-    padding: 0.375em 0.75em;
+    padding: 0.2em 0.75em;
     color: var(--text-color);
     background-color: rgb(var(--bg-color-2));
     border: 1px solid #646464;
@@ -82,6 +117,88 @@ GENERAL PURPOSE
     border-radius: 0.25em;
 }
 
+.input:focus {
+    border: 1px solid hsl(0, 0%, 50%);
+    outline: none;
+}
+
+/* So the calendar icon is white */
+.input-date {
+    color-scheme: dark;
+}
+
+.button {
+    padding: 0.375em 0.75em;
+    color: var(--text-color);
+    appearance: none;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+
+.button-primary {
+    font-weight: 600;
+    font-size: 1.25rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25em;
+}
+
+/*
+BUTTON COLORS
+*/
+.button-dark {
+    color: var(--text-color);
+    background-color: rgb(11, 11, 11);
+}
+
+.button-dark:hover {
+    background-color: rgb(22, 22, 22);
+}
+
+.button-dark:active {
+    background-color: rgb(17, 17, 17);
+}
+
+
+.button-accent {
+    background-color: var(--accent-color1);
+}
+
+.button-accent:hover {
+    background-color: var(--accent-color1-hover);
+}
+
+.button-accent:active {
+    background-color: var(--accent-color1-active);
+}
+
+.button-accent2 {
+    background-color: var(--accent-color2);
+}
+
+.button-accent2:hover {
+    background-color: var(--accent-color2-hover);
+}
+
+.button-accent2:active {
+    background-color: var(--accent-color2-active);
+}
+
+
+
+i.button-remove {
+    color: var(--accent-color-red);
+    transition: color 0.25s;
+    cursor: pointer;
+    font-size: 1.15em;
+}
+
+i.button-remove:hover {
+    color: var(--accent-color-red-hover);
+}
+
+i.button-remove:active {
+    color: var(--accent-color-red-active);
+}
 
 
 .position-relative {
@@ -90,6 +207,10 @@ GENERAL PURPOSE
 
 .display-flex {
     display: flex;
+}
+
+.display-inline-block {
+    display: inline-block;
 }
 
 .align-items-center {
@@ -193,6 +314,10 @@ COLUMNS
     width: auto;
 }
 
+.col {
+    flex: 1 0 0%;
+}
+
 .col-1 {
     width: 10%;
 }
@@ -231,6 +356,10 @@ COLUMNS
 
 /* >= 576px */
 @media screen AND (min-width: 576px) {
+    .col-sm {
+        flex: 1 0 0%;
+    }
+
     .col-sm-1 {
         width: 10%;
     }
@@ -269,6 +398,10 @@ COLUMNS
 }
 
 @media screen AND (min-width: 768px) {
+    .col-md {
+        flex: 1 0 0%;
+    }
+
     .col-md-1 {
         width: 10%;
     }
@@ -307,6 +440,10 @@ COLUMNS
 }
 
 @media screen AND (min-width: 1200px) {
+    .col-xl {
+        flex: 1 0 0%;
+    }
+
     .col-xl-1 {
         width: 10%;
     }
@@ -398,7 +535,7 @@ CONTAINERS
 
 @media screen AND (min-width: 768px) {
     .container-md, .container-sm {
-        max-width: 750px;
+        max-width: 720px;
     }
 }
 
@@ -408,16 +545,61 @@ CONTAINERS
     }
 }
 
-
-
-
-
-
+/*
+So the footer will always be at the bottom at the end of the viewport
+min-height: 100vh;
+*/
 .page-wrapper {
     min-height: 100vh;
-    padding-top: 50px;
+    padding-top: 53px;
     padding-bottom: 2em;
 }
+
+
+.dropdown-button {
+    border-radius: 12px;
+    background-color: rgb(var(--bg-color-2));
+    color: white;
+    padding: 0.5em 1em 0.5em 1em;
+    width: 100%;
+}
+
+.dropdown-button::after {
+    content: "";
+    background-image: url("/ressources/icons/caret-down-solid.svg");
+    background-repeat: no-repeat;
+    width: 1em;
+    height: 1em;
+    background-size: 1em;
+    display: inline-block;
+    margin-left: auto;
+    transition: transform 0.15s ease-out;
+}
+
+
+.dropdown-button:not(.collapsed)::after {
+    transform: rotate(180deg);
+}
+
+.dropdown-collapse.collapsed {
+    display: none;
+}
+
+.collapsing {
+    height: 0;
+    overflow: hidden;
+    transition: 0.25s ease height;
+}
+
+
+
+
+
+
+
+/**
+Specific styles
+*/
 
 
 /*
@@ -463,36 +645,16 @@ NAVBAR
     color: #ffffff;
 }
 
-.search-container {
-    display: flex;
-    align-items: center;
-}
-
-.search-input {
-    padding: 5px 10px;
-    border: 1px solid rgb(170, 170, 170);
-    border-radius: 3px;
-    height: 30px;
-}
-
-.search-button {
-    background-color: #c0a300;
-    border: none;
+.login-button, .login-button * {
     color: white;
-    cursor: pointer;
-    padding: 5px 10px;
-    border-radius: 3px;
-    transition: background-color 0.2s;
-    height: 30px;
-    margin-left: 0.5em;
 }
 
-.search-button:hover {
-    background-color: #48ad4d;
+.login-button-row {
+    column-gap: 0.5em;
 }
 
-.search-button:active {
-    background-color: #246627;
+.navbar-row {
+    column-gap: 1em;
 }
 
 
@@ -540,9 +702,26 @@ FOOTER
     border-radius: 12px;
 }
 
+
+/**
+REGISTER
+*/
 .register-container {
     margin-top: 10em;
 }
+
+.register-form > .row:not(:first-child) {
+    margin-top: 1em;
+}
+
+.register-form > .row {
+    row-gap: 1em;
+}
+
+.register-gap-row {
+    column-gap: 2em;
+}
+
 
 /**
 BLOG ARTICLE
@@ -561,6 +740,10 @@ BLOG ARTICLE
     display: inline-block;
 }
 
+.stats-row {
+    justify-content: space-evenly;
+}
+
 .like-button {
     cursor: pointer;
     transition: transform 0.25s, color 0.1s;
@@ -577,7 +760,7 @@ BLOG ARTICLE
 }
 
 /**
-like button has been pressed - like added
+like button has been pressed
 */
 .like-button.active {
     color: rgb(223, 71, 104);
@@ -595,17 +778,48 @@ like button has been pressed - like added
 
 
 .blog-info-container {
-    margin-top: 2em;
+    margin-top: 1.5em;
     margin-bottom: 1em;
     row-gap: 0.5em;
 }
 
-.stats-row {
-    justify-content: space-evenly;
-}
-
 .blog-content-container {
     margin-top: 1em;
+}
+
+.tag-item {
+    display: inline-block;
+    background-color: rgb(var(--bg-color-2));
+    border-radius: 12px;
+    padding-left: 0.75em;
+    padding-right: 0.75em;
+    flex-shrink: 1;
+}
+
+.tag-element-row {
+    column-gap: 0.5em;
+}
+
+.tag-element-row > * {
+    flex-shrink: 1;
+}
+
+.tag-list {
+    column-gap: 0.5em;
+    row-gap: 0.5em;
+}
+
+.tag-list-container {
+    column-gap: 0.5em;
+}
+
+/**
+The dropdown for the tag-list should only be visible on mobile
+*/
+@media screen AND (min-width: 576px) {
+	.tag-list-container.collapsed {
+        display: flex;
+    }
 }
 
 
@@ -702,4 +916,20 @@ Otherwise with flex-wrap the wrapped elements will overflow, as the parent heigh
     .blog-spoiler-title {
         margin-bottom: 0.25em;
     }
+}
+
+
+/*
+SEARCH KATZEGORIEN
+*/
+.search-katzegorien-container {
+    margin-top: 1em;
+}
+
+.search-form > input {
+    margin-top: 1em;
+}
+
+.submit-row {
+    margin-top: 2em !important;
 }

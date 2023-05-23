@@ -6,12 +6,26 @@
         <li class="navbar-item">
             <a href="katzegorien" class="navbar-link <?php if($_GET["p"] == "katzegorien") echo "active";?>">Katzegorien</a>
         </li>
-        <li class="navbar-item">
-            <a href="registrieren" class="navbar-link <?php if($_GET["p"] == "registrieren") echo "active";?>">Registrieren</a>
-        </li>
     </ul>
-    <div class="search-container">
-        <input type="text" class="search-input" placeholder="Search...">
-        <button class="search-button display-flex align-items-center justify-content-center"><img class="icon" src="/ressources/icons/magnifying-glass-solid.svg"></button>
+    <div class="row align-items-center justify-content-space-between navbar-row">
+        <div class="col-auto">
+            <input type="text" class="input" placeholder="Suche...">
+        </div>
+        <div class="col-auto">
+            <button class="button primary-button button-accent2 login-button" onclick='window.location.href="/login";'>
+                <div class="row align-items-center login-button-row">
+                    <p class="col-auto">Login</p>
+                    <i class="col-auto fa-solid fa-right-to-bracket"></i>
+                </div>
+            </button>
+        </div>
+        <div class="col-auto">
+            <button class="button primary-button button-accent2 login-button" onclick='window.location.href="/registrieren";'>
+                <div class="row align-items-center login-button-row">
+                    <p class="col-auto">Registrieren</p>
+                    <i class="col-auto fa-solid fa-arrow-up-from-bracket"></i>
+                </div>
+            </button>
+        </div>
     </div>
 </nav>
