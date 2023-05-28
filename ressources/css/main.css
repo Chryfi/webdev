@@ -1075,6 +1075,8 @@ UPLOAD STYLES
     padding-right: 1em;
 }
 
-.upload-error-overlay * {
+.upload-error-overlay p {
     font-weight: 500;
+    font-size: 1.25rem;
+    color: white;
 }
