@@ -71,13 +71,14 @@ i {
     display: inline-block;
 }
 
-button, input {
+button, input, textarea {
     margin: 0;
     font-family: inherit;
     font-size: inherit;
     line-height: inherit;
     border-radius: 0;
     border-style: none;
+    resize: vertical;
 }
 
 button {
@@ -88,6 +89,33 @@ button, select {
     text-transform: none;
 }
 
+
+
+/**
+for auto growing textarea
+*/
+.grow-wrap {
+    display: grid;
+}
+
+.grow-wrap::after {
+    content: attr(data-replicated-value) " ";
+    white-space: pre-wrap;
+    visibility: hidden;
+}
+
+.grow-wrap > textarea {
+    resize: none;
+    overflow: hidden;
+}
+
+.grow-wrap > textarea, .grow-wrap::after {
+    padding: 0.5rem;
+    font: inherit;
+    grid-area: 1 / 1 / 2 / 2;
+}
+  
+
 /*
 GENERAL PURPOSE
 */
@@ -95,6 +123,12 @@ GENERAL PURPOSE
     text-align: center;
     margin-bottom: 4em;
     margin-top: 2em;
+}
+
+.hr {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    border-color: rgb(121, 121, 121);
 }
 
 
@@ -126,11 +160,15 @@ GENERAL PURPOSE
     color-scheme: dark;
 }
 
+/*
+BUTTON STUFF
+*/
 .button {
     padding: 0.375em 0.75em;
     color: var(--text-color);
     appearance: none;
     border-radius: 8px;
+    text-align: center;
     transition: background-color 0.2s;
 }
 
@@ -138,12 +176,9 @@ GENERAL PURPOSE
     font-weight: 600;
     font-size: 1.25rem;
     padding-left: 1.25rem;
-    padding-right: 1.25em;
+    padding-right: 1.25rem;
 }
 
-/*
-BUTTON COLORS
-*/
 .button-dark {
     color: var(--text-color);
     background-color: rgb(11, 11, 11);
@@ -252,6 +287,14 @@ i.button-remove:active {
     justify-content: space-evenly;
 }
 
+.align-self-flex-end {
+    align-self: flex-end;
+}
+
+.flex-grow-1 {
+    flex-grow: 1;
+}
+
 .text-center {
     text-align: center;
 }
@@ -267,6 +310,12 @@ i.button-remove:active {
 /*
 CSS UTILITIES
 */
+.margin-y-1
+{
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
 .margin-y-2
 {
     margin-top: 2em;
@@ -790,7 +839,7 @@ stuff like date, username, likes, statistics, tags
 */
 .blog-info-container {
     margin-top: 1.5em;
-    row-gap: 0.5em;
+    row-gap: 0.75em;
 }
 
 .blog-content-container {
@@ -839,14 +888,6 @@ Overrite display none of collapsed like this
 BLOG SPOILER
 */
 
-/*
-Set the children height.
-Otherwise with flex-wrap the wrapped elements will overflow, as the parent height will not change.
-*/
-.blog-spoiler > * {
-    height: 225px;
-}
-
 .blog-spoiler-container {
     background-color: rgb(var(--bg-color-1));
     box-shadow: 0px 0px 20px black;
@@ -864,13 +905,13 @@ Otherwise with flex-wrap the wrapped elements will overflow, as the parent heigh
 .blog-thumbnail-img {
     object-fit: scale-down;
     width: 100%;
-    height: 100%;
     object-position: top;
 }
 
 .blog-spoiler-text-container {
     overflow: hidden;
     position: relative;
+    height: 180px;
 }
 
 .blog-spoiler-text {
@@ -948,4 +989,85 @@ SEARCH KATZEGORIEN
 
 .submit-row {
     margin-top: 2em !important;
+}
+
+/**
+UPLOAD STYLES
+*/
+
+.upload-error-overlay, .upload-hover-overlay, .drop-upload, .upload-progressbar {
+    border-radius: 12px;
+}
+
+.drop-upload {
+    border-color: rgb(201, 201, 201);
+    border-style: dashed;
+    border-width: 2px;
+    min-height: 100px;
+}
+
+.upload-default {
+    padding: 1rem;
+    text-align: center;
+}
+
+.hover, .drop-upload:hover {
+    background: #153243;
+    border-style: solid;
+    cursor: pointer;
+}
+
+.drop-upload > * {
+    pointer-events: none;
+}
+
+
+/* logic when to show which state */
+.drop-upload:not(.hover) .upload-hover-overlay {
+    display: none;
+}
+
+.drop-upload:not(.error) .upload-error-overlay {
+    display: none;
+}
+
+.drop-upload:not(.loading) .upload-progressbar {
+    display: none;
+}
+
+.drop-upload:not(.uploaded) .uploaded-files-list {
+    display: none;
+}
+
+.drop-upload.hover .upload-default,
+.drop-upload.hover .upload-progressbar,
+.drop-upload.hover .upload-error-overlay,
+.drop-upload.uploaded-error .upload-default,
+.drop-upload.loading .upload-default,
+.drop-upload.error .upload-default  {
+    display: none;
+}
+
+.upload-progressbar {
+    background: hsl(97, 50%, 19%);
+}
+
+.uploaded {
+    background: hsl(97, 50%, 19%);
+    border-style: solid;
+}
+
+.upload-hover-overlay {
+    background: #284B63;
+}
+
+.upload-error-overlay {
+    background-color: #6B0F1A;
+    padding: 0.5em;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+.upload-error-overlay p {
+    font-weight: 500;
 }

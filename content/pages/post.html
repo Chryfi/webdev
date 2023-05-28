@@ -1,0 +1,211 @@
+<div class="page-wrapper">
+    <header>
+        <div class="header-text">
+            <h1>Blog Beitrag</h1>
+            <p class="lead">Teile der Katzenwelt deine Gedanken mit!</p>
+        </div>
+    </header>
+    <main class="container-sm">
+        <div class="round-container">
+            <form class="blog-post">
+                <div class="row">
+                    <div class="col">
+                        <p class="lead">Titel</p>
+                        <input class="input" type="text" name="titel">
+                    </div>
+                </div>
+                <div class="row margin-y-1">
+                    <div class="col">
+                        <p class="lead">Spoiler</p>
+                        <div class="grow-wrap">
+                            <textarea name="spoiler" class="input" onInput="this.parentNode.dataset.replicatedValue = this.value"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row margin-y-1">
+                    <div class="col">
+                        <p class="lead">Beitrag</p>
+                        <div class="grow-wrap">
+                            <textarea name="content" class="input" onInput="this.parentNode.dataset.replicatedValue = this.value"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-sm-8">
+                        <div class="drop-upload row" id="image-upload">
+                            <div class="upload-default row justify-content-center align-items-center">
+                                <div class="col">
+                                    <h3><i class="fa-solid fa-upload fa-xl"></i> <a href="#" class="link-info">Upload image</a></h3>
+                                </div>
+                                <div class="col uploaded-files-list">
+                                    <i class="fa-solid fa-file fa-xl"></i>
+                                    <p class="display-inline-block" id="uploaded-file-name">Uploaded</p>
+                                </div>
+                            </div>
+                            <div class="upload-error-overlay">
+                                <div class="justify-content-center">
+                                    <i class="fa-solid fa-exclamation-circle fa-xl"></i>
+                                    <p class="display-inline-block" id="error-text">Error</p>
+                                </div>
+                            </div>
+                            <div class="upload-hover-overlay row justify-content-center align-items-center">
+                                <div class="col-5">
+                                    <h3 class="text-center"><i class="fas fa-upload fa-xl"></i> Drop your file</h3>
+                                </div>
+                            </div>
+                            <div class="upload-progressbar row justify-content-center align-items-center">
+                                <div class="col-5">
+                                    <h3 class="text-center">Loading...</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-5" style="height: 0px">
+                        <img class="blog-thumbnail-img" id="image-preview">
+                    </div>
+                </div>
+                <hr class="hr">
+                <div class="row justify-content-center">
+                    <div class="col-auto">
+                        <div class="button button-primary button-accent2">Posten</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+</div>
+<script>
+    let imageUpload = document.getElementById("image-upload");
+    let imagePreview = document.getElementById("image-preview");
+    let errorText = document.getElementById("error-text");
+    let fileNameDisplay = document.getElementById("uploaded-file-name");
+
+    imageUpload.addEventListener("click", (e) => onClick(e));
+    imageUpload.addEventListener("drop", (e) => onDrop(e));
+    imageUpload.addEventListener("dragover", (e) => e.preventDefault());
+    imageUpload.addEventListener("dragenter", (e) => onDragEnter(e));
+    imageUpload.addEventListener("dragleave", (e) => onDragLeave(e));
+
+
+
+    function onDragLeave(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        imageUpload.classList.remove("hover");
+    }
+
+    function onDragEnter(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        imageUpload.classList.add("hover");
+    }
+
+    function onClick(e) {
+        e.preventDefault();
+
+        /* create a fake input for clicking upload */
+        let input = document.createElement('input');
+        input.type = 'file';
+
+        input.onchange = e => {
+            this.upload(input.files[0]);
+        };
+
+        input.click();
+    }
+
+    function onDrop(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        let items = event.dataTransfer.items;
+
+        if (items && items.length > 0) {
+            /* take the first file, if it is a file */
+            if (items[0].kind === 'file') {
+                upload(items[0].getAsFile());
+            }
+        }
+
+        imageUpload.classList.remove("hover");
+    }
+
+    /**
+     * @param {File} file
+     */
+    function upload(file) {
+        if (file == null) {
+            return;
+        }
+
+        const validImageTypes = ["image/jpeg", "image/png"];
+
+        if (!validImageTypes.includes(file.type)) {
+            displayError("Kein Bild hochgeladen.");
+            return;
+        }
+
+        imageUpload.classList.remove("error");
+        imageUpload.classList.add("loading");
+
+        const reader = new FileReader();
+
+        reader.onload = () => {
+            /* read image to check aspect ratio */
+            const img = new Image();
+
+            img.onload = () => {
+                imageUpload.classList.remove("loading");
+                const width = img.naturalWidth;
+                const height = img.naturalHeight;
+                const d = gcd(width, height);
+                const wRatio = width / d;
+                const hRatio = height / d;
+
+                if (wRatio != 16 || hRatio != 9) {
+                    displayError("Seitenverhältnisse stimmen nicht. Es ist nur 16:9 erlaubt.");
+                    return;
+                }
+
+                imagePreview.src = reader.result;
+                imagePreview.parentElement.style.height = "";
+                imagePreview.parentElement.style.marginTop = "1em";
+                
+                imageUpload.classList.add("uploaded");
+                fileNameDisplay.textContent = "Uploaded " + file.name;
+            };
+
+            img.onerror = () => {
+                displayError("Fehler beim lesen der Datei.");
+            };
+
+            img.src = reader.result;
+        }
+
+        reader.onerror = () => {
+            displayError("Fehler beim lesen der Datei.");
+        }
+
+        reader.readAsDataURL(file);
+    }
+
+    function displayError(message) {
+        imageUpload.classList.add("error");
+        errorText.textContent = message;
+        time = (message != null) ? message.length * 85 : 5000;
+        setTimeout(() => {
+            imageUpload.classList.remove("error");
+            errorText.textContent = "";
+        }, time);
+    }
+
+    function gcd(a, b) {
+        if (!b) {
+            return a;
+        }
+
+        return gcd(b, a % b);
+    }
+</script>
