@@ -45,7 +45,7 @@ include("content/defaults/footer.php");
 
 
 /**
- * @return string|boolean returns the first found filetype in the path. If nothing was found returns false.
+ * @return string returns the first found filetype in the path. If nothing was found returns NULL.
  */
 function findFileType($path, $filetypes) {
     for ($i = 0; $i < count($filetypes); $i++) {
@@ -54,7 +54,7 @@ function findFileType($path, $filetypes) {
         if (file_exists($path.".".$filetype)) {
             return $filetype;
         } else if ($i == count($filetypes) - 1) {
-            return false;
+            return NULL;
         }
     }
 }

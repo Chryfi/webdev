@@ -554,6 +554,9 @@ min-height: 100vh;
     padding-bottom: 2em;
 }
 
+.dropdown-collapse:not(.collapsed) .dropdown-body {
+    margin-top: 1em;
+}
 
 .dropdown-button {
     border-radius: 12px;
@@ -572,9 +575,12 @@ min-height: 100vh;
     background-size: 1em;
     display: inline-block;
     margin-left: auto;
-    transition: transform 0.15s ease-out;
+    transition: transform 0.2s ease-out;
 }
 
+.dropdown-collapse {
+    overflow: hidden;
+}
 
 .dropdown-button:not(.collapsed)::after {
     transform: rotate(180deg);
@@ -587,7 +593,7 @@ min-height: 100vh;
 .collapsing {
     height: 0;
     overflow: hidden;
-    transition: 0.25s ease height;
+    transition: 0.2s ease height;
 }
 
 
@@ -775,10 +781,15 @@ like button has been pressed
     transform: scale(0.85);
 }
 
+.blog-head {
+    margin-bottom: 1em;
+}
 
+/*
+stuff like date, username, likes, statistics, tags
+*/
 .blog-info-container {
     margin-top: 1.5em;
-    margin-bottom: 1em;
     row-gap: 0.5em;
 }
 
@@ -812,8 +823,10 @@ like button has been pressed
     column-gap: 0.5em;
 }
 
+
 /**
 The dropdown for the tag-list should only be visible on mobile
+Overrite display none of collapsed like this
 */
 @media screen AND (min-width: 576px) {
 	.tag-list-container.collapsed {

@@ -1,7 +1,7 @@
 <div class="page-wrapper">
     <main class="container-sm">
         <div class="round-container blog-container">
-            <div class="row justify-content-center">
+            <div class="blog-head row justify-content-center">
                 <div class="col-md-8">
                     <h2>Titel Lorem ipsum lorem Titel</h2>
                     <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata </p>    
@@ -25,16 +25,18 @@
                             <i class="col-auto fa-solid fa-tags"></i>
                             <div class="col-auto">&nbsp;Tag Liste</div>
                         </button>
-                        <div class="row align-items-center justify-content-space-between tag-list-container dropdown-collapse collapsed" id="tag-list">
-                            <i class="col-auto fa-solid fa-tags display-sm-max-none"></i>
-                            <div class="col">
-                                <div class="row tag-list">
-                                    <p class="col-auto tag-item">Katze</p>
-                                    <p class="col-auto tag-item">Fisch</p>
-                                    <p class="col-auto tag-item">Sherlock Holmes Katze</p>
-                                    <p class="col-auto tag-item">Absolute Giga Chad Katze</p>
-                                    <p class="col-auto tag-item">Leckeres Katzenfutter</p>
-                                    <p class="col-auto tag-item">Meme</p>
+                        <div class="tag-list-container dropdown-collapse collapsed" id="tag-list">
+                            <div class="tag-list-container row align-items-center justify-content-space-between dropdown-body">
+                                <i class="col-auto fa-solid fa-tags display-sm-max-none"></i>
+                                <div class="col">
+                                    <div class="row tag-list">
+                                        <p class="col-auto tag-item">Katze</p>
+                                        <p class="col-auto tag-item">Fisch</p>
+                                        <p class="col-auto tag-item">Sherlock Holmes Katze</p>
+                                        <p class="col-auto tag-item">Absolute Giga Chad Katze</p>
+                                        <p class="col-auto tag-item">Leckeres Katzenfutter</p>
+                                        <p class="col-auto tag-item">Meme</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -95,60 +97,4 @@
     likeButtonElement.addEventListener("mouseenter", e => {
         likeButtonElement.classList.add("like-hover");
     });
-
-    
-
-
-    /**
-     * handle dropdowns
-     * TODO move to general code file
-     * TODO bug when you make screen small - dropdown and then big - style.height is 0
-     * */
-    let dropDownButtons = document.getElementsByClassName("dropdown-button");
-    for (let i = 0; i < dropDownButtons.length; i++) {
-        let element = dropDownButtons.item(i);
-
-        if (!("dropdownTarget" in element.dataset) || document.getElementById(element.dataset["dropdownTarget"]) == null) {
-            continue;
-        }
-
-        let target = document.getElementById(element.dataset["dropdownTarget"]);
-
-        element.addEventListener("click", e => {
-            if (target.classList.contains("collapsing")) return;
-
-            if (target.classList.contains("collapsed")) {
-                element.classList.remove("collapsed");
-
-                target.classList.remove("collapsed");
-                target.classList.add("collapsing");
-
-                let clone = target.cloneNode(true);
-                clone.id = Math.random() * 100000;
-                clone.classList.remove("collapsing");
-                clone.style.height = "";
-                target.parentElement.append(clone);
-                let height = document.getElementById(clone.id).offsetHeight;
-                clone.remove();
-
-                setTimeout(() => {
-                    target.style.height = height + "px";
-                }, 1);
-
-                setTimeout(() => {
-                    target.classList.remove("collapsing");
-                }, 250);
-            } else {
-                element.classList.add("collapsed");
-
-                target.classList.add("collapsing");
-                target.style.height = "0px";
-
-                setTimeout(() => {
-                    target.classList.remove("collapsing");
-                    target.classList.add("collapsed");
-                }, 250);
-            }
-        });
-    }
 </script>
