@@ -1,3 +1,15 @@
+/**
+ * The button that controls the dropdown needs to have the class "dropdown-button"
+ * and a data attribute "dropdown-target" with the id of the content container that should be expanded / collapsed.
+ * 
+ * The content container that will be expanded / collapsed needs to have the class "dropdown-collapse"
+ * 
+ * In the collapsed state both button and content container will get the class "collapsed".
+ * While animating the content container into either expanded or collapsed state,
+ * the "collapsed" class will be removed and "collapsing" class will be assigned only for the time period of animation.
+ *
+*/
+
 document.addEventListener("DOMContentLoaded", e => {
     let dropDownButtons = document.getElementsByClassName("dropdown-button");
     for (let i = 0; i < dropDownButtons.length; i++) {
