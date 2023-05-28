@@ -235,6 +235,9 @@ i.button-remove:active {
 }
 
 
+/*
+CSS UTILITIES
+*/
 .position-relative {
     position: relative;
 }
@@ -307,9 +310,6 @@ i.button-remove:active {
     object-fit: scale-down;
 }
 
-/*
-CSS UTILITIES
-*/
 .margin-y-1
 {
     margin-top: 1em;
@@ -603,6 +603,9 @@ min-height: 100vh;
     padding-bottom: 2em;
 }
 
+/*
+DROPDOWN
+*/
 .dropdown-collapse:not(.collapsed) .dropdown-body {
     margin-top: 1em;
 }
@@ -798,6 +801,10 @@ BLOG ARTICLE
     justify-content: space-evenly;
 }
 
+
+/**
+LIKE BUTTON
+*/
 .like-button {
     cursor: pointer;
     transition: transform 0.25s, color 0.1s;
@@ -875,7 +882,7 @@ stuff like date, username, likes, statistics, tags
 
 /**
 The dropdown for the tag-list should only be visible on mobile
-Overrite display none of collapsed like this
+Overwrite display none of collapsed like this
 */
 @media screen AND (min-width: 576px) {
 	.tag-list-container.collapsed {
@@ -1068,6 +1075,6 @@ UPLOAD STYLES
     padding-right: 1em;
 }
 
-.upload-error-overlay p {
+.upload-error-overlay * {
     font-weight: 500;
 }
