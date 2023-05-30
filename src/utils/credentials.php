@@ -27,7 +27,7 @@
         }
 
         private static function readCredentials() : mixed {
-            $contents = file_get_contents("../../credentials");
+            $contents = file_get_contents(BASE_PATH . "/credentials");
             $json_data = json_decode($contents, true);
 
             return $json_data;

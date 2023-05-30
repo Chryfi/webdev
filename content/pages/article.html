@@ -12,7 +12,7 @@
                         <div class="col-md-5">
                             <div class="row stats-row">
                                 <div class="col-auto stats-container">
-                                    <p id="like-counter">12</p><i class="fa-solid fa-heart like-button" id="like-button"></i>
+                                    <p id="like-counter" class="like-counter">12</p><i class="fa-solid fa-heart like-button" id="like-button"></i>
                                 </div>
                                 <div class="col-auto stats-container">
                                     <p>323</p><i class="fa-regular fa-eye"></i>
@@ -82,10 +82,12 @@
         if (likeButtonElement.classList.contains("active")) {
             likeCounterElement.textContent = parseInt(likeCounterElement.textContent) - 1; 
             likeButtonElement.classList.remove("active");
+            likeCounterElement.classList.remove("active");
             likeButtonElement.classList.remove("like-hover");
         } else {
             likeCounterElement.textContent = parseInt(likeCounterElement.textContent) + 1; 
             likeButtonElement.classList.add("active");
+            likeCounterElement.classList.add("active");
             likeButtonElement.classList.remove("like-hover");
         }
     });
