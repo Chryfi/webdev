@@ -160,11 +160,9 @@
                 imageUpload.classList.remove("loading");
                 const width = img.naturalWidth;
                 const height = img.naturalHeight;
-                const d = gcd(width, height);
-                const wRatio = width / d;
-                const hRatio = height / d;
+                const heightTest = (height / width) * 1920;
 
-                if (wRatio != 16 || hRatio != 9) {
+                if (Math.round(heightTest) != 1080) {
                     displayError("Seitenverhältnisse stimmen nicht. Es ist nur 16:9 erlaubt.");
                     return;
                 }
