@@ -7,15 +7,15 @@ html {
     --color3: hsl(0, 45%, 22%);
     --color4: #16C172;
     --color5: #214f3d;
-    --accent-color1: hsl(203, 12%, 38%);
-    --accent-color1-hover: hsl(201, 12%, 45%);
-    --accent-color1-active: hsl(202, 12%, 41%);
-    --accent-color2: hsl(138, 30%, 38%);
-    --accent-color2-hover: hsl(138, 30%, 48%);
-    --accent-color2-active: hsl(138, 30%, 42%);
-    --accent-color-red: hsl(0, 50%, 50%);
-    --accent-color-red-hover: hsl(0, 80%, 65%);
-    --accent-color-red-active: hsl(0, 80%, 60%);
+    --accent-color1: hsl(203, 20%, 30%);
+    --accent-color1-hover: hsl(201, 20%, 40%);
+    --accent-color1-active: hsl(202, 20%, 35%);
+    --accent-color2: hsl(138, 30%, 30%);
+    --accent-color2-hover: hsl(138, 30%, 40%);
+    --accent-color2-active: hsl(138, 30%, 35%);
+    --accent-color-red: hsl(0, 65%, 40%);
+    --accent-color-red-hover: hsl(0, 70%, 60%);
+    --accent-color-red-active: hsl(0, 70%, 50%);
     --text-color: rgb(200, 200, 200);
 }
 
@@ -177,6 +177,7 @@ BUTTON STUFF
     font-size: 1.25rem;
     padding-left: 1.25rem;
     padding-right: 1.25rem;
+    color: white;
 }
 
 .button-dark {
@@ -823,7 +824,7 @@ LIKE BUTTON
 /**
 like button has been pressed
 */
-.like-button.active {
+.like-button.active, .like-counter.active {
     color: rgb(223, 71, 104);
 }
 
@@ -1019,7 +1020,7 @@ UPLOAD STYLES
 }
 
 .hover, .drop-upload:hover {
-    background: #153243;
+    background: var(--accent-color1);
     border-style: solid;
     cursor: pointer;
 }
@@ -1056,20 +1057,20 @@ UPLOAD STYLES
 }
 
 .upload-progressbar {
-    background: hsl(97, 50%, 19%);
+    background: var(--accent-color2);
 }
 
 .uploaded {
-    background: hsl(97, 50%, 19%);
+    background: var(--accent-color2);
     border-style: solid;
 }
 
 .upload-hover-overlay {
-    background: #284B63;
+    background: var(--accent-color1);
 }
 
 .upload-error-overlay {
-    background-color: #6B0F1A;
+    background-color: var(--accent-color-red);
     padding: 0.5em;
     padding-left: 1em;
     padding-right: 1em;
