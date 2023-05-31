@@ -772,10 +772,6 @@ REGISTER
     margin-top: 1em;
 }
 
-.register-form > .row {
-    row-gap: 1em;
-}
-
 .register-gap-row {
     column-gap: 2em;
 }
@@ -1080,4 +1076,8 @@ UPLOAD STYLES
     font-weight: 500;
     font-size: 1.25rem;
     color: white;
+}
+
+.error {
+    color: var(--accent-color-red-active);
 }

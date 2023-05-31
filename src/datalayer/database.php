@@ -1,5 +1,18 @@
 <?php
 
+require_once (BASE_PATH."/src/utils/credentials.php");
+
+/**
+ * @return Database connected database.
+ */
+function getKatzenBlogDatabase(): Database {
+    $db = new Database("webdev", "localhost", "mysql");
+    $db->connect(Credentials::getDatabaseUser(), Credentials::getDatabasePassword());
+
+    return $db;
+}
+
+
 class Database {
     private string $databaseName;
     /**
@@ -54,6 +67,12 @@ class Database {
         }
 
         return $this->connection->prepare($query);
+    }
+
+    public function getLastInsertedId() : ?int {
+        if (!$this->isConnected()) return null;
+
+        return $this->connection->lastInsertId();
     }
 }
 ?>
