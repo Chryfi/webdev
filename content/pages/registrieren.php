@@ -86,36 +86,25 @@ function validateUserData($key, $value) : ?string {
                     <div class="col">
                         <p class="lead">Username</p>
                         <input class="input" type="text" name="username" value="<?php echo $username; ?>">
-                    </div>
-                    <div class="row">
                         <?php outputError("username", $errors);?>
                     </div>
                 </div>
-
                 <div class="row register-gap-row">
                     <div class="col-md">
                         <p class="lead">Vorname</p>
                         <input class="input" type="text" name="firstname" value="<?php echo $firstname; ?>">
+                        <?php outputError("firstname", $errors);?>
                     </div>
                     <div class="col-md">
                         <p class="lead">Nachname</p>
                         <input class="input" type="text" name="surname" value="<?php echo $surname; ?>">
-                    </div>
-                    <div class="row register-gap-row">
-                        <div class="col-md">
-                            <?php outputError("firstname", $errors);?>
-                        </div>
-                        <div class="col-md">
-                            <?php outputError("surname", $errors);?>
-                        </div>
+                        <?php outputError("surname", $errors);?>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
                         <p class="lead">E-Mail</p>
                         <input class="input" type="email" name="email" value="<?php echo $email; ?>">
-                    </div>
-                    <div class="row">
                         <?php outputError("email", $errors);?>
                     </div>
                 </div>
@@ -123,26 +112,18 @@ function validateUserData($key, $value) : ?string {
                     <div class="col-md">
                         <p class="lead">Passwort</p>
                         <input class="input" type="password" name="password" value="<?php echo $password; ?>">
+                        <?php outputError("password", $errors);?>
                     </div>
                     <div class="col-md">
                         <p class="lead">Passwort wiederholen</p>
                         <input class="input" type="password" name="password-repeated" value="<?php echo $passwordRepeated; ?>">
-                    </div>
-                    <div class="row register-gap-row">
-                        <div class="col-md">
-                            <?php outputError("password", $errors);?>
-                        </div>
-                        <div class="col-md">
-                            <?php outputError("password-repeated", $errors);?>
-                        </div>
+                        <?php outputError("password-repeated", $errors);?>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
                         <p class="lead">Geburtstag</p>
                         <input type="date" class="input input-date" name="birthday" value="<?php echo $birthday; ?>">
-                    </div>
-                    <div class="row">
                         <?php outputError("birthday", $errors);?>
                     </div>
                 </div>

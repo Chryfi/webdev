@@ -11,7 +11,7 @@ $password = $_POST["password"] ?? "";
 /* error messages for the input names */
 $errors = [];
 
-if (isset($_POST["username"])) {
+if (isset($_POST["username"]) && !isLoggedin()) {
     $requiredPosts = ["username", "password"];
 
     foreach ($requiredPosts as $key) {
@@ -32,7 +32,7 @@ if (isset($_POST["username"])) {
              * After this block, the user will be logged in, but without refreshing the page, the header will be outdated.
              * We can't use PHP header() because of the routing system.
              */
-            echo '<script type="text/javascript">
+            echo '<script>
                 window.location.href = \'./\';
             </script>';
         }
@@ -57,8 +57,6 @@ function verifyPassword(User $user, string $password) : bool {
                     <div class="col">
                         <p class="lead">Username</p>
                         <input class="input" type="text" name="username" value="<?php echo $username;?>">
-                    </div>
-                    <div class="row">
                         <?php outputError("username", $errors);?>
                     </div>
                 </div>
@@ -66,8 +64,6 @@ function verifyPassword(User $user, string $password) : bool {
                     <div class="col-md">
                         <p class="lead">Passwort</p>
                         <input class="input" type="password" name="password" value="<?php echo $password;?>">
-                    </div>
-                    <div class="row">
                         <?php outputError("password", $errors);?>
                     </div>
                 </div>
