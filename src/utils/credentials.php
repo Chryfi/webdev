@@ -27,10 +27,11 @@
         }
 
         private static function readCredentials() : mixed {
-            $contents = file_get_contents(BASE_PATH . "/credentials");
-            $json_data = json_decode($contents, true);
+            if (!is_file(BASE_PATH . "/credentials")) return null;
 
-            return $json_data;
+            $contents = file_get_contents(BASE_PATH . "/credentials");
+
+            return json_decode($contents, true);
         }
     }
 ?>

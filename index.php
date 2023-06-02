@@ -2,6 +2,8 @@
 /* to avoid endless and annoying relative paths */
 define('BASE_PATH', "C:/xampp/htdocs/KatzenBlog");
 
+session_start();
+
 $request = $_GET['p'];
 $reqComponents = explode('/', $request);
 $page = array_pop($reqComponents);

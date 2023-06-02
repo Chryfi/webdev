@@ -1,5 +1,5 @@
 <?php
-require_once (BASE_PATH."/src/datalayer/database.php");
+require_once (BASE_PATH."/src/datalayer/tables/table.php");
 
 class User
 {
@@ -11,17 +11,40 @@ class User
     private string $surname;
     private string $birthday;
 
-    public function __construct(?int $id, string $username, string $password,
-                                string $email, string $firstname, string $surname,
-                                string $birthday)
+    private function __construct()
     {
-        $this->id = $id;
-        $this->password = $password;
-        $this->email = $email;
-        $this->username = $username;
-        $this->firstname = $firstname;
-        $this->surname = $surname;
-        $this->birthday = $birthday;
+    }
+
+    /* factory methods */
+    public static function createNecessary(string $username, string $password,
+                                           string $email, string $firstname, string $surname,
+                                           string $birthday) : User
+    {
+        $user = new User();
+        $user->password = $password;
+        $user->email = $email;
+        $user->username = $username;
+        $user->firstname = $firstname;
+        $user->surname = $surname;
+        $user->birthday = $birthday;
+
+        return $user;
+    }
+
+    public static function createFull(?int $id, string $username, string $password,
+                                      string $email, string $firstname, string $surname,
+                                      string $birthday) : User
+    {
+        $user = new User();
+        $user->id = $id;
+        $user->password = $password;
+        $user->email = $email;
+        $user->username = $username;
+        $user->firstname = $firstname;
+        $user->surname = $surname;
+        $user->birthday = $birthday;
+
+        return $user;
     }
 
     public function getId(): ?int
@@ -95,16 +118,14 @@ class User
     }
 }
 
-class UserTable
+class UserTable extends Table
 {
-    private Database $db;
-
-    function __construct(Database $db)
-    {
-        $this->db = $db;
-    }
-
-    public function insertUser(User $user)
+    /**
+     * @param User $user
+     * @return bool
+     * @throws PDOException
+     */
+    public function insertUser(User $user) : bool
     {
         $stmt = $this->db->prepare("INSERT INTO user (passwort, email, username, nachname, vorname, geburtstag)
                                           VALUES (:passwort, :email, :username, :nachname, :vorname, :geburtstag)");
@@ -118,14 +139,19 @@ class UserTable
 
         $result = $stmt->execute();
 
-        $user->setId($this->db->getLastInsertedId());
+        if ($result) $user->setId($this->db->getLastInsertedId());
 
         return $result;
     }
 
-    public function getByUserName(string $username) : ?User {
-        $stmt = $this->db->prepare("SELECT * FROM user WHERE username = :username");
-        $stmt->bindValue("username", $username);
+    /**
+     * @param int $id
+     * @return User|null
+     * @throws PDOException
+     */
+    public function getById(int $id) : ?User {
+        $stmt = $this->db->prepare("SELECT * FROM user WHERE id = :id");
+        $stmt->bindValue("id", $id);
         $result = $stmt->execute();
 
         if (!$result) return null;
@@ -137,6 +163,30 @@ class UserTable
         return $this->createUser($row);
     }
 
+    /**
+     * @param string $username
+     * @return User|null
+     * @throws PDOException
+     */
+    public function getByUserName(string $username) : ?User {
+        $stmt = $this->db->prepare("SELECT * FROM user WHERE LOWER(username) = :username");
+        $stmt->bindValue("username", strtolower($username));
+        $result = $stmt->execute();
+
+        if (!$result) return null;
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$row) return null;
+
+        return $this->createUser($row);
+    }
+
+    /**
+     * @param string $email
+     * @return User|null
+     * @throws PDOException
+     */
     public function getByEmail(string $email) : ?User {
         $stmt = $this->db->prepare("SELECT * FROM user WHERE email = :email");
         $stmt->bindValue("email", $email);
@@ -152,7 +202,7 @@ class UserTable
     }
 
     private function createUser(mixed $row) : User {
-        return new User($row["id"], $row["username"], $row["passwort"],
+        return User::createFull($row["id"], $row["username"], $row["passwort"],
             $row["email"], $row["vorname"], $row["nachname"], $row["geburtstag"]);
     }
 }

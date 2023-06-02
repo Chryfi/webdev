@@ -4,6 +4,7 @@ require_once (BASE_PATH."/src/utils/credentials.php");
 
 /**
  * @return Database connected database.
+ * @throws PDOException when the connection failed
  */
 function getKatzenBlogDatabase(): Database {
     $db = new Database("webdev", "localhost", "mysql");
@@ -43,7 +44,7 @@ class Database {
      * @throws PDOException
      */
     public function connect(string $user, string $password): void {
-        if ($user === null && $password === null) return;
+        if (!isset($user) || !isset($password)) return;
 
         $this->username = $user;
         $this->$password = $password;

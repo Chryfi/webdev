@@ -1,6 +1,8 @@
 <?php
+require_once(BASE_PATH . "/src/datalayer/tables/user.php");
+require_once(BASE_PATH . "/src/application/userForm.php");
 
-require_once (BASE_PATH."/src/datalayer/user.php");
+$userTable = new UserTable(getKatzenBlogDatabase());
 
 /* quick access for output */
 $username = $_POST["username"] ?? "";
@@ -8,6 +10,8 @@ $firstname = $_POST["firstname"] ?? "";
 $surname = $_POST["surname"] ?? "";
 $email = $_POST["email"] ?? "";
 $birthday = $_POST["birthday"] ?? "";
+$password = $_POST["password"] ?? "";
+$passwordRepeated = $_POST["password-repeated"] ?? "";
 
 /* error messages for the input names */
 $errors = [];
@@ -24,19 +28,19 @@ if (isset($_POST["username"])) {
         }
     }
 
-    if (count($errors) == 0) {
-        if ($_POST["password"] != $_POST["password-repeated"]) {
-            $errors["password"] = "Die Passwörter stimmen nicht überein.";
-            $errors["password-repeated"] = $errors["password"];
-        } else {
-            $registered = registerUser($_POST["username"], $_POST["password"], $_POST["email"], $_POST["firstname"], $_POST["surname"], $_POST["birthday"]);
+    if (!isset($errors["password"]) && $_POST["password"] != $_POST["password-repeated"]) {
+        $errors["password"] = "Die Passwörter stimmen nicht überein.";
+        $errors["password-repeated"] = $errors["password"];
         }
+
+    if (count($errors) == 0) {
+        $registered = registerUser($_POST["username"], $_POST["password"], $_POST["email"], $_POST["firstname"], $_POST["surname"], $_POST["birthday"]);
     }
 }
 
 function registerUser($username, $password, $email, $firstname, $surname, $birthday): bool {
     $userTable = new UserTable(getKatzenBlogDatabase());
-    $user = new User(null, $username, $password, $email, $firstname, $surname, $birthday);
+    $user = User::createNecessary($username, password_hash($password, PASSWORD_BCRYPT), $email, $firstname, $surname, $birthday);
 
     return $userTable->insertUser($user);
 }
@@ -68,22 +72,6 @@ function validateUserData($key, $value) : ?string {
     }
 
     return null;
-}
-
-function usernameExists($username): bool {
-    $userTable = new UserTable(getKatzenBlogDatabase());
-    return $userTable->getByUserName($username) != null;
-}
-
-function emailExists($email): bool {
-    $userTable = new UserTable(getKatzenBlogDatabase());
-    return $userTable->getByEmail($email) != null;
-}
-
-function outputError($key, $errors) {
-    if (array_key_exists($key, $errors)) {
-        echo '<p class="error"><i class="error fa-solid fa-circle-exclamation"></i> '.$errors[$key].'</p>';
-    }
 }
 ?>
 
@@ -133,11 +121,11 @@ function outputError($key, $errors) {
                 <div class="row register-gap-row">
                     <div class="col-md">
                         <p class="lead">Passwort</p>
-                        <input class="input" type="password" name="password">
+                        <input class="input" type="password" name="password" value="<?php echo $password; ?>">
                     </div>
                     <div class="col-md">
                         <p class="lead">Passwort wiederholen</p>
-                        <input class="input" type="password" name="password-repeated">
+                        <input class="input" type="password" name="password-repeated" value="<?php echo $passwordRepeated; ?>">
                     </div>
                     <div class="row register-gap-row">
                         <div class="col-md">
