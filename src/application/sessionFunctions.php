@@ -32,5 +32,8 @@ function getLoggedInUser() : ?User {
     if (!isLoggedin()) return null;
 
     $userTable = new UserTable(getKatzenBlogDatabase());
-    return $userTable->getById($_SESSION["user"]["userid"]);
+    $user = $userTable->getById($_SESSION["user"]["userid"]);
+    $userTable->getDatabase()->disconnect();
+
+    return $user;
 }

@@ -20,6 +20,7 @@ $registered = false;
 if (isset($_POST["username"])) {
     $requiredPosts = ["username", "firstname", "surname", "surname", "email", "password", "password-repeated", "birthday"];
 
+    /* input validation (also validating if username email etc. already exist) */
     foreach ($requiredPosts as $key) {
         if (!isset($_POST[$key]) || $_POST[$key] == "") {
             $errors[$key] = "Geben Sie etwas ein.";

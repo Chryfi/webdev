@@ -16,22 +16,22 @@ require_once (BASE_PATH."/src/application/sessionFunctions.php");
             <input type="text" class="input" placeholder="Suche...">
         </div>
         <?php if (!isLoggedin()): ?>
-        <div class="col-auto">
-            <button class="button primary-button button-accent2 login-button" onclick='window.location.href="/login";'>
-                <div class="row align-items-center login-button-row">
-                    <p class="col-auto">Login</p>
-                    <i class="col-auto fa-solid fa-right-to-bracket"></i>
-                </div>
-            </button>
-        </div>
-        <div class="col-auto">
-            <button class="button primary-button button-accent2 login-button" onclick='window.location.href="/registrieren";'>
-                <div class="row align-items-center login-button-row">
-                    <p class="col-auto">Registrieren</p>
-                    <i class="col-auto fa-solid fa-arrow-up-from-bracket"></i>
-                </div>
-            </button>
-        </div>
+            <div class="col-auto">
+                <button class="button primary-button button-accent2 login-button" onclick='window.location.href="/login";'>
+                    <div class="row align-items-center login-button-row">
+                        <p class="col-auto">Login</p>
+                        <i class="col-auto fa-solid fa-right-to-bracket"></i>
+                    </div>
+                </button>
+            </div>
+            <div class="col-auto">
+                <button class="button primary-button button-accent2 login-button" onclick='window.location.href="/registrieren";'>
+                    <div class="row align-items-center login-button-row">
+                        <p class="col-auto">Registrieren</p>
+                        <i class="col-auto fa-solid fa-arrow-up-from-bracket"></i>
+                    </div>
+                </button>
+            </div>
         <?php else: ?>
             <div class="col-auto">
                 <button class="button primary-button button-accent2 login-button" onclick='window.location.href="/user";'>
