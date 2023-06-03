@@ -4,10 +4,10 @@ require_once(BASE_PATH . "/src/datalayer/tables/likedTable.php");
 
 class Beitrag
 {
-    private ?int $id;
+    private ?int $id = null;
     private int $views;
     private string $title;
-    private ?int $datetime;
+    private ?int $datetime = null;
     private string $teaser;
     private string $content;
     private int $userId;
@@ -200,6 +200,29 @@ class BeitragTable extends Table {
 
         if ($result) {
             $beitrag->setId($this->db->getLastInsertedId());
+            $beitrag->setDateTime($timestamp);
+        }
+
+        return $result;
+    }
+
+    public function updateBeitrag(Beitrag $beitrag) : bool {
+        if ($beitrag->getId() == null) return false;
+
+        $stmt = $this->db->prepare("UPDATE beitrag SET titel = :titel, datum = :datum, teaser = :teaser,
+                                          beitrag = :beitrag, image_name = :image_name WHERE id = :id");
+        $timestamp = time();
+
+        $stmt->bindValue("titel", $beitrag->getTitle());
+        $stmt->bindValue("datum", $timestamp);
+        $stmt->bindValue("teaser", $beitrag->getTeaser());
+        $stmt->bindValue("beitrag", $beitrag->getContent());
+        $stmt->bindValue("image_name", $beitrag->getImageName());
+        $stmt->bindValue("id", $beitrag->getId());
+
+        $result = $stmt->execute();
+
+        if ($result) {
             $beitrag->setDateTime($timestamp);
         }
 

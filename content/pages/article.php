@@ -8,6 +8,7 @@ require_once (BASE_PATH."/src/application/sessionFunctions.php");
 require_once (BASE_PATH."/src/utils/tags.php");
 
 /* quick access for output */
+$id = $_GET["id"] ?? "";
 $title = "";
 $spoiler = "";
 $authorName = "";
@@ -18,6 +19,7 @@ $likes = 0;
 $imageLink = "";
 $content = "";
 $userLikedThis = false;
+$isUserAuthor = false;
 
 if (isset($_GET["id"])) {
     $db = getKatzenBlogDatabase();
@@ -33,8 +35,9 @@ if (isset($_GET["id"])) {
     if ($beitrag = $beitragTable->getBeitrag((int) $_GET["id"])) {
         if (!isLoggedin() || ($beitrag->getUserId() != getSessionUserId())) {
             $beitragTable->addView($beitrag->getId());
+        } else {
+            $isUserAuthor = true;
         }
-
 
         $user = $userTable->getById($beitrag->getUserId());
         $authorName = $user ? $user->getUsername() : "";
@@ -64,6 +67,22 @@ if (isset($_GET["id"])) {
             <div class="round-container blog-container">
                 <div class="blog-head row justify-content-center">
                     <div class="col-md-8">
+                        <?php if($isUserAuthor): ?>
+                            <div class="row margin-bottom-1">
+                                <div class="col-auto">
+                                    <button class="button primary-button button-accent2"
+                                            onclick='window.location.href="/post?edit=<?php echo $id; ?>";'>
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </button>
+                                </div>
+                                <div class="col-auto margin-x-1">
+                                    <button class="button primary-button button-remove login-button"
+                                            onclick='window.location.href=""'>
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        <?php endif; ?>
                         <h2><?php echo $title;?></h2>
                         <?php echo $spoiler;?>
                         <div class="row blog-info-container">

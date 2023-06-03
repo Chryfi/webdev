@@ -6,6 +6,11 @@ require_once (BASE_PATH."/src/datalayer/tables/kategorie.php");
 require_once (BASE_PATH."/src/utils/tags.php");
 require_once (BASE_PATH."/src/utils/redirect.php");
 
+/* Whether we are editing an existing article */
+$isEditMode = false;
+/* retrieved from the database */
+$oldBeitrag = null;
+
 /* quick access for output */
 $title = $_POST["title"] ?? "";
 $spoiler = $_POST["spoiler"] ?? "";
@@ -13,6 +18,28 @@ $tags = $_POST["tags"] ?? [];
 $content = $_POST["content"] ?? "";
 $imageName = $_POST["image-name-cache"] ?? "";
 $imageData = $_POST["image-data-cache"] ?? "";
+
+if (isset($_GET["edit"]) && $_GET["edit"] != "" && isLoggedin()) {
+    $db = getKatzenBlogDatabase();
+    $beitragTable = new BeitragTable($db);
+    $kategorieTable = new KategorieTable($db);
+
+    $oldBeitrag = $beitragTable->getBeitrag($_GET["edit"]);
+
+    if ($oldBeitrag->getUserId() == getSessionUserId()) {
+        $isEditMode = true;
+
+        /* the presence of this means, that the user submitted the form, therefore don't use the old data as output */
+        if (!isset($_GET["edited"])) {
+            $title = $oldBeitrag->getTitle();
+            $spoiler = $oldBeitrag->getTeaser();
+            $tags = $kategorieTable->getTagsByBeitrag($oldBeitrag->getId()) ?? array();
+            $content = $oldBeitrag->getContent();
+            $imageName = "Image";
+            $imageData = readAsBase64URI($oldBeitrag->getImageName()) ?? "";
+        }
+    }
+}
 
 /* error messages for the input names */
 $errors = [];
@@ -51,21 +78,28 @@ if (isset($_POST["title"]) && isLoggedin())
         $errors["spoiler"] = "Der Spoiler darf maximal 350 Zeichen enthalten.";
     }
 
-    if (count($errors) == 0 && $beitrag = insertBeitrag($title, $spoiler, $tags, $content, $imageData)) {
-        redirectJS("article?id=".$beitrag->getId());
+    if (count($errors) == 0) {
+        $beitrag = null;
+
+        if (!$isEditMode) {
+            $beitrag = insertBeitrag($title, $spoiler, $tags, $content, $imageData);
+        } else {
+            $beitrag = editBeitrag($oldBeitrag, $title, $spoiler, $tags, $content, $imageData);
+        }
+
+        if ($beitrag) redirectJS("article?id=".$beitrag->getId());
     }
 }
 
-function insertBeitrag($title, $spoiler, $tags, $content, $imageBase64URI) : ?Beitrag {
-    $base64Image = explode(',', $imageBase64URI)[1];
-    $imageDataDecoded = base64_decode($base64Image);
-    $extension = explode('/', mime_content_type($imageBase64URI))[1];
-    $fileName = uniqid() . '.' . $extension;
 
+
+
+function insertBeitrag($title, $spoiler, $tags, $content, $imageBase64URI) : ?Beitrag {
+    $imagePath = generateThumbnailPath($imageBase64URI);
     $db = getKatzenBlogDatabase();
     $kategorieTable = new KategorieTable($db);
     $beitragTable = new BeitragTable($db);
-    $beitrag = Beitrag::createNecessary($title, $spoiler, $content, getSessionUserId(), BASE_PATH."/upload/".$fileName);
+    $beitrag = Beitrag::createNecessary($title, $spoiler, $content, getSessionUserId(), $imagePath);
 
     //TODO what if not enough tags are inserted due to errors? Delete beitrag?
     if ($beitragTable->insertBeitrag($beitrag)) {
@@ -73,7 +107,57 @@ function insertBeitrag($title, $spoiler, $tags, $content, $imageBase64URI) : ?Be
             $kategorieTable->insertTag($tag, $beitrag->getId());
         }
 
-        file_put_contents(BASE_PATH."/upload/".$fileName, $imageDataDecoded);
+        saveThumbnail($imageBase64URI, $imagePath);
+
+        $db->disconnect();
+        return $beitrag;
+    }
+
+    $db->disconnect();
+
+    return null;
+}
+
+function editBeitrag(Beitrag $oldBeitrag, $title, $spoiler, $tags, $content, $imageBase64URI) : ?Beitrag {
+    $oldImagePath = $oldBeitrag->getImageName();
+    $imagePath = $oldImagePath;
+    $oldImage = readAsBase64URI($oldBeitrag->getImageName());
+
+    if ($oldImage != $imageBase64URI) {
+        $imagePath = generateThumbnailPath($imageBase64URI);
+    }
+
+    $db = getKatzenBlogDatabase();
+    $kategorieTable = new KategorieTable($db);
+    $beitragTable = new BeitragTable($db);
+    $beitrag = Beitrag::createNecessary($title, $spoiler, $content, getSessionUserId(), $imagePath);
+    $beitrag->setId($oldBeitrag->getId());
+
+    //TODO what if not enough tags are inserted due to errors? Delete beitrag?
+    if ($beitragTable->updateBeitrag($beitrag)) {
+        $oldTags = $kategorieTable->getTagsByBeitrag($oldBeitrag->getId());
+
+        if ($oldTags != null) {
+            /* add new tags */
+            foreach ($tags as $tag) {
+                if (!in_array($tag, $oldTags)) {
+                    $kategorieTable->insertTag($tag, $beitrag->getId());
+                }
+            }
+            /* remove tags if necessary */
+            foreach ($oldTags as $oldTag) {
+                if (!in_array($oldTag, $tags)) {
+                    $kategorieTable->removeTagFromBeitrag($oldTag, $beitrag->getId());
+                }
+            }
+        }
+
+        if ($oldImage != $imageBase64URI) {
+            unlink($oldImagePath);
+            saveThumbnail($imageBase64URI, $imagePath);
+        }
+
+        $db->disconnect();
 
         return $beitrag;
     }
@@ -81,6 +165,34 @@ function insertBeitrag($title, $spoiler, $tags, $content, $imageBase64URI) : ?Be
     $db->disconnect();
 
     return null;
+}
+
+function generateThumbnailPath($imageBase64URI) : string {
+    $extension = explode('/', mime_content_type($imageBase64URI))[1];
+    $fileName = uniqid() . '.' . $extension;
+    return BASE_PATH."/upload/".$fileName;
+}
+
+function saveThumbnail($imageBase64URI, $path): void {
+    $base64Image = explode(',', $imageBase64URI)[1];
+    $imageDataDecoded = base64_decode($base64Image);
+
+    file_put_contents($path, $imageDataDecoded);
+}
+
+function readAsBase64URI($path) : ?string {
+    if (!is_file($path)) return null;
+
+    $imageFileRS = fopen($path, 'r');
+    $fileContent = fread($imageFileRS, filesize($path));
+    fclose($imageFileRS);
+
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    $mimeType = finfo_buffer($finfo, $fileContent);
+    finfo_close($finfo);
+
+    $base64Content = base64_encode($fileContent);
+    return 'data:' . $mimeType . ';base64,' . $base64Content;
 }
 
 
@@ -107,7 +219,7 @@ function validateImage($imageFile) : ?string {
             <?php if (!isLoggedin()): ?>
                 <p class="lead text-center"><i class="fa-solid fa-circle-exclamation"></i> Melde dich zuerst an um einen Blog Beitrag zu erstellen.</p>
             <?php else: ?>
-                <form class="blog-post" method="POST" enctype="multipart/form-data">
+                <form class="blog-post" method="POST" enctype="multipart/form-data" action="<?php if($isEditMode) echo 'post?edit='.$_GET["edit"].'&edited=true'; ?>">
                     <input type="hidden" name="MAX_FILE_SIZE" value="5000000">
                     <div class="row">
                         <div class="col">
