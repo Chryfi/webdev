@@ -4,6 +4,7 @@ require_once (BASE_PATH."/src/application/userForm.php");
 require_once (BASE_PATH."/src/datalayer/tables/beitrag.php");
 require_once (BASE_PATH."/src/datalayer/tables/kategorie.php");
 require_once (BASE_PATH."/src/utils/tags.php");
+require_once (BASE_PATH."/src/utils/redirect.php");
 
 /* quick access for output */
 $title = $_POST["title"] ?? "";
@@ -22,36 +23,36 @@ if (isset($_POST["title"]) && isLoggedin())
 
     foreach ($textPosts as $key) {
         if (!isset($_POST[$key]) || $_POST[$key] == "") {
-            $errors[$key] = "Geben Sie etwas ein.";
+            $errors[$key] = "Gebe etwas ein.";
         }
     }
 
     /* correct tags e.g. duplicate entries and make lowercase */
     if (isset($_POST["tags"])) {
         $tags = array_unique(array_map('strtolower', $tags));
+        /* remove spaces from the beginning and end of all tags */
+        $tags = array_map("trim", $tags);
     }
 
     /* count the corrected tags as duplicate entries might be removed and result in not enough tags */
     if (!isset($tags) || count($tags) < 2) {
-        $errors["tags"] = "Nutzen Sie mindestens zwei tags.";
+        $errors["tags"] = "Nutze mindestens zwei tags.";
     } else if (count($tags) > 10) {
         $errors["tags"] = "Es sind maximal 10 tags erlaubt.";
     }
 
     if ($imageData == "") {
-        $errors["image"] = "Laden Sie ein Bild hoch.";
+        $errors["image"] = "Lade ein Bild hoch.";
     } else if ($errorMsg = validateImage($imageData)) {
         $errors["image"] = $errorMsg;
     }
 
-    if (count($errors) == 0 && insertBeitrag($title, $spoiler, $tags, $content, $imageData)) {
-        echo '<script>
-                window.location.href = \'/article\';
-            </script>';
+    if (count($errors) == 0 && $beitrag = insertBeitrag($title, $spoiler, $tags, $content, $imageData)) {
+        redirectJS("article?id=".$beitrag->getId());
     }
 }
 
-function insertBeitrag($title, $spoiler, $tags, $content, $imageBase64URI) : bool {
+function insertBeitrag($title, $spoiler, $tags, $content, $imageBase64URI) : ?Beitrag {
     $base64Image = explode(',', $imageBase64URI)[1];
     $imageDataDecoded = base64_decode($base64Image);
     $extension = explode('/', mime_content_type($imageBase64URI))[1];
@@ -62,7 +63,7 @@ function insertBeitrag($title, $spoiler, $tags, $content, $imageBase64URI) : boo
     $beitragTable = new BeitragTable($db);
     $beitrag = Beitrag::createNecessary($title, $spoiler, $content, getSessionUserId(), BASE_PATH."/upload/".$fileName);
 
-    // what if not enough tags are inserted due to errors? Delete beitrag?
+    //TODO what if not enough tags are inserted due to errors? Delete beitrag?
     if ($beitragTable->insertBeitrag($beitrag)) {
         foreach ($tags as $tag) {
             $kategorieTable->insertTag($tag, $beitrag->getId());
@@ -70,12 +71,12 @@ function insertBeitrag($title, $spoiler, $tags, $content, $imageBase64URI) : boo
 
         file_put_contents(BASE_PATH."/upload/".$fileName, $imageDataDecoded);
 
-        return true;
+        return $beitrag;
     }
 
     $db->disconnect();
 
-    return false;
+    return null;
 }
 
 
@@ -124,7 +125,7 @@ function validateImage($imageFile) : ?string {
                     <div class="row margin-y-1">
                         <div class="col">
                             <p class="lead">Tags</p>
-                            <input type="text" class="input" id="tag-search-input" autocomplete="off">
+                            <input type="text" class="input" id="tag-search-input" autocomplete="off" placeholder="Suche nach Tags oder erstelle neue">
                             <?php outputError("tags", $errors);?>
                             <div class="blog-info-container row align-items-center justify-content-space-between tag-list-container" id="tag-container">
                                 <i class="col-auto fa-solid fa-tags"></i>
@@ -150,9 +151,10 @@ function validateImage($imageFile) : ?string {
                         <div class="col-sm-8" id="upload-container">
                             <input id="image-data-cache" type="text" name="image-data-cache" hidden value="<?php echo $imageData;?>">
                             <input id="image-name-cache" type="text" name="image-name-cache" hidden value="<?php echo $imageName;?>">
-                            <?php outputError("image", $errors);?>
                             <!-- Upload element gets inserted here -->
+                            <?php outputError("image", $errors);?>
                         </div>
+
                         <div class="col-sm-5" style="height: 0px">
                             <img class="blog-thumbnail-img" id="image-preview" src="<?php echo $imageData;?>">
                         </div>
@@ -180,7 +182,7 @@ function validateImage($imageFile) : ?string {
     uploadElement.fileInputCache = document.getElementById("image-data-cache");
     uploadElement.onLoad = onUploadLoad;
 
-    document.getElementById("upload-container").appendChild(uploadElement.getElement());
+    document.getElementById("image-name-cache").insertAdjacentElement('afterend', uploadElement.getElement());
 
 
     /* when PHP outputs stuff into the input areas, we need to adjust the styles and do some extra work */

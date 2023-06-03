@@ -147,7 +147,7 @@ class TagSearch {
     }
 
     onEnter(tagName) {
-        this.addTagResult(tagName);
+        this.addTagResult(tagName.trim());
         this.endSearch();
     }
 
@@ -157,8 +157,9 @@ class TagSearch {
             return;
         }
 
-        this.#fetchTags(search).then((result) => {
+        this.#fetchTags(search.trim()).then((result) => {
             this.beginSearch();
+            /* display the tags fetched from the database */
             for (let tagName in result) {
                 let number = result[tagName];
 
@@ -168,7 +169,7 @@ class TagSearch {
     }
 
     addTagResult(tagName) {
-        tagName = tagName.toLowerCase();
+        tagName = tagName.toLowerCase().trim();
         let tagElement = this.#createTagResultElement(tagName);
 
         /* prevent double tags by using id as easy reference */
