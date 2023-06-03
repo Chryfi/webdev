@@ -894,6 +894,16 @@ stuff like date, username, likes, statistics, tags
     column-gap: 0.5em;
 }
 
+.tag-search-results-container {
+    position: absolute;
+    width: 100%;
+    height: auto;
+    border-radius: 0 0 12px 12px;
+    background-color: rgb(var(--bg-color-0));
+    box-shadow: 0px 0px 10px black;
+    padding: 20px 10px;
+}
+
 
 /**
 The dropdown for the tag-list should only be visible on mobile
