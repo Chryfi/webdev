@@ -1,7 +1,8 @@
 <?php
 
 /**
- * Output a list of tags.
+ * Output a list of tags used for forms. Every tag item has a remove button and
+ * a hidden input with the tag name as value.
  * See /ressources/js/tagSearch.js for more concrete details.
  * @param $tags
  * @return void
@@ -18,5 +19,17 @@ function outputTagList($tags) : void {
             </div>
         </div>
         HTML;
+    }
+}
+
+
+/**
+ * Output a simple tag list only for display purposes.
+ * @param $tags
+ * @return void
+ */
+function outputSimpleTagList($tags) {
+    foreach ($tags as $tag) {
+        echo '<p class="col-auto tag-item">'.$tag.'</p>';
     }
 }
