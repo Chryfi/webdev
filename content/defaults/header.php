@@ -47,7 +47,7 @@ require_once (BASE_PATH."/src/application/sessionFunctions.php");
                 </button>
             </div>
             <div class="col-auto">
-                <button class="button primary-button button-remove login-button" onclick='window.location.href="/src/application/logout.php";'>
+                <button class="button primary-button button-remove login-button" onclick='window.location.href="/src/application/logout.php?redirect="+window.location.href;'>
                     <div class="row align-items-center login-button-row">
                         <p class="col-auto">Abmelden</p>
                         <i class="col-auto fa-solid fa-right-from-bracket"></i>
