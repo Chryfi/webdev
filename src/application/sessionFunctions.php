@@ -20,6 +20,10 @@ function getSessionUsername() : ?string {
     return isLoggedin() ? $_SESSION["user"]["username"] : null;
 }
 
+function getSessionUserId() : ?string {
+    return isLoggedin() ? $_SESSION["user"]["userid"] : null;
+}
+
 function isLoggedin() : bool {
     return isset($_SESSION["user"]["userid"]);
 }

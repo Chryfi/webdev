@@ -10,6 +10,11 @@ require_once (BASE_PATH."/src/application/sessionFunctions.php");
         <li class="navbar-item">
             <a href="katzegorien" class="navbar-link <?php if($_GET["p"] == "katzegorien") echo "active";?>">Katzegorien</a>
         </li>
+        <?php if (isLoggedin()): ?>
+            <li class="navbar-item">
+                <a href="post" class="navbar-link <?php if($_GET["p"] == "post") echo "active";?>">Miau posten</a>
+            </li>
+        <?php endif; ?>
     </ul>
     <div class="row align-items-center justify-content-space-between navbar-row">
         <div class="col-auto">
