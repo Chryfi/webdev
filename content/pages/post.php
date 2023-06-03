@@ -27,7 +27,7 @@ if (isset($_POST["title"]) && isLoggedin())
         }
     }
 
-    /* correct tags e.g. duplicate entries and make lowercase */
+    /* correct tags e.g. remove duplicate entries and make lowercase */
     if (isset($_POST["tags"])) {
         $tags = array_unique(array_map('strtolower', $tags));
         /* remove spaces from the beginning and end of all tags */
@@ -45,6 +45,10 @@ if (isset($_POST["title"]) && isLoggedin())
         $errors["image"] = "Lade ein Bild hoch.";
     } else if ($errorMsg = validateImage($imageData)) {
         $errors["image"] = $errorMsg;
+    }
+
+    if (strlen($spoiler) > 350) {
+        $errors["spoiler"] = "Der Spoiler darf maximal 350 Zeichen enthalten.";
     }
 
     if (count($errors) == 0 && $beitrag = insertBeitrag($title, $spoiler, $tags, $content, $imageData)) {
