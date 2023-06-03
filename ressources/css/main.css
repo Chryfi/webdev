@@ -27,11 +27,17 @@ body {
     line-height: 1.5;
 }
 
+pre {
+    font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    /* white space pre retains literal line breaks, but when resizing it doesn't break. This fixes it */
+    white-space: pre-wrap;
+}
+
 * {
     box-sizing: border-box;
 }
 
-h1, h2, h3, h4, h5, h6, p {
+h1, h2, h3, h4, h5, h6, p, pre {
     margin-top: 0;
     margin-bottom: 0;
 }
@@ -44,7 +50,7 @@ h1, h2, h3, h4, h5, h6 {
     color: white;
 }
 
-p {
+p, pre {
     color: var(--text-color);
 }
 
@@ -935,7 +941,6 @@ BLOG SPOILER
 }
 
 .blog-thumbnail-img {
-    object-fit: scale-down;
     width: 100%;
     object-position: top;
 }

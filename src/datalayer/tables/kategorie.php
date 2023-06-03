@@ -13,6 +13,21 @@ class KategorieTable extends Table
         return $stmt->execute();
     }
 
+    public function getTagsByBeitrag(int $beitrag_id) : ?array {
+        $stmt = $this->db->prepare("SELECT * FROM kategorie WHERE beitrag_id = :beitrag_id");
+        $stmt->bindValue("beitrag_id", $beitrag_id);
+        $result = $stmt->execute();
+
+        if (!$result) return null;
+
+        $tags = array();
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $tags[] = $row["bezeichnung"];
+        }
+
+        return $tags;
+    }
+
     /**
      * @param string $searchName
      * @return array|null null if the search failed.

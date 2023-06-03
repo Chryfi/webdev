@@ -190,7 +190,7 @@ class BeitragTable extends Table {
         $timestamp = time();
 
         $stmt->bindValue("titel", $beitrag->getTitle());
-        $stmt->bindValue("datum", date("Y-m-d H:i:s", $timestamp));
+        $stmt->bindValue("datum", $timestamp);
         $stmt->bindValue("teaser", $beitrag->getTeaser());
         $stmt->bindValue("beitrag", $beitrag->getContent());
         $stmt->bindValue("user_id", $beitrag->getUserId());
@@ -215,7 +215,21 @@ class BeitragTable extends Table {
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
+        if (!$row) return null;
+
         return $this->createBeitrag($row);
+    }
+
+    public function addView(int $beitrag_id) : bool {
+        $beitrag = $this->getBeitrag($beitrag_id);
+
+        if (!$beitrag) return false;
+
+        $stmt = $this->db->prepare("UPDATE beitrag SET aufrufzahlen = :aufrufzahlen WHERE id = :id");
+        $stmt->bindValue("aufrufzahlen", $beitrag->getViews() + 1);
+        $stmt->bindValue("id", $beitrag->getId());
+
+        return $stmt->execute();
     }
 
     private function createBeitrag(mixed $row) : Beitrag {
