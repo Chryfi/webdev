@@ -1,50 +1,46 @@
 <?php
 require_once (BASE_PATH."/src/datalayer/tables/table.php");
 require_once(BASE_PATH . "/src/datalayer/tables/likedTable.php");
+require_once(BASE_PATH . "/src/datalayer/tables/kategorie.php");
 
 class Beitrag
 {
-    private ?int $id = null;
-    private int $views;
-    private string $title;
-    private ?int $datetime = null;
-    private string $teaser;
-    private string $content;
-    private int $userId;
-    private string $imageName;
+    protected ?int $id = null;
+    protected int $views;
+    protected string $title;
+    protected ?int $datetime = null;
+    protected string $teaser;
+    protected string $content;
+    protected int $userId;
+    protected string $imageName;
 
-    private function __construct()
-    { }
+    protected function __construct(?int $id, int $views, string $title, ?int $datetime,
+                                   string $teaser, string $content, int $userId, string $imageName)
+    {
+        $this->id = $id;
+        $this->views = $views;
+        $this->title = $title;
+        $this->datetime = $datetime;
+        $this->teaser = $teaser;
+        $this->content = $content;
+        $this->userId = $userId;
+        $this->imageName = $imageName;
+    }
 
     /* Factory methods */
     public static function createFull(int $id, int $views, string $title, int $datetime,
-                                      string $teaser, string $content, int $userId, string $imageName) : Beitrag {
-        $beitrag = new Beitrag();
-        $beitrag->id = $id;
-        $beitrag->views = $views;
-        $beitrag->title = $title;
-        $beitrag->datetime = $datetime;
-        $beitrag->teaser = $teaser;
-        $beitrag->content = $content;
-        $beitrag->userId = $userId;
-        $beitrag->imageName = $imageName;
-
-        return $beitrag;
+                                      string $teaser, string $content, int $userId, string $imageName) : Beitrag
+    {
+        return new Beitrag($id, $views, $title, $datetime, $teaser, $content, $userId, $imageName);
     }
 
     /**
      * Useful for insertion into database
      */
-    public static function createNecessary(string $title, string $teaser, string $content, int $userId, string $imageName) : Beitrag {
-        $beitrag = new Beitrag();
-        $beitrag->views = 0;
-        $beitrag->title = $title;
-        $beitrag->teaser = $teaser;
-        $beitrag->content = $content;
-        $beitrag->userId = $userId;
-        $beitrag->imageName = $imageName;
-
-        return $beitrag;
+    public static function createNecessary(string $title, string $teaser, string $content,
+                                           int $userId, string $imageName) : Beitrag
+    {
+        return new Beitrag(null, 0, $title, null, $teaser, $content, $userId, $imageName);
     }
 
     /**
@@ -176,6 +172,56 @@ class Beitrag
     }
 }
 
+/**
+ * This contains all database relations of a beitrag too.
+ */
+class BeitragRelations extends Beitrag {
+    private int $likes;
+    private array $tags;
+
+    public function __construct(Beitrag $beitrag, array $tags, int $likes)
+    {
+        parent::__construct($beitrag->id, $beitrag->views, $beitrag->title, $beitrag->datetime,
+            $beitrag->teaser, $beitrag->content, $beitrag->userId, $beitrag->imageName);
+
+        $this->tags = $tags;
+        $this->likes = $likes;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLikes(): int
+    {
+        return $this->likes;
+    }
+
+    /**
+     * @param int $likes
+     */
+    public function setLikes(int $likes): void
+    {
+        $this->likes = $likes;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTags(): array
+    {
+        return $this->tags;
+    }
+
+    /**
+     * @param array $tags
+     */
+    public function setTags(array $tags): void
+    {
+        $this->tags = $tags;
+    }
+}
+
+
 
 
 class BeitragTable extends Table {
@@ -250,6 +296,18 @@ class BeitragTable extends Table {
         if (!$row) return null;
 
         return $this->createBeitrag($row);
+    }
+
+    public function getBeitragRelations(int $id) : ?BeitragRelations {
+        $beitrag = $this->getBeitrag($id);
+        if (!$beitrag) return null;
+
+        $likedTable = new LikedTable($this->db);
+        $kategorieTable = new KategorieTable($this->db);
+        $likes = $likedTable->countLikesBeitrag($id) ?? 0;
+        $tags = $kategorieTable->getTagsByBeitrag($id) ?? array();
+
+        return new BeitragRelations($beitrag, $tags, $likes);
     }
 
     /**
