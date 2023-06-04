@@ -19,12 +19,13 @@ $content = $_POST["content"] ?? "";
 $imageName = $_POST["image-name-cache"] ?? "";
 $imageData = $_POST["image-data-cache"] ?? "";
 
-if (isset($_GET["edit"]) && $_GET["edit"] != "" && isLoggedin()) {
+if (isset($_GET["edit"]) && $_GET["edit"] != ""
+    && is_numeric($_GET["edit"]) && isLoggedin())
+{
     $db = getKatzenBlogDatabase();
     $beitragTable = new BeitragTable($db);
-    $kategorieTable = new KategorieTable($db);
 
-    $oldBeitrag = $beitragTable->getBeitrag($_GET["edit"]);
+    $oldBeitrag = $beitragTable->getBeitragRelations($_GET["edit"]);
 
     if ($oldBeitrag && $oldBeitrag->getUserId() == getSessionUserId()) {
         $isEditMode = true;
@@ -33,12 +34,14 @@ if (isset($_GET["edit"]) && $_GET["edit"] != "" && isLoggedin()) {
         if (!isset($_GET["edited"])) {
             $title = $oldBeitrag->getTitle();
             $spoiler = $oldBeitrag->getTeaser();
-            $tags = $kategorieTable->getTagsByBeitrag($oldBeitrag->getId()) ?? array();
+            $tags = $oldBeitrag->getTags();
             $content = $oldBeitrag->getContent();
             $imageName = "Image";
             $imageData = readAsBase64URI($oldBeitrag->getImageName()) ?? "";
         }
     }
+
+    $db->disconnect();
 }
 
 /* error messages for the input names */
