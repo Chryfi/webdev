@@ -396,6 +396,10 @@ ROW COLUMN STUFF
     width: 100%;
 }
 
+.row-gap-1 {
+    row-gap: 1em;
+}
+
 /*
 COLUMNS
 */
@@ -1129,4 +1133,17 @@ UPLOAD STYLES
 
 .error {
     color: var(--accent-color-red-active);
+}
+
+.confirmation-row {
+    width: 75%;
+    justify-content: space-between;
+}
+
+@media screen AND (max-width: 575px) {
+    .confirmation-row {
+        width: 0%;
+        justify-content: center;
+        row-gap: 2em;
+    }
 }

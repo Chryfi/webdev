@@ -26,7 +26,7 @@ if (isset($_GET["edit"]) && $_GET["edit"] != "" && isLoggedin()) {
 
     $oldBeitrag = $beitragTable->getBeitrag($_GET["edit"]);
 
-    if ($oldBeitrag->getUserId() == getSessionUserId()) {
+    if ($oldBeitrag && $oldBeitrag->getUserId() == getSessionUserId()) {
         $isEditMode = true;
 
         /* the presence of this means, that the user submitted the form, therefore don't use the old data as output */

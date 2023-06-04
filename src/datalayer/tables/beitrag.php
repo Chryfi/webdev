@@ -206,6 +206,15 @@ class BeitragTable extends Table {
         return $result;
     }
 
+    public function delete(Beitrag $beitrag) : bool {
+        if ($beitrag->getId() == null) return false;
+
+        $stmt = $this->db->prepare("DELETE FROM beitrag WHERE id = :id");
+        $stmt->bindValue("id", $beitrag->getId());
+
+        return $stmt->execute();
+    }
+
     public function updateBeitrag(Beitrag $beitrag) : bool {
         if ($beitrag->getId() == null) return false;
 
@@ -243,6 +252,11 @@ class BeitragTable extends Table {
         return $this->createBeitrag($row);
     }
 
+    /**
+     * Increments the counter of views.
+     * @param int $beitrag_id
+     * @return bool
+     */
     public function addView(int $beitrag_id) : bool {
         $beitrag = $this->getBeitrag($beitrag_id);
 

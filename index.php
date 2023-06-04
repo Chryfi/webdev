@@ -15,12 +15,6 @@ if (count($reqComponents) != 0 && $reqComponents[0] == "src") {
     return;
 }
 
-/* request to the upload folder should be let through - we only have public thumbnail images there anyways */
-if (count($reqComponents) != 0 && $reqComponents[0] == "upload") {
-    include($request);
-    return;
-}
-
 if (empty($page)) {
     $page = "index";
 }

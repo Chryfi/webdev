@@ -37,6 +37,13 @@ class LikedTable extends Table {
         return $stmt->execute();
     }
 
+    public function removeLikesFromBeitrag(int $beitragID) : bool {
+        $stmt = $this->db->prepare("DELETE FROM liket WHERE beitrag_id = :beitrag_id");
+        $stmt->bindValue("beitrag_id", $beitragID);
+
+        return $stmt->execute();
+    }
+
     public function isLikePresent(int $beitragID, int $userID) : bool {
         $stmt = $this->db->prepare("SELECT * FROM liket WHERE beitrag_id = :beitrag_id AND user_id = :user_id");
         $stmt->bindValue("beitrag_id", $beitragID);

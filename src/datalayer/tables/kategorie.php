@@ -23,6 +23,15 @@ class KategorieTable extends Table
         return $stmt->execute();
     }
 
+    public function removeTagsFromBeitrag(int $beitragId) : bool
+    {
+        $stmt = $this->db->prepare("DELETE FROM kategorie WHERE beitrag_id = :beitrag_id");
+
+        $stmt->bindValue("beitrag_id", $beitragId);
+
+        return $stmt->execute();
+    }
+
     public function getTagsByBeitrag(int $beitrag_id) : ?array {
         $stmt = $this->db->prepare("SELECT * FROM kategorie WHERE beitrag_id = :beitrag_id");
         $stmt->bindValue("beitrag_id", $beitrag_id);
