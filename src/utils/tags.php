@@ -9,7 +9,7 @@
  */
 function outputTagList($tags) : void {
     foreach ($tags as $tag) {
-        $id = "tag-search-result".$tag;
+        $id = "tag-search-result-".$tag;
         echo <<<HTML
         <div id="{$id}" class="col-auto tag-item">
             <div class="row tag-element-row align-items-center">
