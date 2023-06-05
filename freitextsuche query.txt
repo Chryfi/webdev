@@ -1,0 +1,2 @@
+SELECT * FROM beitrag, kategorie WHERE (titel LIKE '%titel1%' AND titel LIKE '%titelN%') AND (beitrag LIKE '%beitrag1%' AND beitrag LIKE '%beitragN%') AND kategorie.beitrag_id = beitrag.id
+GROUP BY beitrag.id HAVING kategorie.bezeichnung = tag1 AND kategorie.bezeichnung = tagN

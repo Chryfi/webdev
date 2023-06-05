@@ -66,10 +66,21 @@ li {
 
 a {
     color: var(--text-color);
+    transition: color 0.25s;
 }
 
 a:visited {
     color: var(--text-color);
+}
+
+a.active {
+    color: white;
+    text-decoration: none;
+}
+
+a:hover {
+    color: white;
+    text-decoration: none;
 }
 
 i {
@@ -602,6 +613,18 @@ COLUMNS
     }
 }
 
+@media screen AND (max-width: 1199px) {
+    .display-xl-max-none {
+        display: none;
+    }
+}
+
+@media screen AND (min-width: 1200px) {
+    .display-xl-none {
+        display: none;
+    }
+}
+
 .lead {
     font-size: 1.25rem;
     font-weight: 300;
@@ -847,8 +870,11 @@ BLOG ARTICLE
 LIKE BUTTON
 */
 .like-button {
-    cursor: pointer;
     transition: transform 0.25s, color 0.1s;
+}
+
+.like-button:not(.mute-cursor-effects) {
+    cursor: pointer;
 }
 
 .like-hover {
@@ -856,7 +882,7 @@ LIKE BUTTON
     transform: scale(1.2);
 }
 
-.like-button:active {
+.like-button:active:not(.mute-cursor-effects) {
     color: rgb(255, 46, 91);
     transform: scale(1.4);
 }
@@ -873,7 +899,7 @@ like button has been pressed
     transform: scale(1);
 }
 
-.like-button.active:active {
+.like-button.active:active:not(.mute-cursor-effects) {
     color: rgb(255, 255, 255);
     transform: scale(0.85);
 }
@@ -946,6 +972,14 @@ Overwrite display none of collapsed like this
 BLOG SPOILER
 */
 
+.blog-spoiler-tag-list-container {
+    margin-top: 0.75em;
+}
+
+.blog-spoiler-list > *:not(:first-child) {
+    margin-top: 2em;
+}
+
 .blog-spoiler-container {
     background-color: rgb(var(--bg-color-1));
     box-shadow: 0px 0px 20px black;
@@ -968,7 +1002,7 @@ BLOG SPOILER
 .blog-spoiler-text-container {
     overflow: hidden;
     position: relative;
-    height: 180px;
+    height: 210px;
 }
 
 .blog-spoiler-text {
@@ -981,7 +1015,7 @@ BLOG SPOILER
     align-items: flex-end;
     justify-content: center;
     position: absolute;
-    bottom: 0;
+    bottom: 0px;
     width: 100%;
     height: 150px;
     color: rgb(0, 0, 0);
@@ -1019,15 +1053,29 @@ BLOG SPOILER
         padding-right: 0px;
     }
 
+    .blog-spoiler-text-container {
+        height: 175px;
+    }
+
     .read-further-container {
         border-radius: 0px;
     }
 
     .blog-spoiler-title {
         margin-bottom: 0.25em;
+        font-size: 1.17rem;
     }
 }
 
+@media screen AND (max-width: 1199px) {
+    .read-further-container {
+        bottom: 0;
+    }
+
+    .blog-spoiler-title {
+        font-size: 1.17rem;
+    }
+}
 
 /*
 SEARCH KATZEGORIEN
@@ -1146,4 +1194,9 @@ UPLOAD STYLES
         justify-content: center;
         row-gap: 2em;
     }
+}
+
+.paging-row {
+    text-align: center;
+    margin: 2em 0;
 }

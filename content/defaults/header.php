@@ -18,7 +18,9 @@ require_once (BASE_PATH."/src/application/sessionFunctions.php");
     </ul>
     <div class="row align-items-center justify-content-space-between navbar-row">
         <div class="col-auto">
-            <input type="text" class="input" placeholder="Suche...">
+            <form method="GET" action="katzegorien">
+                <input type="text" class="input" name="title-search" placeholder="Titel Suche">
+            </form>
         </div>
         <?php if (!isLoggedin()): ?>
             <div class="col-auto">

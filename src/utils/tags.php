@@ -29,7 +29,14 @@ function outputTagList($tags) : void {
  * @return void
  */
 function outputSimpleTagList($tags) {
+    echo getSimpleTagList($tags);
+}
+
+function getSimpleTagList($tags) : string {
+    $htmlString = "";
     foreach ($tags as $tag) {
-        echo '<p class="col-auto tag-item">'.$tag.'</p>';
+        $htmlString .= '<p class="col-auto tag-item">'.$tag.'</p>';
     }
+
+    return $htmlString;
 }

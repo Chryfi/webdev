@@ -311,6 +311,110 @@ class BeitragTable extends Table {
     }
 
     /**
+     * @return array|null array of {@link BeitragRelations} or null if something went wrong.
+     */
+    public function searchBeitragLike(array $title, DatabaseOperator $titleOP,
+                                      array $text, DatabaseOperator $textOP,
+                                      array $tags, DatabaseOperator $tagsOP,
+                                      ?int $limit, int $offset) : ?array
+    {
+        $titleSearchQuery = "";
+        for ($i = 0; $i < count($title); $i++) {
+            if ($titleSearchQuery != "") {
+                if ($titleOP == DatabaseOperator::AND) {
+                    $titleSearchQuery .= " AND";
+                } else if ($titleOP == DatabaseOperator::OR) {
+                    $titleSearchQuery .= " OR";
+                }
+            }
+
+            $titleSearchQuery .= " titel LIKE :titel$i";
+        }
+
+        $textSearchQuery = "";
+        for ($i = 0; $i < count($text); $i++) {
+            if ($textSearchQuery != "") {
+                if ($textOP == DatabaseOperator::AND) {
+                    $textSearchQuery .= " AND";
+                } else if ($textOP == DatabaseOperator::OR) {
+                    $textSearchQuery .= " OR";
+                }
+            }
+
+            $textSearchQuery .= " (beitrag LIKE :beitrag$i OR teaser LIKE :teaser$i)";
+        }
+
+        $tagSearchQuery = "";
+        for ($i = 0; $i < count($tags); $i++) {
+            if ($tagSearchQuery != "") {
+                if ($tagsOP == DatabaseOperator::AND) {
+                    $tagSearchQuery .= " AND";
+                } else if ($tagsOP == DatabaseOperator::OR) {
+                    $tagSearchQuery .= " OR";
+                }
+            }
+
+            $tagSearchQuery .= " kategorie.bezeichnung = :bezeichnung$i";
+        }
+
+        $limitQuery = $limit != null ? "LIMIT $limit OFFSET $offset" : "";
+        $whereStmt = "";
+        $whereStatements = array();
+        $whereStatements[] = $titleSearchQuery != "" ? "(".$titleSearchQuery.")" : "";
+        $whereStatements[] = $textSearchQuery != "" ? "(".$textSearchQuery.")" : "";
+        $whereStatements[] = $tagSearchQuery != "" ? "(".$tagSearchQuery.")" : "";
+
+        foreach ($whereStatements as $where) {
+            if ($whereStmt != "" && $where != "") {
+                $whereStmt .= " AND";
+            }
+
+            if ($where != "") {
+                $whereStmt .= " ".$where;
+            }
+        }
+
+        $searchQuery = "SELECT * FROM beitrag WHERE $whereStmt $limitQuery";
+
+        //TODO tag suche funktioniert nicht wenn man die tags mit AND verbindet. z.B. HAVING bezeichnung = "test" AND bezeichnung = "test2" funktioniert garnicht.
+        //HAVING mit nur einem tag funktioniert auch nicht richtig.
+        if ($tagSearchQuery != "") {
+            $whereStmt = $whereStmt != "" ? $whereStmt." AND" : "";
+            $searchQuery = "SELECT * FROM beitrag, kategorie WHERE $whereStmt beitrag.id = kategorie.beitrag_id GROUP BY beitrag.id $limitQuery";
+        }
+
+        var_dump($searchQuery);
+
+        $stmt = $this->db->prepare($searchQuery);
+
+        for ($i = 0; $i < count($title); $i++) {
+            $stmt->bindValue("titel".$i, "%".$title[$i]."%");
+        }
+
+        for ($i = 0; $i < count($text); $i++) {
+            $stmt->bindValue("beitrag".$i, "%".$text[$i]."%");
+            $stmt->bindValue("teaser".$i, "%".$text[$i]."%");
+        }
+
+        if ($tagSearchQuery != "") {
+            for ($i = 0; $i < count($tags); $i++) {
+                $stmt->bindValue("bezeichnung".$i, $tags[$i]);
+            }
+        }
+
+        $result = $stmt->execute();
+
+        if (!$result) return null;
+
+        $searchResults = array();
+        while ($row = $stmt->fetch()) {
+            $searchResults[] = $this->getBeitragRelations($row["id"]);
+        }
+
+        return $searchResults;
+    }
+
+    /**
      * Increments the counter of views.
      * @param int $beitrag_id
      * @return bool
