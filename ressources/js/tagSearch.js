@@ -38,6 +38,8 @@ class TagSearch {
                 this.onEnter(this.tagInput.value);
             }
         });
+        this.tagInput.addEventListener("focusout", e => this.endSearch());
+        this.tagInput.addEventListener("focusin", e => this.onSearch(this.tagInput.value));
 
         /* when there are already tag elements in the tag list. Might be from PHP output */
         document.addEventListener("DOMContentLoaded", () => {
@@ -120,8 +122,7 @@ class TagSearch {
         tagItem.style.cursor = "pointer";
 
         tagItem.addEventListener("click", () => {
-            this.addTagResult(tagName);
-            this.endSearch();
+            this.onEnter(tagName);
         });
 
         return tagItem;
@@ -142,12 +143,12 @@ class TagSearch {
     endSearch() {
         this.#tagSearchList.innerHTML = "";
         this.#tagContainer.remove();
-        this.tagInput.value = "";
         this.tagInput.parentElement.style.position = "";
     }
 
     onEnter(tagName) {
         this.addTagResult(tagName.trim());
+        this.tagInput.value = "";
         this.endSearch();
     }
 
