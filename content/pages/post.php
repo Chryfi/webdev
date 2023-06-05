@@ -81,6 +81,10 @@ if (isset($_POST["title"]) && isLoggedin())
         $errors["spoiler"] = "Der Spoiler darf maximal 350 Zeichen enthalten.";
     }
 
+    if (strlen($title) > 75) {
+        $errors["title"] = "Der Titel darf maximal 75 Zeichen enthalten.";
+    }
+
     if (count($errors) == 0) {
         $beitrag = null;
 
