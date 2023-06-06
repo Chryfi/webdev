@@ -3,7 +3,7 @@ require_once (BASE_PATH."/src/datalayer/tables/user.php");
 require_once (BASE_PATH."/src/datalayer/tables/likedTable.php");
 require_once (BASE_PATH."/src/application/sessionFunctions.php");
 
-function getBeitragHTML(BeitragRelations $beitrag, bool $showTags) : string {
+function getBeitragSpoilerHTML(BeitragRelations $beitrag, bool $showTags, ?string $getParameter) : string {
     $db = getKatzenBlogDatabase();
     $userTable = new UserTable($db);
     $author = $userTable->getById($beitrag->getUserId());
@@ -38,10 +38,12 @@ function getBeitragHTML(BeitragRelations $beitrag, bool $showTags) : string {
         HTML;
     }
 
+    $getParameter = isset($getParameter) ? "&".$getParameter : "";
+
     return <<<HTML
-<div class="blog-spoiler-container" onclick="window.location.href='/article?id={$beitrag->getId()}';">
+<div class="blog-spoiler-container" onclick="window.location.href='/article?id={$beitrag->getId()}{$getParameter}';">
     <div class="container-fluid display-md-none">
-        <h2 class="text-center blog-spoiler-title">{$beitrag->getTitle()} {$beitrag->getId()}</h2>
+        <h2 class="text-center blog-spoiler-title">{$beitrag->getTitle()}</h2>
     </div>
     <div class="row blog-spoiler">
         <div class="col-md-5 col-xl-4 blog-thumbnail-img-container">
@@ -69,7 +71,7 @@ function getBeitragHTML(BeitragRelations $beitrag, bool $showTags) : string {
                     <h3 class="read-further-text">WEITER LESEN</h3>
                 </div>
                 <div class="blog-spoiler-text">
-                    <h2 class="blog-spoiler-title display-md-max-none">{$beitrag->getTitle()} {$beitrag->getId()}</h2>
+                    <h2 class="blog-spoiler-title display-md-max-none">{$beitrag->getTitle()}</h2>
                     <p>{$beitrag->getTeaser()}</p>
                 </div>
             </div>

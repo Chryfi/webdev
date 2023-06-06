@@ -7,6 +7,7 @@ require_once (BASE_PATH."/src/utils/tags.php");
 require_once (BASE_PATH."/src/application/displayBeitrag.php");
 
 /* quick access for output */
+$counterHtml = "";
 $searchText = $_GET["text-search"] ?? "";
 $searchTitle = $_GET["title-search"] ?? "";
 $tags = $_GET["tags"] ?? [];
@@ -15,55 +16,74 @@ $currentSearchPage = isset($_GET["page"]) && $_GET["page"] > 0 ? $_GET["page"] :
 $countSearchResults = 0;
 $limit = 5;
 $limitPaging = 10;
+$getParameter = null;
 
 if ($searchText != "" || $searchTitle != "" || count($tags) > 0) {
     $db = getKatzenBlogDatabase();
     $beitragTable = new BeitragTable($db);
 
-    $textSearchComponents = [$searchText];//explode(" ", $searchText);
-    $titleSearchComponents = [$searchTitle];
+    $textSearchComponents = explode(" ", $searchText);
+    $titleSearchComponents = explode(" ", $searchTitle);
 
     $beitragResults = $beitragTable->searchBeitragLike($titleSearchComponents, DatabaseOperator::AND,
         $textSearchComponents, DatabaseOperator::AND,
         $tags, DatabaseOperator::OR, $limit, ($currentSearchPage - 1) * $limit) ?? array();
 
-    //TODO this sus paging
-    $allResults = $beitragTable->searchBeitragLike($titleSearchComponents, DatabaseOperator::AND,
+    $countSearchResults = $beitragTable->countBeitragLike($titleSearchComponents, DatabaseOperator::AND,
         $textSearchComponents, DatabaseOperator::AND,
-        $tags, DatabaseOperator::OR, $limit * $limitPaging, ($currentSearchPage - 1) * $limit) ?? array();
+        $tags, DatabaseOperator::OR, null, 0) ?? array();
 
-    $countSearchResults = count($allResults);
+    $counterHtml = getSearchCountHTML($countSearchResults, $currentSearchPage);
+
+    $getCopy = $_GET;
+    unset($getCopy["p"]);
+    $getParameter = http_build_query($getCopy);
 
     $db->disconnect();
 }
 
+function outputPaging(int $countSearchResults, int $limit, int $limitPaging, array $getParameter) {
+    unset($getParameter["page"]);
+    $currentPage = isset($_GET["page"]) && $_GET["page"] > 0 ? $_GET["page"] : 1;
+    $maxCountPages = ceil($countSearchResults / $limit);
+    $minPage = min(max($currentPage - floor($limitPaging / 2) + 1, 1), $maxCountPages);
+    $maxPage = $minPage + $limitPaging - 1;
 
-//TODO paging only show range of 10 pages centered at current page.
-function outputPaging(int $countSearchResults, int $limit, int $currentPage, int $limitPaging) {
-    $getCopy = $_GET;
+    if ($maxPage > $maxCountPages) {
+        $minPage = max($minPage - ($maxPage - $maxCountPages), 1);
+    }
 
-    unset($getCopy["p"]);
-    unset($getCopy["page"]);
-    $countSearchResults += ($currentPage - 1) * $limit;
+    $maxPage = min($maxPage, $maxCountPages);
 
     echo '<div class="paging-row">';
-    $i = max(1, $currentPage - $limitPaging / 2);
-    while ($i <= ceil($countSearchResults / $limit)) {
+    $i = $minPage;
+    if ($currentPage > 1) {
+        echo '<a href="katzegorien?page='.($currentPage - 1).'&'.http_build_query($getParameter).'">Zurück</a>';
+    }
+    echo '<div class="page-links-row">';
+    while ($i <= $maxPage) {
         if ($currentPage == $i) {
             echo '<a class="active">'.$i.'</a>';
         } else {
-            echo '<a href="katzegorien?page='.$i.'&'.http_build_query($getCopy).'">'.$i.'</a>';
-        }
-
-        if ($i < ceil($countSearchResults / $limit)) {
-            echo '<pre style="display: inline-block">  |  </pre>';
+            echo '<a href="katzegorien?page='.$i.'&'.http_build_query($getParameter).'">'.$i.'</a>';
         }
 
         $i++;
     }
     echo '</div>';
+    if ($currentPage < $maxPage) {
+        echo '<a href="katzegorien?page='.($currentPage + 1).'&'.http_build_query($getParameter).'">Weiter</a>';
+    }
+    echo '</div>';
 }
 
+function getSearchCountHTML(int $totalCount, int $currentPage) : string {
+    $ergebnisString = $totalCount > 1 ? " Ergebnisse" : " Ergebnis";
+    $pageString = $currentPage > 1 ? "Seite ".$currentPage." " : "";
+    $insgesamtString = $currentPage > 1 ? "von insgesamt " : "Insgesamt ";
+
+    return '<p class="lead text-center">'.$pageString.$insgesamtString.$totalCount.$ergebnisString.'</p>';
+}
 
 ?>
 <div class="page-wrapper">
@@ -95,12 +115,20 @@ function outputPaging(int $countSearchResults, int $limit, int $currentPage, int
         </div>
         <div class="search-katzegorien-result blog-spoiler-list">
             <?php
+                echo $counterHtml;
+
                 foreach ($beitragResults as $beitrag) {
-                    echo getBeitragHTML($beitrag, true);
+                    echo getBeitragSpoilerHTML($beitrag, true, $getParameter);
                 }
             ?>
         </div>
-        <?php outputPaging($countSearchResults, $limit, $currentSearchPage, $limitPaging); ?>
+        <?php
+            if ($countSearchResults > 0) {
+                $getCopy = $_GET;
+                unset($getCopy["p"]);
+                outputPaging($countSearchResults, $limit, $limitPaging, $getCopy);
+            }
+        ?>
     </main>
 </div>
 <script>

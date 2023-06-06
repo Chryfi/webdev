@@ -310,13 +310,27 @@ class BeitragTable extends Table {
         return new BeitragRelations($beitrag, $tags, $likes);
     }
 
-    /**
-     * @return array|null array of {@link BeitragRelations} or null if something went wrong.
-     */
     public function searchBeitragLike(array $title, DatabaseOperator $titleOP,
                                       array $text, DatabaseOperator $textOP,
                                       array $tags, DatabaseOperator $tagsOP,
-                                      ?int $limit, int $offset) : ?array
+                                      ?int $limit, int $offset) : ?array {
+        return $this->_searchBeitragLike($title, $titleOP, $text, $textOP, $tags, $tagsOP, $limit, $offset, false);
+    }
+
+    public function countBeitragLike(array $title, DatabaseOperator $titleOP,
+                                      array $text, DatabaseOperator $textOP,
+                                      array $tags, DatabaseOperator $tagsOP,
+                                      ?int $limit, int $offset) : int {
+        return $this->_searchBeitragLike($title, $titleOP, $text, $textOP, $tags, $tagsOP, $limit, $offset, true);
+    }
+
+    /**
+     * @return array|null array of {@link BeitragRelations} or null if something went wrong.
+     */
+    private function _searchBeitragLike(array $title, DatabaseOperator $titleOP,
+                                      array $text, DatabaseOperator $textOP,
+                                      array $tags, DatabaseOperator $tagsOP,
+                                      ?int $limit, int $offset, bool $count) : mixed
     {
         $titleSearchQuery = "";
         for ($i = 0; $i < count($title); $i++) {
@@ -374,16 +388,16 @@ class BeitragTable extends Table {
             }
         }
 
-        $searchQuery = "SELECT * FROM beitrag WHERE $whereStmt $limitQuery";
+        $selectionThing = $count ? "COUNT(*)" : "*";
+
+        $searchQuery = "SELECT $selectionThing FROM beitrag WHERE $whereStmt $limitQuery";
 
         //TODO tag suche funktioniert nicht wenn man die tags mit AND verbindet. z.B. HAVING bezeichnung = "test" AND bezeichnung = "test2" funktioniert garnicht.
         //HAVING mit nur einem tag funktioniert auch nicht richtig.
         if ($tagSearchQuery != "") {
             $whereStmt = $whereStmt != "" ? $whereStmt." AND" : "";
-            $searchQuery = "SELECT * FROM beitrag, kategorie WHERE $whereStmt beitrag.id = kategorie.beitrag_id GROUP BY beitrag.id $limitQuery";
+            $searchQuery = "SELECT $selectionThing FROM beitrag, kategorie WHERE $whereStmt beitrag.id = kategorie.beitrag_id GROUP BY beitrag.id $limitQuery";
         }
-
-        var_dump($searchQuery);
 
         $stmt = $this->db->prepare($searchQuery);
 
@@ -406,12 +420,20 @@ class BeitragTable extends Table {
 
         if (!$result) return null;
 
-        $searchResults = array();
-        while ($row = $stmt->fetch()) {
-            $searchResults[] = $this->getBeitragRelations($row["id"]);
-        }
+        if ($count) {
+            $row = $stmt->fetch();
 
-        return $searchResults;
+            if (!$row) return 0;
+
+            return  $row["COUNT(*)"];
+        } else {
+            $searchResults = array();
+            while ($row = $stmt->fetch()) {
+                $searchResults[] = $this->getBeitragRelations($row["id"]);
+            }
+
+            return $searchResults;
+        }
     }
 
     /**

@@ -1199,4 +1199,18 @@ UPLOAD STYLES
 .paging-row {
     text-align: center;
     margin: 2em 0;
+    display: flex;
+    justify-content: center;
+}
+
+.page-links-row {
+    padding: 0 0.5em;
+}
+
+.page-links-row > a:not(:first-child) {
+    border-left: 1px solid var(--text-color);
+}
+
+.page-links-row > a {
+    padding: 0 0.5em;
 }

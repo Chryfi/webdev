@@ -1,5 +1,23 @@
 <?php
 require_once (BASE_PATH."/src/application/sessionFunctions.php");
+
+/*
+ * hidden inputs containing the GET values for search if there were any
+ * This is needed to preserve paging and search values when the user comes from a search
+ */
+$searchGETCacheHTML = "";
+$searchTitle = $_GET["title-search"] ?? "";
+
+if (isset($_GET["title-search"])) {
+    $getCopy = $_GET;
+    unset($getCopy["p"]);
+    unset($getCopy["id"]);
+    unset($getCopy["title-search"]);
+    
+    foreach ($getCopy as $key => $value) {
+        $searchGETCacheHTML .= '<input type="hidden" name="'.$key.'" value="'.$value.'">';
+    }
+}
 ?>
 
 <nav class="navbar">
@@ -19,7 +37,8 @@ require_once (BASE_PATH."/src/application/sessionFunctions.php");
     <div class="row align-items-center justify-content-space-between navbar-row">
         <div class="col-auto">
             <form method="GET" action="katzegorien">
-                <input type="text" class="input" name="title-search" placeholder="Titel Suche">
+                <input type="text" class="input" name="title-search" placeholder="Titel Suche" value="<?php echo $searchTitle; ?>">
+                <?php echo $searchGETCacheHTML; ?>
             </form>
         </div>
         <?php if (!isLoggedin()): ?>
