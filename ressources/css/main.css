@@ -95,7 +95,7 @@ button, input, textarea {
     line-height: inherit;
     border-radius: 0;
     border-style: none;
-    resize: vertical;
+    resize: none;
 }
 
 button {
@@ -800,6 +800,7 @@ NAVBAR
 
 .navbar-list {
     list-style-type: none;
+    align-items: center;
 }
 
 .navbar-link {

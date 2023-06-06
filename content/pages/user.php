@@ -44,7 +44,7 @@ $user = getLoggedInUser();
                 <div class="row justify-content-center">
                     <div class="col-md-5">
                         <p class="lead">Geburtstag</p>
-                        <input type="date" class="input input-date" value="<?php echo $user->getBirthday(); ?>">
+                        <input class="input input-date" value="<?php echo date_format(date_create($user->getBirthday()), "d.m.Y"); ?>">
                     </div>
                 </div>
             </div>
