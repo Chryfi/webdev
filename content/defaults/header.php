@@ -15,7 +15,13 @@ if (isset($_GET["title-search"])) {
     unset($getCopy["title-search"]);
 
     foreach ($getCopy as $key => $value) {
-        $searchGETCacheHTML .= '<input type="hidden" name="'.$key.'" value="'.$value.'">';
+        if (is_array($value)) {
+            foreach ($value as $valueKey => $valueItem) {
+                $searchGETCacheHTML .= '<input type="hidden" name="'.$key.'[]" value="'.$valueItem.'">';
+            }
+        } else {
+            $searchGETCacheHTML .= '<input type="hidden" name="'.$key.'" value="'.$value.'">';
+        }
     }
 }
 ?>
