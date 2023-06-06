@@ -35,6 +35,7 @@ if (isset($_GET["title-search"])) {
     <div class="dropdown-collapse" id="navbar-collapse">
         <div class="navbar row">
             <ul class="navbar-col navbar-row navbar-list">
+                <i class="col-auto fa-solid fa-cat"></i>
                 <li class="navbar-item">
                     <a href="index" class="navbar-link <?php if(empty($_GET["p"]) || $_GET["p"] == "index") echo "active";?>">Home</a>
                 </li>
