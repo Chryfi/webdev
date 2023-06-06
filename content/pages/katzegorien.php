@@ -102,7 +102,7 @@ function getSearchCountHTML(int $totalCount, int $currentPage) : string {
             <form class="gap-y-1" method="GET">
                 <input type="text" class="input" name="title-search" placeholder="Titelsuche" value="<?php echo $searchTitle; ?>">
                 <div>
-                    <button class="dropdown-button row align-items-center <?php if (!$isAdvancedSearch) echo 'collapsed'; ?>" data-dropdown-target="extended-search">
+                    <button class="dropdown-button dropdown-button-classic row align-items-center <?php if (!$isAdvancedSearch) echo 'collapsed'; ?>" data-dropdown-target="extended-search">
                         <i class="col-auto fa-solid fa-magnifying-glass"></i>
                         <div class="col-auto icon-text-right"> Erweiterte Suche</div>
                     </button>

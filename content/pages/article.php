@@ -98,7 +98,7 @@ if (isset($_GET["id"]) && $_GET["id"] != "" && is_numeric($_GET["id"])) {
                                 </div>
                             </div>
                             <div class="col">
-                                <button class="display-sm-none dropdown-button row align-items-center collapsed" data-dropdown-target="tag-list">
+                                <button class="display-sm-none dropdown-button dropdown-button-classic row align-items-center collapsed" data-dropdown-target="tag-list">
                                     <i class="col-auto fa-solid fa-tags"></i>
                                     <div class="col-auto">&nbsp;Tag Liste</div>
                                 </button>
