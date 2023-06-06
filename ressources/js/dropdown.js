@@ -53,6 +53,8 @@ class DropdownButton {
     }
 
     onClick(e) {
+        e.preventDefault();
+
         if (this.#element.classList.contains("collapsed")) {
             this.#element.classList.remove("collapsed");
             this.#target.classList.remove("collapsed");

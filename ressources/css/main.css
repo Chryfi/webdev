@@ -148,6 +148,18 @@ GENERAL PURPOSE
     border-color: rgb(121, 121, 121);
 }
 
+.gap-y-1 > *:not(:first-child) {
+    margin-top: 1em;
+}
+
+.gap-y-05 > *:not(:first-child) {
+    margin-top: 0.5em;
+}
+
+.icon-text-right {
+    margin-left: 0.35em;
+}
+
 
 .icon {
     width: 16px;
@@ -696,10 +708,6 @@ DROPDOWN
     display: inline-block;
     margin-left: auto;
     transition: transform 0.2s ease-out;
-}
-
-.dropdown-collapse {
-    overflow: hidden;
 }
 
 .dropdown-button:not(.collapsed)::after {

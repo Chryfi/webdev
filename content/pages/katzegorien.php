@@ -17,8 +17,13 @@ $countSearchResults = 0;
 $limit = 5;
 $limitPaging = 10;
 $getParameter = null;
+$isAdvancedSearch = false;
 
 if ($searchText != "" || $searchTitle != "" || count($tags) > 0) {
+    if ($searchText != "" || count($tags) > 0) {
+        $isAdvancedSearch = true;
+    }
+
     $db = getKatzenBlogDatabase();
     $beitragTable = new BeitragTable($db);
 
@@ -94,15 +99,27 @@ function getSearchCountHTML(int $totalCount, int $currentPage) : string {
     </header>
     <main class="container-sm">
         <div class="search-katzegorien-container">
-            <form class="search-form" method="GET">
+            <form class="gap-y-1" method="GET">
                 <input type="text" class="input" name="title-search" placeholder="Titelsuche" value="<?php echo $searchTitle; ?>">
-                <input type="text" class="input" name="text-search" placeholder="Freitextsuche" value="<?php echo $searchText; ?>">
-                <input type="text" class="input" id="tag-search-input" autocomplete="off" placeholder="Suche nach Tags">
-                <div class="blog-info-container row align-items-center justify-content-space-between tag-list-container" id="tag-container">
-                    <i class="col-auto fa-solid fa-tags"></i>
-                    <div class="col">
-                        <div class="row tag-list" id="tag-list">
-                            <?php outputTagList($tags); ?>
+                <div>
+                    <button class="dropdown-button row align-items-center <?php if (!$isAdvancedSearch) echo 'collapsed'; ?>" data-dropdown-target="extended-search">
+                        <i class="col-auto fa-solid fa-magnifying-glass"></i>
+                        <div class="col-auto icon-text-right"> Erweiterte Suche</div>
+                    </button>
+                    <div class="dropdown-collapse <?php if (!$isAdvancedSearch) echo 'collapsed'; ?>" id="extended-search">
+                        <div class="dropdown-body gap-y-1">
+                            <input type="text" class="input" name="text-search" placeholder="Freitextsuche" value="<?php echo $searchText; ?>">
+                            <div>
+                                <input type="text" class="input" id="tag-search-input" autocomplete="off" placeholder="Suche nach Tags">
+                                <div class="blog-info-container row align-items-center justify-content-space-between tag-list-container" id="tag-container">
+                                    <i class="col-auto fa-solid fa-tags"></i>
+                                    <div class="col">
+                                        <div class="row tag-list" id="tag-list">
+                                            <?php outputTagList($tags); ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
