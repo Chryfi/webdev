@@ -396,7 +396,12 @@ class BeitragTable extends Table {
         //HAVING mit nur einem tag funktioniert auch nicht richtig.
         if ($tagSearchQuery != "") {
             $whereStmt = $whereStmt != "" ? $whereStmt." AND" : "";
-            $searchQuery = "SELECT $selectionThing FROM beitrag, kategorie WHERE $whereStmt beitrag.id = kategorie.beitrag_id GROUP BY beitrag.id $limitQuery";
+            if ($count) {
+                $searchQuery = "SELECT COUNT(*) FROM beitrag WHERE beitrag.id IN
+                                   (SELECT beitrag.id FROM beitrag, kategorie WHERE $whereStmt beitrag.id = kategorie.beitrag_id GROUP BY beitrag.id $limitQuery)";
+            } else {
+                $searchQuery = "SELECT * FROM beitrag, kategorie WHERE $whereStmt beitrag.id = kategorie.beitrag_id GROUP BY beitrag.id $limitQuery";
+            }
         }
 
         $stmt = $this->db->prepare($searchQuery);
