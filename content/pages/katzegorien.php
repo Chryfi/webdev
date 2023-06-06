@@ -36,7 +36,7 @@ if ($searchText != "" || $searchTitle != "" || count($tags) > 0) {
 
     $countSearchResults = $beitragTable->countBeitragLike($titleSearchComponents, DatabaseOperator::AND,
         $textSearchComponents, DatabaseOperator::AND,
-        $tags, DatabaseOperator::OR, null, 0) ?? array();
+        $tags, DatabaseOperator::OR, null, 0);
 
     $counterHtml = getSearchCountHTML($countSearchResults, $currentSearchPage);
 

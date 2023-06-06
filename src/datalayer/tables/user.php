@@ -3,7 +3,7 @@ require_once (BASE_PATH."/src/datalayer/tables/table.php");
 
 class User
 {
-    private ?int $id;
+    private ?int $id = null;
     private string $password;
     private string $email;
     private string $username;

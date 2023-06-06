@@ -434,7 +434,9 @@ class BeitragTable extends Table {
         } else {
             $searchResults = array();
             while ($row = $stmt->fetch()) {
-                $searchResults[] = $this->getBeitragRelations($row["id"]);
+                if ($beitrag = $this->getBeitragRelations($row["id"])) {
+                    $searchResults[] = $beitrag;
+                }
             }
 
             return $searchResults;
