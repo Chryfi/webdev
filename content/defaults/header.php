@@ -13,7 +13,7 @@ if (isset($_GET["title-search"])) {
     unset($getCopy["p"]);
     unset($getCopy["id"]);
     unset($getCopy["title-search"]);
-    
+
     foreach ($getCopy as $key => $value) {
         $searchGETCacheHTML .= '<input type="hidden" name="'.$key.'" value="'.$value.'">';
     }

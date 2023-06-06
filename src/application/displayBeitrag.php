@@ -2,6 +2,7 @@
 require_once (BASE_PATH."/src/datalayer/tables/user.php");
 require_once (BASE_PATH."/src/datalayer/tables/likedTable.php");
 require_once (BASE_PATH."/src/application/sessionFunctions.php");
+require_once (BASE_PATH."/src/utils/tags.php");
 
 function getBeitragSpoilerHTML(BeitragRelations $beitrag, bool $showTags, ?string $getParameter) : string {
     $db = getKatzenBlogDatabase();

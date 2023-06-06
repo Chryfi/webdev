@@ -21,6 +21,24 @@ class LikedTable extends Table {
         return $row["COUNT(*)"];
     }
 
+    /**
+     * @return array|null array of beitrag ids
+     */
+    public function orderByLikesDesc(?int $limit, int $offset) : ?array {
+        $limitQuery = isset($limit) ? "LIMIT $limit OFFSET $offset" : "";
+        $stmt = $this->db->prepare("SELECT beitrag_id, COUNT(*) as count FROM liket GROUP BY beitrag_id ORDER BY count DESC $limitQuery");
+        $result = $stmt->execute();
+
+        if (!$result) return null;
+
+        $ids = array();
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $ids[] = $row["beitrag_id"];
+        }
+
+        return $ids;
+    }
+
     public function insertLike(int $beitragID, int $userID) : bool {
         $stmt = $this->db->prepare("INSERT INTO liket (beitrag_id, user_id) VALUES (:beitrag_id, :user_id)");
         $stmt->bindValue("beitrag_id", $beitragID);
