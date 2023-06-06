@@ -20,7 +20,7 @@ if (isset($_GET["title-search"])) {
                 $searchGETCacheHTML .= '<input type="hidden" name="'.$key.'[]" value="'.$valueItem.'">';
             }
         } else {
-            $searchGETCacheHTML .= '<input type="hidden" name="'.$key.'" value="'.$value.'">';
+            $searchGETCacheHTML .= '<input id="navbar-search-cache-'.$key.'" type="hidden" name="'.$key.'" value="'.$value.'">';
         }
     }
 }
@@ -51,7 +51,7 @@ if (isset($_GET["title-search"])) {
             <div class="navbar-col align-items-center navbar-row">
                 <div class="navbar-col">
                     <form method="GET" action="katzegorien">
-                        <input type="text" class="input" name="title-search" placeholder="Titel Suche" value="<?php echo $searchTitle; ?>">
+                        <input id="navbar-search-title" type="text" class="input" name="title-search" placeholder="Titel Suche" value="<?php echo $searchTitle; ?>">
                         <?php echo $searchGETCacheHTML; ?>
                     </form>
                 </div>
@@ -99,6 +99,19 @@ if (isset($_GET["title-search"])) {
     let navbarCollapse = document.getElementById("navbar-collapse");
     let navbarSearchIcon = document.getElementById("navbar-search-icon");
     let navbarContainer = document.getElementById("navbar-container");
+    let navbarSearchInput = document.getElementById("navbar-search-title");
+    let navbarSearchPageCache = document.getElementById("navbar-search-cache-page");
+
+    let originalSearchValue = navbarSearchInput.value;
+    let originalSearchPage = navbarSearchPageCache != null ? navbarSearchPageCache.value : 1;
+
+    navbarSearchInput.addEventListener("input", e => {
+        if (navbarSearchInput.value !== originalSearchValue) {
+            navbarSearchPageCache.value = 1;
+        } else {
+            navbarSearchPageCache.value = originalSearchPage;
+        }
+    });
 
     navbarSearchIcon.addEventListener("click", e => {
        window.location.href = "/katzegorien";
