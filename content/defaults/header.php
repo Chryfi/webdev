@@ -32,7 +32,7 @@ if (isset($_GET["title-search"])) {
             <i class="navbar-icon nav-hamburger-icon col-auto fa-solid fa-bars" id="navbar-dropdown-icon"></i>
         </button>
     </div>
-    <div class="dropdown-collapse" id="navbar-collapse">
+    <div class="dropdown-collapse collapsed" id="navbar-collapse">
         <div class="navbar row">
             <ul class="navbar-col navbar-row navbar-list">
                 <i class="col-auto fa-solid fa-cat"></i>
@@ -119,7 +119,7 @@ if (isset($_GET["title-search"])) {
     function handleNavbarResizing(e) {
         let width = window.innerWidth || document.documentElement.clientWidth;
 
-        if (width < 801) {
+        if (width < 851) {
             navbarButton.classList.add("collapsed");
             collapsedState();
         } else {
