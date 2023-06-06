@@ -10,7 +10,7 @@
  */
 class TagSearch {
     /**
-     * The element that displays the results
+     * The element that displays the search results
      * from which you can pick one tag
      */
     #tagContainer;
@@ -33,13 +33,18 @@ class TagSearch {
     initEvents() {
         this.tagInput.addEventListener("input", () => this.onSearch(this.tagInput.value));
         this.tagInput.addEventListener("keydown", (event) => {
+            /* ENTER pressed */
             if (event.keyCode === 13) {
                 event.preventDefault();
                 this.onEnter(this.tagInput.value);
             }
         });
-        this.tagInput.addEventListener("focusout", e => this.endSearch());
+        this.tagInput.addEventListener("focusout", e => this.onFocusOut());
         this.tagInput.addEventListener("focusin", e => this.onSearch(this.tagInput.value));
+        this.#tagContainer.addEventListener("mouseover", e => this.#tagContainer.isMouseOver = true);
+        this.#tagContainer.addEventListener("mouseleave", e => this.#tagContainer.isMouseOver = false);
+        /* prevent the input from losing focus when clicking on the tag container */
+        this.#tagContainer.addEventListener("mousedown", e => e.preventDefault());
 
         /* when there are already tag elements in the tag list. Might be from PHP output */
         document.addEventListener("DOMContentLoaded", () => {
@@ -65,6 +70,7 @@ class TagSearch {
     #createTagContainer() {
         this.#tagContainer = document.createElement("div");
         this.#tagContainer.classList.add("tag-search-results-container");
+        this.#tagContainer.isMouseOver = false;
 
         this.#tagSearchList = document.createElement("div");
         this.#tagSearchList.classList.add("row", "tag-list");
@@ -135,6 +141,16 @@ class TagSearch {
         this.#tagSearchList.innerHTML = "";
         this.tagInput.parentElement.style.position = "relative";
         this.tagInput.insertAdjacentElement("afterend", this.#tagContainer);
+    }
+
+    onFocusOut() {
+        /**
+         * When the user clicks on something other than the input,
+         * we need to check if the click was on the search results to pick a tag.
+         */
+        if (!this.#tagContainer.isMouseOver) {
+            this.endSearch();
+        }
     }
 
     /**
