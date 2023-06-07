@@ -310,16 +310,16 @@ class BeitragTable extends Table {
         return new BeitragRelations($beitrag, $tags, $likes);
     }
 
-    public function searchBeitragLike(array $title, DatabaseOperator $titleOP,
-                                      array $text, DatabaseOperator $textOP,
-                                      array $tags, DatabaseOperator $tagsOP,
+    public function searchBeitragLike(array $title, string $titleOP,
+                                      array $text, string $textOP,
+                                      array $tags, string $tagsOP,
                                       ?int $limit, int $offset) : ?array {
         return $this->_searchBeitragLike($title, $titleOP, $text, $textOP, $tags, $tagsOP, $limit, $offset, false);
     }
 
-    public function countBeitragLike(array $title, DatabaseOperator $titleOP,
-                                      array $text, DatabaseOperator $textOP,
-                                      array $tags, DatabaseOperator $tagsOP,
+    public function countBeitragLike(array $title, string $titleOP,
+                                      array $text, string $textOP,
+                                      array $tags, string $tagsOP,
                                       ?int $limit, int $offset) : int {
         return $this->_searchBeitragLike($title, $titleOP, $text, $textOP, $tags, $tagsOP, $limit, $offset, true);
     }
@@ -327,9 +327,9 @@ class BeitragTable extends Table {
     /**
      * @return array|null array of {@link BeitragRelations} or null if something went wrong.
      */
-    private function _searchBeitragLike(array $title, DatabaseOperator $titleOP,
-                                      array $text, DatabaseOperator $textOP,
-                                      array $tags, DatabaseOperator $tagsOP,
+    private function _searchBeitragLike(array $title, string $titleOP,
+                                      array $text, string $textOP,
+                                      array $tags, string $tagsOP,
                                       ?int $limit, int $offset, bool $count) : mixed
     {
         $titleSearchQuery = "";

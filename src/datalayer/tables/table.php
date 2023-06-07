@@ -1,10 +1,11 @@
 <?php
 require_once(BASE_PATH . "/src/datalayer/database.php");
 
-enum DatabaseOperator
+/* I miss my nice enums from java :( */
+abstract class DatabaseOperator
 {
-    case AND;
-    case OR;
+    const AND = "AND";
+    const OR = "OR";
 }
 
 abstract class Table {
