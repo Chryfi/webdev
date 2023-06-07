@@ -7,7 +7,7 @@ require_once (BASE_PATH."/src/utils/credentials.php");
  * @throws PDOException when the connection failed
  */
 function getKatzenBlogDatabase(): Database {
-    $db = new Database("katzenblog", "localhost", "mysql");
+    $db = new Database("wiinf6.erlenkaemper.eu", "localhost", "mysql");
     $db->connect(Credentials::getDatabaseUser(), Credentials::getDatabasePassword());
 
     return $db;
