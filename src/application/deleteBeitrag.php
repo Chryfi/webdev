@@ -17,7 +17,7 @@ if (isset($_POST["delete"]) && $_POST["delete"] != ""
     $beitrag = $beitragTable->getBeitrag($_POST["delete"]);
 
     if ($beitrag && $beitrag->getUserId() == getSessionUserId()) {
-        deleteBeitragAndRelations($_POST["delete"]);
+        $status = deleteBeitragAndRelations($_POST["delete"]);
     }
 
     $db->disconnect();
