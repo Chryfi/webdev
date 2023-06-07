@@ -56,61 +56,69 @@ class DropdownButton {
         e.preventDefault();
 
         if (this.#element.classList.contains("collapsed")) {
-            this.#element.classList.remove("collapsed");
-            this.#target.classList.remove("collapsed");
-
-            
-            if (this.#collapsingTimer != null) {
-                this.#target.style.height = this.#target.offsetHeight + "px";
-                clearTimeout(this.#collapsingTimer);
-                this.#collapsingTimer = null;
-            }
-
-            this.#target.style.overflow = "hidden";
-            this.#target.classList.add("collapsing");
-            let height = this.#calculateHeight(this.#target);
-
-            /* 
-             * Give the DOM time to update
-             * otherwise the css "collapsing" class will not recognise the height change for the transition
-             */
-            setTimeout(() => {
-                this.#target.style.height = height + "px";
-            }, 0);
-
-            this.#expandingTimer = setTimeout(() => {
-                this.#target.classList.remove("collapsing");
-                this.#target.style.overflow = "";
-                this.#target.style.height = "";
-                this.#expandingTimer = null;
-            }, this.#duration);
+            this.#expand();
         } else {
-            if (this.#expandingTimer != null) {
-                this.#target.style.height = this.#target.offsetHeight + "px";
-                clearTimeout(this.#expandingTimer);
-                this.#expandingTimer = null;
-            } else {
-                /* Set the height explicitly so the css transition can work */
-                let height = this.#calculateHeight(this.#target);
-                this.#target.style.height = height + "px";
-            }
-
-            this.#target.style.overflow = "hidden";
-            this.#element.classList.add("collapsed");
-
-            setTimeout(() => {
-                this.#target.classList.add("collapsing");
-                this.#target.style.height = "0px";
-            }, 0);
-            
-            this.#collapsingTimer = setTimeout(() => {
-                this.#target.classList.remove("collapsing");
-                this.#target.classList.add("collapsed");
-                this.#target.style.height = "";
-                this.#target.style.overflow = "";
-                this.#collapsingTimer = null;
-            }, this.#duration);
+            this.#collapse();
         }
+    }
+
+    #expand() {
+        this.#element.classList.remove("collapsed");
+        this.#target.classList.remove("collapsed");
+
+
+        if (this.#collapsingTimer != null) {
+            this.#target.style.height = this.#target.offsetHeight + "px";
+            clearTimeout(this.#collapsingTimer);
+            this.#collapsingTimer = null;
+        }
+
+        this.#target.style.overflow = "hidden";
+        this.#target.classList.add("collapsing");
+        let height = this.#calculateHeight(this.#target);
+
+        /*
+         * Give the DOM time to update
+         * otherwise the css "collapsing" class will not recognise the height change for the transition
+         */
+        setTimeout(() => {
+            this.#target.style.height = height + "px";
+        }, 0);
+
+        this.#expandingTimer = setTimeout(() => {
+            this.#target.classList.remove("collapsing");
+            this.#target.style.overflow = "";
+            this.#target.style.height = "";
+            this.#expandingTimer = null;
+        }, this.#duration);
+    }
+
+    #collapse() {
+        if (this.#expandingTimer != null) {
+            this.#target.style.height = this.#target.offsetHeight + "px";
+            clearTimeout(this.#expandingTimer);
+            this.#expandingTimer = null;
+        } else {
+            /* Set the height explicitly so the css transition can work */
+            let height = this.#calculateHeight(this.#target);
+            this.#target.style.height = height + "px";
+        }
+
+        this.#target.style.overflow = "hidden";
+        this.#element.classList.add("collapsed");
+
+        setTimeout(() => {
+            this.#target.classList.add("collapsing");
+            this.#target.style.height = "0px";
+        }, 0);
+
+        this.#collapsingTimer = setTimeout(() => {
+            this.#target.classList.remove("collapsing");
+            this.#target.classList.add("collapsed");
+            this.#target.style.height = "";
+            this.#target.style.overflow = "";
+            this.#collapsingTimer = null;
+        }, this.#duration);
     }
 
     #calculateHeight(target) {
