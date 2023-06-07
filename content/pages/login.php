@@ -3,6 +3,7 @@
 require_once(BASE_PATH . "/src/datalayer/tables/user.php");
 require_once(BASE_PATH . "/src/application/userForm.php");
 require_once(BASE_PATH . "/src/application/sessionFunctions.php");
+require_once(BASE_PATH . "/src/utils/redirect.php");
 
 /* quick access for output */
 $username = $_POST["username"] ?? "";
@@ -32,12 +33,10 @@ if (isset($_POST["username"]) && !isLoggedin()) {
 
             /*
              * The header is already loaded and shows the buttons to login.
-             * After this block, the user will be logged in, but without refreshing the page, the header will be outdated.
+             * After this code, the user will be logged in, but without refreshing the page, the header will be outdated.
              * We can't use PHP header() because of the routing system.
              */
-            echo '<script>
-                window.location.href = \'./\';
-            </script>';
+            refreshWithJS();
         }
     }
 }
