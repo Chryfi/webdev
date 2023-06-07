@@ -134,23 +134,23 @@ if (isset($_GET["title-search"])) {
 
         if (width < 851) {
             navbarButton.classList.add("collapsed");
+            navbarCollapse.classList.add("collapsed");
             collapsedState();
         } else {
             navbarButton.classList.remove("collapsed");
+            navbarCollapse.classList.remove("collapsed");
             expandedState();
             navbarContainer.classList.add("collapsed");
         }
     }
 
     function collapsedState() {
-        navbarCollapse.classList.add("collapsed");
         dropdownIcon.classList.remove("fa-x");
         dropdownIcon.classList.add("fa-bars");
         navbarContainer.classList.add("collapsed");
     }
 
     function expandedState() {
-        navbarCollapse.classList.remove("collapsed");
         dropdownIcon.classList.add("fa-x");
         dropdownIcon.classList.remove("fa-bars");
         navbarContainer.classList.remove("collapsed");
