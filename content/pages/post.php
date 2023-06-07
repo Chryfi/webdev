@@ -30,15 +30,12 @@ if (isset($_GET["edit"]) && $_GET["edit"] != ""
     if ($oldBeitrag && $oldBeitrag->getUserId() == getSessionUserId()) {
         $isEditMode = true;
 
-        /* the presence of this means, that the user submitted the form, therefore don't use the old data as output */
-        if (!isset($_GET["edited"])) {
-            $title = $oldBeitrag->getTitle();
-            $spoiler = $oldBeitrag->getTeaser();
-            $tags = $oldBeitrag->getTags();
-            $content = $oldBeitrag->getContent();
-            $imageName = "Image";
-            $imageData = readAsBase64URI($oldBeitrag->getImageName()) ?? "";
-        }
+        $title = $_POST["title"] ?? $oldBeitrag->getTitle();
+        $spoiler = $_POST["spoiler"] ?? $oldBeitrag->getTeaser();
+        $tags = $_POST["tags"] ?? $oldBeitrag->getTags();
+        $content = $_POST["content"] ?? $oldBeitrag->getContent();
+        $imageName = $_POST["image-name-cache"] ?? "Image";
+        $imageData = $_POST["image-data-cache"] ?? (readAsBase64URI($oldBeitrag->getImageName()) ?? "");
     }
 
     $db->disconnect();
@@ -108,7 +105,6 @@ function insertBeitrag($title, $spoiler, $tags, $content, $imageBase64URI) : ?Be
     $beitragTable = new BeitragTable($db);
     $beitrag = Beitrag::createNecessary($title, $spoiler, $content, getSessionUserId(), $imagePath);
 
-    //TODO what if not enough tags are inserted due to errors? Delete beitrag?
     if ($beitragTable->insertBeitrag($beitrag)) {
         foreach ($tags as $tag) {
             $kategorieTable->insertTag($tag, $beitrag->getId());
@@ -140,7 +136,6 @@ function editBeitrag(Beitrag $oldBeitrag, $title, $spoiler, $tags, $content, $im
     $beitrag = Beitrag::createNecessary($title, $spoiler, $content, getSessionUserId(), $imagePath);
     $beitrag->setId($oldBeitrag->getId());
 
-    //TODO what if not enough tags are inserted due to errors? Delete beitrag?
     if ($beitragTable->updateBeitrag($beitrag)) {
         $oldTags = $kategorieTable->getTagsByBeitrag($oldBeitrag->getId());
 
@@ -226,7 +221,7 @@ function validateImage($imageFile) : ?string {
             <?php if (!isLoggedin()): ?>
                 <p class="lead text-center"><i class="fa-solid fa-circle-exclamation"></i> Melde dich zuerst an um einen Blog Beitrag zu erstellen.</p>
             <?php else: ?>
-                <form class="blog-post" method="POST" enctype="multipart/form-data" action="<?php if($isEditMode) echo 'post?edit='.$_GET["edit"].'&edited=true'; ?>">
+                <form class="blog-post" method="POST" enctype="multipart/form-data" action="<?php if($isEditMode) echo 'post?edit='.$_GET["edit"]; ?>">
                     <input type="hidden" name="MAX_FILE_SIZE" value="5000000">
                     <div class="row">
                         <div class="col">
