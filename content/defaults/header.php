@@ -27,7 +27,7 @@ if (isset($_GET["title-search"])) {
 ?>
 <nav class="navbar-container" id="navbar-container">
     <div class="navbar-mobile-row">
-        <i class="navbar-icon col-auto fa-solid fa-magnifying-glass" id="navbar-search-icon"></i>
+        <i class="cursor-pointer navbar-icon col-auto fa-solid fa-magnifying-glass" id="navbar-search-icon"></i>
         <button id="navbar-button" class="navbar-dropdown-button dropdown-button col-auto" data-dropdown-target="navbar-collapse">
             <i class="navbar-icon nav-hamburger-icon col-auto fa-solid fa-bars" id="navbar-dropdown-icon"></i>
         </button>
