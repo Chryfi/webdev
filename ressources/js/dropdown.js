@@ -22,7 +22,6 @@ document.addEventListener("DOMContentLoaded", e => {
         let target = document.getElementById(element.dataset["dropdownTarget"]);
 
         let btn = new DropdownButton(element, target);
-        btn.init();
     }
 });
 
@@ -43,6 +42,7 @@ class DropdownButton {
         this.#element = element;
         this.#target = target;
         this.#duration = duration;
+        this.init();
     }
 
     /**
@@ -66,9 +66,10 @@ class DropdownButton {
                 this.#collapsingTimer = null;
             }
 
+            this.#target.style.overflow = "hidden";
             this.#target.classList.add("collapsing");
             let height = this.#calculateHeight(this.#target);
-            
+
             /* 
              * Give the DOM time to update
              * otherwise the css "collapsing" class will not recognise the height change for the transition
@@ -79,6 +80,7 @@ class DropdownButton {
 
             this.#expandingTimer = setTimeout(() => {
                 this.#target.classList.remove("collapsing");
+                this.#target.style.overflow = "";
                 this.#target.style.height = "";
                 this.#expandingTimer = null;
             }, this.#duration);
@@ -93,6 +95,7 @@ class DropdownButton {
                 this.#target.style.height = height + "px";
             }
 
+            this.#target.style.overflow = "hidden";
             this.#element.classList.add("collapsed");
 
             setTimeout(() => {
@@ -104,6 +107,7 @@ class DropdownButton {
                 this.#target.classList.remove("collapsing");
                 this.#target.classList.add("collapsed");
                 this.#target.style.height = "";
+                this.#target.style.overflow = "";
                 this.#collapsingTimer = null;
             }, this.#duration);
         }
