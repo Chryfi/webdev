@@ -34,10 +34,25 @@ document.addEventListener("DOMContentLoaded", e => {
 class DropdownButton {
     #expandingTimer;
     #collapsingTimer;
+    /**
+     * The dropdown button that controls the collapsing and expanding
+     * @type HTMLElement
+     */
     #element;
+    /**
+     * The body that should be collapsed or expanded.
+     * @type HTMLElement
+     */
     #target;
     #duration;
 
+    /**
+     *
+     * @param element The dropdown button that controls the collapsing and expanding
+     * @param target The body that should be collapsed or expanded.
+     * @param duration the duration of the animation. Default is 0.2 seconds.
+     * This should correspond to the css transition duration.
+     */
     constructor(element, target, duration = 200) {
         this.#element = element;
         this.#target = target;
