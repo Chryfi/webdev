@@ -22,9 +22,9 @@ class Database {
     private string $address;
     private string $service;
 
-    private ?string $username;
-    private ?string $password;
-    private ?PDO $connection;
+    private ?string $username = null;
+    private ?string $password = null;
+    private ?PDO $connection = null;
 
     function __construct(string $databaseName, string $address, string $service) {
         $this->databaseName = $databaseName;
