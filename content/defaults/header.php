@@ -106,6 +106,8 @@ if (isset($_GET["title-search"])) {
     let originalSearchPage = navbarSearchPageCache != null ? navbarSearchPageCache.value : 1;
 
     navbarSearchInput.addEventListener("input", e => {
+        if (navbarSearchPageCache == null) return;
+
         if (navbarSearchInput.value !== originalSearchValue) {
             navbarSearchPageCache.value = 1;
         } else {

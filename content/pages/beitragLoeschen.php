@@ -32,22 +32,21 @@ if (isset($_GET["id"]) && $_GET["id"] != "" && is_numeric($_GET["id"]) && isLogg
                 <h1 class="h1 lead">"<?php echo $title; ?>"</h1>
                 <form id="deletion-form" class="register-form" method="POST">
                     <div class="row justify-content-center">
-                            <div class="row confirmation-row">
-                                <div class="col-auto">
-                                    <button id="abort-delete-button"
-                                            class="button primary-button button-accent2 login-button">
-                                        Nicht löschen
-                                    </button>
+                        <div class="row confirmation-row">
+                            <div class="col-auto">
+                                <button id="abort-delete-button"
+                                        class="button primary-button button-accent2 login-button">
+                                    Nicht löschen
+                                </button>
+                            </div>
+                            <div class="col-auto">
+                                <button type="submit" class="button primary-button button-remove login-button"">
+                                <div class="row align-items-center login-button-row">
+                                    <i class="col-auto fa-solid fa-trash"></i>
+                                    <p class="col-auto">Löschen</p>
                                 </div>
-                                <div class="col-auto">
-                                    <button type="submit" class="button primary-button button-remove login-button"
-                                    ">
-                                    <div class="row align-items-center login-button-row">
-                                        <i class="col-auto fa-solid fa-trash"></i>
-                                        <p class="col-auto">Löschen</p>
-                                    </div>
-                                    </button>
-                                </div>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <input type="hidden" name="delete" value="<?php echo $id; ?>">
@@ -59,34 +58,37 @@ if (isset($_GET["id"]) && $_GET["id"] != "" && is_numeric($_GET["id"]) && isLogg
     </main>
 </div>
 <script>
-    document.getElementById("abort-delete-button").addEventListener("click", e => {
-        e.preventDefault();
-
-        window.location.href = "/article?id=<?php echo $id;?>";
-    });
-
     let formElement = document.getElementById("deletion-form");
-    formElement.addEventListener("submit", e => {
-        e.preventDefault();
 
-        let formData = new FormData(e.target);
+    if (formElement != null) {
+        document.getElementById("abort-delete-button").addEventListener("click", e => {
+            e.preventDefault();
 
-        fetch("/src/application/deleteBeitrag.php", {
-            method: "POST",
-            body: formData
-        }).then(async response => {
-            let status = await response.json();
-
-            let messageElement = document.createElement("p");
-            messageElement.classList.add("lead", "text-center");
-
-            if (status["status"]) {
-                messageElement.textContent = "Löschung erfolgreich.";
-            } else {
-                messageElement.textContent = "Löschung nicht erfolgreich.";
-            }
-
-            formElement.replaceWith(messageElement);
+            window.location.href = "/article?id=<?php echo $id;?>";
         });
-    });
+
+        formElement.addEventListener("submit", e => {
+            e.preventDefault();
+
+            let formData = new FormData(e.target);
+
+            fetch("/src/application/deleteBeitrag.php", {
+                method: "POST",
+                body: formData
+            }).then(async response => {
+                let status = await response.json();
+
+                let messageElement = document.createElement("p");
+                messageElement.classList.add("lead", "text-center");
+
+                if (status["status"]) {
+                    messageElement.textContent = "Löschung erfolgreich.";
+                } else {
+                    messageElement.textContent = "Löschung nicht erfolgreich.";
+                }
+
+                formElement.replaceWith(messageElement);
+            });
+        });
+    }
 </script>

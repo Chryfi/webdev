@@ -137,58 +137,60 @@ if (isset($_GET["id"]) && $_GET["id"] != "" && is_numeric($_GET["id"])) {
     let likeButtonElement = document.getElementById("like-button");
     let likeCounterElement = document.getElementById("like-counter");
 
-    /**
-     * When clicking the like button, the hover effect for removing the like should
-     * only appear after leaving and re-entering the like button. Similarily if the user removed the like, 
-     * the hover effects for adding a like should only appear after re-entering the like button.
-     */
-    likeButtonElement.addEventListener("click", e => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const articleID = urlParams.get('id');
+    if (likeButtonElement != null && likeCounterElement != null) {
+        /**
+         * When clicking the like button, the hover effect for removing the like should
+         * only appear after leaving and re-entering the like button. Similarly, if the user removed the like,
+         * the hover effects for adding a like should only appear after re-entering the like button.
+         */
+        likeButtonElement.addEventListener("click", e => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const articleID = urlParams.get('id');
 
-        let likeRequest = new FormData();
-        likeRequest.append("id", articleID);
+            let likeRequest = new FormData();
+            likeRequest.append("id", articleID);
 
-        if (likeButtonElement.classList.contains("active")) {
-            likeRequest.append("remove", "");
+            if (likeButtonElement.classList.contains("active")) {
+                likeRequest.append("remove", "");
 
-            fetch("/src/application/like.php", {
-                method: "POST",
-                body: likeRequest
-            }).then(async (response) => {
-                let status = await response.json();
+                fetch("/src/application/like.php", {
+                    method: "POST",
+                    body: likeRequest
+                }).then(async (response) => {
+                    let status = await response.json();
 
-                if (!status["status"]) return;
+                    if (!status["status"]) return;
 
-                likeCounterElement.textContent = parseInt(likeCounterElement.textContent) - 1;
-                likeButtonElement.classList.remove("active");
-                likeCounterElement.classList.remove("active");
-                likeButtonElement.classList.remove("like-hover");
-            });
-        } else {
-            likeRequest.append("add", "");
+                    likeCounterElement.textContent = parseInt(likeCounterElement.textContent) - 1;
+                    likeButtonElement.classList.remove("active");
+                    likeCounterElement.classList.remove("active");
+                    likeButtonElement.classList.remove("like-hover");
+                });
+            } else {
+                likeRequest.append("add", "");
 
-            fetch("/src/application/like.php", {
-                method: "POST",
-                body: likeRequest
-            }).then(async (response) => {
-                let status = await response.json();
+                fetch("/src/application/like.php", {
+                    method: "POST",
+                    body: likeRequest
+                }).then(async (response) => {
+                    let status = await response.json();
 
-                if (!status["status"]) return;
+                    if (!status["status"]) return;
 
-                likeCounterElement.textContent = parseInt(likeCounterElement.textContent) + 1;
-                likeButtonElement.classList.add("active");
-                likeCounterElement.classList.add("active");
-                likeButtonElement.classList.remove("like-hover");
-            });
-        }
-    });
+                    likeCounterElement.textContent = parseInt(likeCounterElement.textContent) + 1;
+                    likeButtonElement.classList.add("active");
+                    likeCounterElement.classList.add("active");
+                    likeButtonElement.classList.remove("like-hover");
+                });
+            }
+        });
 
-    likeButtonElement.addEventListener("mouseleave", e => {
-        likeButtonElement.classList.remove("like-hover");
-    });
+        likeButtonElement.addEventListener("mouseleave", e => {
+            likeButtonElement.classList.remove("like-hover");
+        });
 
-    likeButtonElement.addEventListener("mouseenter", e => {
-        likeButtonElement.classList.add("like-hover");
-    });
+        likeButtonElement.addEventListener("mouseenter", e => {
+            likeButtonElement.classList.add("like-hover");
+        });
+    }
 </script>
