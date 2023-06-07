@@ -38,7 +38,10 @@ function deleteBeitragAndRelations(int $beitragID): bool {
     $kategorieTable = new KategorieTable($db);
     $beitrag = $beitragTable->getBeitrag($beitragID);
 
-    if (!$beitrag) return false;
+    if (!$beitrag) {
+        $db->disconnect();
+        return false;
+    }
 
     $likedTable->removeLikesFromBeitrag($beitrag->getId());
     $kategorieTable->removeTagsFromBeitrag($beitrag->getId());

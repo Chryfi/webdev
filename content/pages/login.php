@@ -16,15 +16,18 @@ if (isset($_POST["username"]) && !isLoggedin()) {
 
     foreach ($requiredPosts as $key) {
         if (!isset($_POST[$key]) || $_POST[$key] == "") {
-            $errors[$key] = "Geben Sie etwas ein.";
+            $errors[$key] = "Gebe etwas ein.";
         }
     }
 
     if (count($errors) == 0) {
-        $userTable = new UserTable(getKatzenBlogDatabase());
-        if (!usernameExists($username) || !verifyPassword($user = $userTable->getByUserName($username), $password)) {
+        $db = getKatzenBlogDatabase();
+        $userTable = new UserTable($db);
+        if (!($user = $userTable->getByUserName($username)) || !verifyPassword($user, $password)) {
             $errors["general"] = "Username oder Passwort falsch.";
+            $db->disconnect();
         } else {
+            $db->disconnect();
             login($user);
 
             /*

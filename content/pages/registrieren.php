@@ -2,8 +2,6 @@
 require_once(BASE_PATH . "/src/datalayer/tables/user.php");
 require_once(BASE_PATH . "/src/application/userForm.php");
 
-$userTable = new UserTable(getKatzenBlogDatabase());
-
 /* quick access for output */
 $username = $_POST["username"] ?? "";
 $firstname = $_POST["firstname"] ?? "";
@@ -40,10 +38,15 @@ if (isset($_POST["username"])) {
 }
 
 function registerUser($username, $password, $email, $firstname, $surname, $birthday): bool {
-    $userTable = new UserTable(getKatzenBlogDatabase());
+    $db = getKatzenBlogDatabase();
+    $userTable = new UserTable($db);
     $user = User::createNecessary($username, password_hash($password, PASSWORD_BCRYPT), $email, $firstname, $surname, $birthday);
 
-    return $userTable->insertUser($user);
+    $result = $userTable->insertUser($user);
+
+    $db->disconnect();
+
+    return $result;
 }
 
 /**
