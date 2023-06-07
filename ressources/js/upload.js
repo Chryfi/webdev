@@ -7,6 +7,13 @@ class UploadElement {
     #uploadHoverOverlay;
     #loadingOverlay;
     #validFileTypes;
+    /**
+     * This callback is executed after {@link fileResult} and {@link file} have been set
+     * with the newly uploaded element.
+     * The callback receives "this" instance as argument. When the callback returns false, the uploading will be aborted and
+     * the variables {@link fileResult} and {@link file} will be reset to the previous uploaded element.
+     * The callback is allowed to return a {@link Promise}.
+     */
     onLoad;
     fileResult;
     /**
