@@ -32,11 +32,11 @@ if ($searchText != "" || $searchTitle != "" || count($tags) > 0) {
 
     $beitragResults = $beitragTable->searchBeitragLike($titleSearchComponents, DatabaseOperator::AND,
         $textSearchComponents, DatabaseOperator::AND,
-        $tags, DatabaseOperator::OR, $limit, ($currentSearchPage - 1) * $limit) ?? array();
+        $tags, DatabaseOperator::AND, $limit, ($currentSearchPage - 1) * $limit) ?? array();
 
     $countSearchResults = $beitragTable->countBeitragLike($titleSearchComponents, DatabaseOperator::AND,
         $textSearchComponents, DatabaseOperator::AND,
-        $tags, DatabaseOperator::OR, null, 0);
+        $tags, DatabaseOperator::AND, null, 0);
 
     $counterHtml = getSearchCountHTML($countSearchResults, $currentSearchPage);
 
@@ -47,7 +47,7 @@ if ($searchText != "" || $searchTitle != "" || count($tags) > 0) {
     $db->disconnect();
 }
 
-function outputPaging(int $countSearchResults, int $limit, int $limitPaging, array $getParameter) {
+function getPagingHTML(int $countSearchResults, int $limit, int $limitPaging, array $getParameter) : string {
     unset($getParameter["page"]);
     $currentPage = isset($_GET["page"]) && $_GET["page"] > 0 ? $_GET["page"] : 1;
     $maxCountPages = ceil($countSearchResults / $limit);
@@ -60,26 +60,32 @@ function outputPaging(int $countSearchResults, int $limit, int $limitPaging, arr
 
     $maxPage = min($maxPage, $maxCountPages);
 
-    echo '<div class="paging-row">';
+    $pagingHTML = '<div class="paging-row">';
     $i = $minPage;
+
     if ($currentPage > 1) {
-        echo '<a href="katzegorien?page='.($currentPage - 1).'&'.http_build_query($getParameter).'">Zurück</a>';
+        $pagingHTML .= '<a href="katzegorien?page='.($currentPage - 1).'&'.http_build_query($getParameter).'">Zurück</a>';
     }
-    echo '<div class="page-links-row">';
+
+    $pagingHTML .= '<div class="page-links-row">';
     while ($i <= $maxPage) {
         if ($currentPage == $i) {
-            echo '<a class="active">'.$i.'</a>';
+            $pagingHTML .= '<a class="active">'.$i.'</a>';
         } else {
-            echo '<a href="katzegorien?page='.$i.'&'.http_build_query($getParameter).'">'.$i.'</a>';
+            $pagingHTML .= '<a href="katzegorien?page='.$i.'&'.http_build_query($getParameter).'">'.$i.'</a>';
         }
 
         $i++;
     }
-    echo '</div>';
+    $pagingHTML .= '</div>';
+
     if ($currentPage < $maxPage) {
-        echo '<a href="katzegorien?page='.($currentPage + 1).'&'.http_build_query($getParameter).'">Weiter</a>';
+        $pagingHTML .= '<a href="katzegorien?page='.($currentPage + 1).'&'.http_build_query($getParameter).'">Weiter</a>';
     }
-    echo '</div>';
+
+    $pagingHTML .= '</div>';
+
+    return $pagingHTML;
 }
 
 function getSearchCountHTML(int $totalCount, int $currentPage) : string {
@@ -143,7 +149,7 @@ function getSearchCountHTML(int $totalCount, int $currentPage) : string {
             if ($countSearchResults > 0) {
                 $getCopy = $_GET;
                 unset($getCopy["p"]);
-                outputPaging($countSearchResults, $limit, $limitPaging, $getCopy);
+                echo getPagingHTML($countSearchResults, $limit, $limitPaging, $getCopy);
             }
         ?>
     </main>
