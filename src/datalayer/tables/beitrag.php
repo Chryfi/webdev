@@ -310,6 +310,30 @@ class BeitragTable extends Table {
         return new BeitragRelations($beitrag, $tags, $likes);
     }
 
+    /**
+     * @param int|null $limit optional limit
+     * @param int $offset
+     * @return array|null array of {@link BeitragRelations} or null if the query failed.
+     */
+    public function orderByDatumDesc(?int $limit, int $offset) : ?array {
+        $limitQuery = isset($limit) ? "LIMIT $limit OFFSET $offset" : "";
+        $stmt = $this->db->prepare("SELECT * FROM beitrag ORDER BY datum DESC $limitQuery");
+        $result = $stmt->execute();
+
+        if (!$result) return null;
+
+        $searchResults = array();
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $beitragRelation = $this->getBeitragRelations($row["id"]);
+
+            if ($beitragRelation) {
+                $searchResults[] = $beitragRelation;
+            }
+        }
+
+        return $searchResults;
+    }
+
     public function searchBeitragLike(array $title, string $titleOP,
                                       array $text, string $textOP,
                                       array $tags, string $tagsOP,

@@ -42,6 +42,9 @@ if (isset($_GET["title-search"])) {
                 <li class="navbar-item">
                     <a href="katzegorien" class="navbar-link <?php if($_GET["p"] == "katzegorien") echo "active";?>">Katzegorien</a>
                 </li>
+                <li class="navbar-item">
+                    <a href="neuePosts" class="navbar-link <?php if($_GET["p"] == "neuePosts") echo "active";?>">Neue Beiträge</a>
+                </li>
                 <?php if (isLoggedin()): ?>
                     <li class="navbar-item">
                         <a href="post" class="navbar-link <?php if($_GET["p"] == "post") echo "active";?>">Miau posten</a>
