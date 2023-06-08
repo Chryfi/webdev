@@ -243,7 +243,7 @@ function validateImage($imageFile) : ?string {
                     <div class="row margin-y-1">
                         <div class="col">
                             <p class="lead">Tags</p>
-                            <input type="text" class="input" id="tag-search-input" autocomplete="off" placeholder="Suche nach Tags oder erstelle neue">
+                            <input type="text" class="input" id="tag-search-input" autocomplete="off" inputmode="search" placeholder="Suche nach Tags oder erstelle neue">
                             <?php outputError("tags", $errors);?>
                             <div class="blog-info-container row align-items-center justify-content-space-between tag-list-container" id="tag-container">
                                 <i class="col-auto fa-solid fa-tags"></i>
