@@ -45,11 +45,9 @@ if (isset($_GET["title-search"])) {
                 <li class="navbar-item">
                     <a href="neuePosts" class="navbar-link <?php if($_GET["p"] == "neuePosts") echo "active";?>">Neue Beiträge</a>
                 </li>
-                <?php if (isLoggedin()): ?>
-                    <li class="navbar-item">
-                        <a href="post" class="navbar-link <?php if($_GET["p"] == "post") echo "active";?>">Miau posten</a>
-                    </li>
-                <?php endif; ?>
+                <li class="navbar-item">
+                    <a href="post" class="navbar-link <?php if($_GET["p"] == "post") echo "active";?>">Miau posten</a>
+                </li>
             </ul>
             <div class="navbar-col align-items-center navbar-row">
                 <div class="navbar-col">
