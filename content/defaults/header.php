@@ -96,6 +96,7 @@ if (isset($_GET["title-search"])) {
     </div>
 </nav>
 <script>
+    let lastWidth = 0;
     let navbarButton = document.getElementById("navbar-button");
     let navbarCollapse = document.getElementById("navbar-collapse");
     let navbarSearchIcon = document.getElementById("navbar-search-icon");
@@ -135,6 +136,8 @@ if (isset($_GET["title-search"])) {
     function handleNavbarResizing(e) {
         let width = window.innerWidth || document.documentElement.clientWidth;
 
+        if (lastWidth === width) return;
+
         if (width < 951) {
             navbarButton.classList.add("collapsed");
             navbarCollapse.classList.add("collapsed");
@@ -145,6 +148,8 @@ if (isset($_GET["title-search"])) {
             expandedState();
             navbarContainer.classList.add("collapsed");
         }
+
+        lastWidth = width;
     }
 
     function collapsedState() {
