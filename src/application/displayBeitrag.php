@@ -131,7 +131,7 @@ function getBeitragSpoilerHTML(BeitragRelations $beitrag, bool $showTags, ?strin
                 </div>
             </div>
         </div>
-        <div class="row margin-y-05 display-xl-none display-md-max-none">
+        <div class="row display-xl-none display-md-max-none">
             <div class="col-md-5">
                 <p>{$authorUsername} | {$date}</p>
             </div>
