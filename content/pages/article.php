@@ -18,9 +18,9 @@ $viewCount = 0;
 $likes = 0;
 $imageLink = "";
 $content = "";
-$userLikedThis = false;
 $isUserAuthor = false;
 $beitrag = null;
+$likeHtmlClasses = "";
 
 if (isset($_GET["id"]) && $_GET["id"] != "" && is_numeric($_GET["id"])) {
     $db = getKatzenBlogDatabase();
@@ -29,7 +29,11 @@ if (isset($_GET["id"]) && $_GET["id"] != "" && is_numeric($_GET["id"])) {
     $likedTable = new LikedTable($db);
 
     if (isLoggedin()) {
-        $userLikedThis = $likedTable->isLikePresent($_GET["id"], getSessionUserId());
+        if ($likedTable->isLikePresent($_GET["id"], getSessionUserId())) {
+            $likeHtmlClasses .= "active";
+        }
+    } else {
+        $likeHtmlClasses .= "mute-cursor-effects";
     }
 
     if ($beitrag = $beitragTable->getBeitragRelations($_GET["id"])) {
@@ -89,8 +93,8 @@ if (isset($_GET["id"]) && $_GET["id"] != "" && is_numeric($_GET["id"])) {
                             <div class="col-md-5">
                                 <div class="row stats-row">
                                     <div class="col-auto stats-container">
-                                        <p id="like-counter" class="like-counter <?php if ($userLikedThis) echo "active"; ?>"><?php echo $likes;?></p>
-                                        <i class="fa-solid fa-heart like-button <?php if ($userLikedThis) echo "active"; ?>" id="like-button"></i>
+                                        <p id="like-counter" class="like-counter <?php echo $likeHtmlClasses; ?>"><?php echo $likes;?></p>
+                                        <i class="fa-solid fa-heart like-button <?php echo $likeHtmlClasses; ?>" id="like-button"></i>
                                     </div>
                                     <div class="col-auto stats-container">
                                         <p><?php echo $viewCount;?></p><i class="fa-regular fa-eye"></i>
@@ -137,7 +141,8 @@ if (isset($_GET["id"]) && $_GET["id"] != "" && is_numeric($_GET["id"])) {
     let likeButtonElement = document.getElementById("like-button");
     let likeCounterElement = document.getElementById("like-counter");
 
-    if (likeButtonElement != null && likeCounterElement != null) {
+    if (likeButtonElement != null && likeCounterElement != null
+        && !likeButtonElement.classList.contains("mute-cursor-effects") && !likeCounterElement.classList.contains("mute-cursor-effects")) {
         /**
          * When clicking the like button, the hover effect for removing the like should
          * only appear after leaving and re-entering the like button. Similarly, if the user removed the like,
