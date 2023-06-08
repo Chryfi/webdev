@@ -137,7 +137,7 @@ if (isset($_GET["title-search"])) {
     function handleNavbarResizing(e) {
         let width = window.innerWidth || document.documentElement.clientWidth;
 
-        if (width < 851) {
+        if (width < 951) {
             navbarButton.classList.add("collapsed");
             navbarCollapse.classList.add("collapsed");
             collapsedState();
