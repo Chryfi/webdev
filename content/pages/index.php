@@ -9,7 +9,7 @@ $forYouBeitragHTML = '';
 $db = getKatzenBlogDatabase();
 $likedTable = new LikedTable($db);
 $beitragTable = new BeitragTable($db);
-$ids = $likedTable->orderByLikesDesc(4, 0);
+$ids = $likedTable->orderByLikesDesc(5, 0);
 
 if ($ids) {
     foreach ($ids as $id) {
@@ -22,7 +22,7 @@ if ($ids) {
 }
 
 if ($forYouBeitragHTML == "") {
-    $forYouBeitragHTML = '<p class="lead">Ein Fehler ist aufgetreten beim Sammeln der Daten.</p>';
+    $forYouBeitragHTML = '<p class="lead text-center">Ein Fehler ist aufgetreten beim Sammeln der Daten.</p>';
 }
 
 $db->disconnect();
