@@ -789,14 +789,14 @@ NAVBAR
     position: fixed;
     top: 0;
     z-index: 1000;
-    backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px) saturate(50%);
     background-color: hsla(207, 15%, 12%, 1);
-    box-shadow: 0px 2px 15px rgb(0, 0, 0);
+    box-shadow: 0px 5px 15px rgb(0, 0, 0);
     transition: background-color 1s, backdrop-filter 1.25s;
 }
 
 .navbar-container.collapsed {
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(20px) saturate(180%);
     background-color: hsla(207, 15%, 12%, 0.8);
     transition: background-color 0.25s;
 }
