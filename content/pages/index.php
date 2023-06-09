@@ -30,7 +30,7 @@ $db->disconnect();
 ?>
 
 <div class="page-wrapper">
-    <header>
+    <header class="container-sm">
         <div class="header-text">
             <h1>For you page</h1>
             <p class="lead">Dinge die dich interessieren könnten.</p>

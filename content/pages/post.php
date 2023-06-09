@@ -210,7 +210,7 @@ function validateImage($imageFile) : ?string {
 ?>
 
 <div class="page-wrapper">
-    <header>
+    <header class="container-sm">
         <div class="header-text">
             <h1>Blog Beitrag</h1>
             <p class="lead">Teile der Katzenwelt deine Gedanken mit!</p>

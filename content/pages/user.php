@@ -6,7 +6,7 @@ $user = getLoggedInUser();
 ?>
 
 <div class="page-wrapper">
-    <header>
+    <header class="container-sm">
         <div class="header-text">
             <?php if (isLoggedin()): ?>
                 <h1>Willkommen <?php echo getSessionUsername(); ?></h1>

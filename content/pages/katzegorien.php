@@ -4,6 +4,7 @@ require_once (BASE_PATH."/src/datalayer/tables/beitrag.php");
 require_once (BASE_PATH."/src/datalayer/tables/likedTable.php");
 require_once (BASE_PATH."/src/application/sessionFunctions.php");
 require_once (BASE_PATH."/src/utils/tags.php");
+require_once (BASE_PATH."/src/utils/paging.php");
 require_once (BASE_PATH."/src/application/displayBeitrag.php");
 
 /* quick access for output */
@@ -57,7 +58,7 @@ function getSearchCountHTML(int $totalCount, int $currentPage) : string {
 
 ?>
 <div class="page-wrapper">
-    <header>
+    <header class="container-sm">
         <div class="header-text">
             <h1>Suche</h1>
         </div>
@@ -75,7 +76,7 @@ function getSearchCountHTML(int $totalCount, int $currentPage) : string {
                         <div class="dropdown-body gap-y-1">
                             <input type="text" class="input" name="text-search" placeholder="Freitextsuche" value="<?php echo $searchText; ?>">
                             <div>
-                                <input type="text" class="input" id="tag-search-input" autocomplete="off" placeholder="Suche nach Tags">
+                                <input type="text" class="input" id="tag-search-input" autocomplete="off" inputmode="search" placeholder="Suche nach Tags">
                                 <div class="blog-info-container row align-items-center justify-content-space-between tag-list-container" id="tag-container">
                                     <i class="col-auto fa-solid fa-tags"></i>
                                     <div class="col">
@@ -108,7 +109,7 @@ function getSearchCountHTML(int $totalCount, int $currentPage) : string {
             if ($countSearchResults > 0) {
                 $getCopy = $_GET;
                 unset($getCopy["p"]);
-                echo getPagingHTML($countSearchResults, $limit, $limitPaging, $getCopy);
+                echo getPagingHTML($countSearchResults, $limit, $limitPaging, $getCopy, "katzegorien");
             }
         ?>
     </main>
