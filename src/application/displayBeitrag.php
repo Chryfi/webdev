@@ -4,48 +4,6 @@ require_once (BASE_PATH."/src/datalayer/tables/likedTable.php");
 require_once (BASE_PATH."/src/application/sessionFunctions.php");
 require_once (BASE_PATH."/src/utils/tags.php");
 
-function getPagingHTML(int $countSearchResults, int $limit, int $limitPaging, array $getParameter) : string {
-    unset($getParameter["page"]);
-    $currentPage = isset($_GET["page"]) && $_GET["page"] > 0 ? $_GET["page"] : 1;
-    $maxCountPages = ceil($countSearchResults / $limit);
-    $minPage = min(max($currentPage - floor($limitPaging / 2) + 1, 1), $maxCountPages);
-    $maxPage = $minPage + $limitPaging - 1;
-
-    if ($maxPage > $maxCountPages) {
-        $minPage = max($minPage - ($maxPage - $maxCountPages), 1);
-    }
-
-    $maxPage = min($maxPage, $maxCountPages);
-
-    $pagingHTML = '<div class="paging-row">';
-    $i = $minPage;
-
-    if ($currentPage > 1) {
-        $pagingHTML .= '<a href="katzegorien?page='.($currentPage - 1).'&'.http_build_query($getParameter).'">Zurück</a>';
-    }
-
-    $pagingHTML .= '<div class="page-links-row">';
-    while ($i <= $maxPage) {
-        if ($currentPage == $i) {
-            $pagingHTML .= '<a class="active">'.$i.'</a>';
-        } else {
-            $pagingHTML .= '<a href="katzegorien?page='.$i.'&'.http_build_query($getParameter).'">'.$i.'</a>';
-        }
-
-        $i++;
-    }
-    $pagingHTML .= '</div>';
-
-    if ($currentPage < $maxPage) {
-        $pagingHTML .= '<a href="katzegorien?page='.($currentPage + 1).'&'.http_build_query($getParameter).'">Weiter</a>';
-    }
-
-    $pagingHTML .= '</div>';
-
-    return $pagingHTML;
-}
-
-
 function getBeitragSpoilerHTML(BeitragRelations $beitrag, bool $showTags, ?string $getParameter) : string {
     $db = getKatzenBlogDatabase();
     $userTable = new UserTable($db);
