@@ -22,7 +22,7 @@ if ($ids) {
 }
 
 if ($forYouBeitragHTML == "") {
-    $forYouBeitragHTML = '<p class="lead text-center">Ein Fehler ist aufgetreten beim Sammeln der Daten.</p>';
+    $forYouBeitragHTML = '<p class="lead text-center">Keine Daten.</p>';
 }
 
 $db->disconnect();
