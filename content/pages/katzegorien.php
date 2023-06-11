@@ -8,13 +8,15 @@ require_once (BASE_PATH."/src/utils/paging.php");
 require_once (BASE_PATH."/src/utils/displayBeitrag.php");
 
 /* quick access for output */
-$counterHtml = "";
 $searchText = $_GET["text-search"] ?? "";
 $searchTitle = $_GET["title-search"] ?? "";
 $tags = $_GET["tags"] ?? [];
-$beitragResults = array();
-$currentSearchPage = isset($_GET["page"]) && $_GET["page"] > 0 ? $_GET["page"] : 1;
+$counterHtml = "";
+$pagingHTML = "";
+$beitragListHTML = "";
+
 $countSearchResults = 0;
+$currentSearchPage = isset($_GET["page"]) && $_GET["page"] > 0 ? $_GET["page"] : 1;
 $limit = 5;
 $limitPaging = 10;
 $getParameter = null;
@@ -44,6 +46,14 @@ if ($searchText != "" || $searchTitle != "" || count($tags) > 0) {
     $getCopy = $_GET;
     unset($getCopy["p"]);
     $getParameter = http_build_query($getCopy);
+
+    if ($countSearchResults > 0) {
+        $pagingHTML = getPagingHTML($countSearchResults, $limit, $limitPaging, $getCopy, "katzegorien");
+    }
+
+    foreach ($beitragResults as $beitrag) {
+        $beitragListHTML .= getBeitragSpoilerHTML($beitrag, true, $getParameter);
+    }
 
     $db->disconnect();
 }
@@ -99,19 +109,10 @@ function getSearchCountHTML(int $totalCount, int $currentPage) : string {
         <div class="search-katzegorien-result blog-spoiler-list">
             <?php
                 echo $counterHtml;
-
-                foreach ($beitragResults as $beitrag) {
-                    echo getBeitragSpoilerHTML($beitrag, true, $getParameter);
-                }
+                echo $beitragListHTML;
             ?>
         </div>
-        <?php
-            if ($countSearchResults > 0) {
-                $getCopy = $_GET;
-                unset($getCopy["p"]);
-                echo getPagingHTML($countSearchResults, $limit, $limitPaging, $getCopy, "katzegorien");
-            }
-        ?>
+        <?php echo $pagingHTML; ?>
     </main>
 </div>
 <script>
