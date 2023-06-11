@@ -293,67 +293,70 @@ function validateImage($imageFile) : ?string {
     let tagList = document.getElementById("tag-list");
     let tagSearchInput = document.getElementById("tag-search-input");
 
-    let tagSearchHandler = new TagSearch(tagSearchInput, tagList);
+    /* when these are null, the user probably is not logged in and cant post an article */
+    if (imagePreview != null && tagSearchInput != null) {
+        let tagSearchHandler = new TagSearch(tagSearchInput, tagList);
 
-    let uploadElement = new UploadElement(["image/jpeg", "image/png"]);
-    /* upload the data as base64 URI so we can persist it and render it easily */
-    uploadElement.fileInputCache = document.getElementById("image-data-cache");
-    uploadElement.onLoad = onUploadLoad;
+        let uploadElement = new UploadElement(["image/jpeg", "image/png"]);
+        /* upload the data as base64 URI so we can persist it and render it easily */
+        uploadElement.fileInputCache = document.getElementById("image-data-cache");
+        uploadElement.onLoad = onUploadLoad;
 
-    document.getElementById("image-name-cache").insertAdjacentElement('afterend', uploadElement.getElement());
-
-
-    /* when PHP outputs stuff into the input areas, we need to adjust the styles and do some extra work */
-    document.addEventListener("DOMContentLoaded", e => {
-        let spoilerTextarea = document.getElementById("spoiler-textarea");
-        let contentTextarea = document.getElementById("content-textarea");
-        let imagePreview = document.getElementById("image-preview");
-        let imageNameCache = document.getElementById("image-name-cache");
-
-        spoilerTextarea.parentNode.dataset.replicatedValue = spoilerTextarea.value;
-        contentTextarea.parentNode.dataset.replicatedValue = contentTextarea.value;
-
-        /* when PHP loaded the image URI from the last POST request */
-        if (imagePreview.getAttribute("src") !== "") {
-            imagePreview.parentElement.style.height = "";
-            imagePreview.parentElement.style.marginTop = "1em";
-            uploadElement.uploadURI(imagePreview.src, new File([], imageNameCache.value));
-        }
-    });
+        document.getElementById("image-name-cache").insertAdjacentElement('afterend', uploadElement.getElement());
 
 
-    /**
-     * when uploading an image -> validate image aspect ratio.
-     * @param {UploadElement} element
-     */
-    function onUploadLoad(element) {
-        return new Promise(resolve => {
-            /* read image to check aspect ratio */
-            const img = new Image();
-            img.onload = () => {
-                const width = img.naturalWidth;
-                const height = img.naturalHeight;
-                const heightTest = (height / width) * 1920;
+        /* when PHP outputs stuff into the input areas, we need to adjust the styles and do some extra work */
+        document.addEventListener("DOMContentLoaded", e => {
+            let spoilerTextarea = document.getElementById("spoiler-textarea");
+            let contentTextarea = document.getElementById("content-textarea");
+            let imagePreview = document.getElementById("image-preview");
+            let imageNameCache = document.getElementById("image-name-cache");
 
-                /* account for rounding error */
-                if (heightTest <= 1079 || heightTest >= 1081) {
-                    element.displayError("Seitenverhältnisse stimmen nicht. Es ist nur 16:9 erlaubt.");
+            spoilerTextarea.parentNode.dataset.replicatedValue = spoilerTextarea.value;
+            contentTextarea.parentNode.dataset.replicatedValue = contentTextarea.value;
 
-                    resolve(false);
-
-                    return;
-                }
-
-                imagePreview.src = element.fileResult;
+            /* when PHP loaded the image URI from the last POST request */
+            if (imagePreview.getAttribute("src") !== "") {
                 imagePreview.parentElement.style.height = "";
                 imagePreview.parentElement.style.marginTop = "1em";
-
-                document.getElementById("image-name-cache").value = element.file.name;
-
-                resolve(true);
+                uploadElement.uploadURI(imagePreview.src, new File([], imageNameCache.value));
             }
-
-            img.src = element.fileResult;
         });
+
+
+        /**
+         * when uploading an image -> validate image aspect ratio.
+         * @param {UploadElement} element
+         */
+        function onUploadLoad(element) {
+            return new Promise(resolve => {
+                /* read image to check aspect ratio */
+                const img = new Image();
+                img.onload = () => {
+                    const width = img.naturalWidth;
+                    const height = img.naturalHeight;
+                    const heightTest = (height / width) * 1920;
+
+                    /* account for rounding error */
+                    if (heightTest <= 1079 || heightTest >= 1081) {
+                        element.displayError("Seitenverhältnisse stimmen nicht. Es ist nur 16:9 erlaubt.");
+
+                        resolve(false);
+
+                        return;
+                    }
+
+                    imagePreview.src = element.fileResult;
+                    imagePreview.parentElement.style.height = "";
+                    imagePreview.parentElement.style.marginTop = "1em";
+
+                    document.getElementById("image-name-cache").value = element.file.name;
+
+                    resolve(true);
+                }
+
+                img.src = element.fileResult;
+            });
+        }
     }
 </script>
