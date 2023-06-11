@@ -1,5 +1,5 @@
 <?php
-require_once (BASE_PATH."/src/application/sessionFunctions.php");
+require_once (BASE_PATH."/src/utils/sessionFunctions.php");
 require_once (BASE_PATH."/src/application/userForm.php");
 require_once (BASE_PATH."/src/datalayer/tables/beitrag.php");
 require_once (BASE_PATH."/src/datalayer/tables/kategorie.php");

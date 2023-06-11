@@ -4,7 +4,7 @@ require_once (BASE_PATH."/src/datalayer/tables/user.php");
 require_once (BASE_PATH."/src/datalayer/tables/kategorie.php");
 require_once (BASE_PATH."/src/datalayer/tables/likedTable.php");
 require_once (BASE_PATH."/src/utils/redirect.php");
-require_once (BASE_PATH."/src/application/sessionFunctions.php");
+require_once (BASE_PATH."/src/utils/sessionFunctions.php");
 require_once (BASE_PATH."/src/utils/tags.php");
 
 /* quick access for output */

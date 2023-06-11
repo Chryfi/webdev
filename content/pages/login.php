@@ -2,7 +2,7 @@
 
 require_once(BASE_PATH . "/src/datalayer/tables/user.php");
 require_once(BASE_PATH . "/src/application/userForm.php");
-require_once(BASE_PATH . "/src/application/sessionFunctions.php");
+require_once(BASE_PATH . "/src/utils/sessionFunctions.php");
 require_once(BASE_PATH . "/src/utils/redirect.php");
 
 /* quick access for output */
