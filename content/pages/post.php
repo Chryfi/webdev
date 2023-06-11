@@ -335,7 +335,8 @@ function validateImage($imageFile) : ?string {
                 const height = img.naturalHeight;
                 const heightTest = (height / width) * 1920;
 
-                if (Math.round(heightTest) !== 1080) {
+                /* account for rounding error */
+                if (heightTest <= 1079 || heightTest >= 1081) {
                     element.displayError("Seitenverhältnisse stimmen nicht. Es ist nur 16:9 erlaubt.");
 
                     resolve(false);
