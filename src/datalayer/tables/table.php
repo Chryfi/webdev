@@ -1,7 +1,7 @@
 <?php
 require_once(BASE_PATH . "/src/datalayer/database.php");
 
-/* I miss my nice enums from java :( */
+/* I miss my nice enums from java :*( */
 abstract class DatabaseOperator
 {
     const AND = "AND";

@@ -1,7 +1,7 @@
 <?php
 require_once ("requestParser.php");
 
-/* to avoid endless and annoying relative paths */
+/* to avoid endless and annoying relative paths - also stupid backslashes from windows >:( */
 define('BASE_PATH', str_replace(["/index.php", "\index.php", "\\"], ["", "", "/"], __FILE__));
 
 $_requestParser = new RequestParser($_GET["p"]);
@@ -10,7 +10,7 @@ $_requestParser->parse();
 session_start();
 
 /* request to php source files should be let through */
-if ($_requestParser->getRequestPart(0) == "src") {
+if ($_requestParser->getRequestPart(0) == "src" && $_requestParser->getRequestPart(1) == "application") {
     include($_requestParser->getRequest());
     return;
 }
