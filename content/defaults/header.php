@@ -75,7 +75,7 @@ if (isset($_GET["title-search"])) {
                     </div>
                 <?php else: ?>
                     <div class="navbar-col navbar-row">
-                        <button class="navbar-item-sm button primary-button button-accent2 login-button" onclick='window.location.href="/user";'>
+                        <button class="navbar-item-sm button primary-button button-accent login-button" onclick='window.location.href="/user";'>
                             <div class="row align-items-center login-button-row">
                                 <i class="col-auto fa-solid fa-user"></i>
                                 <p class="col-auto"><?php echo getSessionUsername(); ?></p>

@@ -1131,7 +1131,7 @@ BLOG SPOILER
 }
 
 .blog-spoiler-container:hover .read-further-text {
-    border-bottom: 2px solid white;
+    border-bottom: 2px solid var(--accent-color1-hover);
 }
 
 @media screen AND (max-width: 767px) {
