@@ -1,6 +1,6 @@
 <?php
 require_once(BASE_PATH . "/src/datalayer/tables/user.php");
-require_once(BASE_PATH . "/src/application/userForm.php");
+require_once(BASE_PATH . "/src/utils/userForm.php");
 
 /* quick access for output */
 $username = $_POST["username"] ?? "";
