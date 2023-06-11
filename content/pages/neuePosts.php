@@ -1,7 +1,7 @@
 <?php
 require_once (BASE_PATH."/src/datalayer/tables/likedTable.php");
 require_once (BASE_PATH."/src/datalayer/tables/beitrag.php");
-require_once (BASE_PATH."/src/application/displayBeitrag.php");
+require_once (BASE_PATH."/src/utils/displayBeitrag.php");
 require_once (BASE_PATH."/src/utils/paging.php");
 
 /* quick access for output */

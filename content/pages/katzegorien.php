@@ -5,7 +5,7 @@ require_once (BASE_PATH."/src/datalayer/tables/likedTable.php");
 require_once (BASE_PATH."/src/application/sessionFunctions.php");
 require_once (BASE_PATH."/src/utils/tags.php");
 require_once (BASE_PATH."/src/utils/paging.php");
-require_once (BASE_PATH."/src/application/displayBeitrag.php");
+require_once (BASE_PATH."/src/utils/displayBeitrag.php");
 
 /* quick access for output */
 $counterHtml = "";
