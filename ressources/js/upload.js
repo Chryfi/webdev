@@ -195,6 +195,7 @@ class UploadElement {
         }
 
         reader.onerror = () => {
+            this.#element.classList.remove("loading");
             this.displayError("Fehler beim lesen der Datei.");
         }
 
