@@ -59,7 +59,7 @@ if ($searchText != "" || $searchTitle != "" || count($tags) > 0) {
 }
 
 function getSearchCountHTML(int $totalCount, int $currentPage) : string {
-    $ergebnisString = $totalCount > 1 ? " Ergebnisse" : " Ergebnis";
+    $ergebnisString = $totalCount > 1 || $totalCount == 0 ? " Ergebnisse" : " Ergebnis";
     $pageString = $currentPage > 1 ? "Seite ".$currentPage." " : "";
     $insgesamtString = $currentPage > 1 ? "von insgesamt " : "Insgesamt ";
 
