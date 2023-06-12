@@ -4,9 +4,9 @@
  * @param string $location
  * @return void
  */
-function redirectJS(string $location) {
+function redirectJSReplace(string $location) {
     echo '<script>
-        window.location.href = \''.$location.'\';
+        window.location.replace(\''.$location.'\');
     </script>';
 }
 

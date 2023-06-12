@@ -91,7 +91,7 @@ if (isset($_POST["title"]) && isLoggedin())
             $beitrag = editBeitrag($oldBeitrag, $title, $spoiler, $tags, $content, $imageData);
         }
 
-        if ($beitrag) redirectJS("article?id=".$beitrag->getId());
+        if ($beitrag) redirectJSReplace("article?id=".$beitrag->getId());
     }
 }
 
