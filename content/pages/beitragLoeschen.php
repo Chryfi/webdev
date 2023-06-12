@@ -70,7 +70,7 @@ if (isset($_GET["id"]) && $_GET["id"] != "" && is_numeric($_GET["id"]) && isLogg
         formElement.addEventListener("submit", e => {
             e.preventDefault();
 
-            let formData = new FormData(e.target);
+            let formData = new FormData(formElement);
 
             fetch("/src/application/deleteBeitrag.php", {
                 method: "POST",
