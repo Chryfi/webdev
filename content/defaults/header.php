@@ -26,14 +26,16 @@ if (isset($_GET["title-search"])) {
 }
 ?>
 <nav class="navbar-container" id="navbar-container">
-    <div class="navbar-mobile-row">
-        <i class="cursor-pointer navbar-icon col-auto fa-solid fa-magnifying-glass" id="navbar-search-icon"></i>
-        <button id="navbar-button" class="navbar-dropdown-button dropdown-button col-auto" data-dropdown-target="navbar-collapse">
-            <i class="navbar-icon nav-hamburger-icon col-auto fa-solid fa-bars" id="navbar-dropdown-icon"></i>
+    <div class="navbar navbar-mobile">
+        <button id="navbar-search-button" class="display-flex align-items-center bg-transparent col-auto">
+            <i class="col-auto fa-solid fa-magnifying-glass"></i>
+        </button>
+        <button id="navbar-button" class="display-flex align-items-center bg-transparent dropdown-button col-auto" data-dropdown-target="navbar-collapse">
+            <i class="nav-hamburger-icon col-auto fa-solid fa-bars" id="navbar-dropdown-icon"></i>
         </button>
     </div>
     <div class="dropdown-collapse collapsed" id="navbar-collapse">
-        <div class="navbar row">
+        <div class="navbar navbar-body row">
             <ul class="navbar-col navbar-row navbar-list">
                 <i class="col-auto fa-solid fa-cat"></i>
                 <li class="navbar-item">
@@ -97,15 +99,16 @@ if (isset($_GET["title-search"])) {
 </nav>
 <script>
     let lastWidth = 0;
-    let navbarButton = document.getElementById("navbar-button");
-    let navbarCollapse = document.getElementById("navbar-collapse");
-    let navbarSearchIcon = document.getElementById("navbar-search-icon");
-    let navbarContainer = document.getElementById("navbar-container");
-    let navbarSearchInput = document.getElementById("navbar-search-title");
-    let navbarSearchPageCache = document.getElementById("navbar-search-cache-page");
+    const navbarButton = document.getElementById("navbar-button");
+    const navbarCollapse = document.getElementById("navbar-collapse");
+    const navbarSearchButton = document.getElementById("navbar-search-button");
+    const navbarContainer = document.getElementById("navbar-container");
+    const navbarSearchInput = document.getElementById("navbar-search-title");
+    const navbarSearchPageCache = document.getElementById("navbar-search-cache-page");
+    const dropdownIcon = document.getElementById("navbar-dropdown-icon");
 
-    let originalSearchValue = navbarSearchInput.value;
-    let originalSearchPage = navbarSearchPageCache != null ? navbarSearchPageCache.value : 1;
+    const originalSearchValue = navbarSearchInput.value;
+    const originalSearchPage = navbarSearchPageCache != null ? navbarSearchPageCache.value : 1;
 
     navbarSearchInput.addEventListener("input", e => {
         if (navbarSearchPageCache == null) return;
@@ -117,15 +120,14 @@ if (isset($_GET["title-search"])) {
         }
     });
 
-    navbarSearchIcon.addEventListener("click", e => {
+    navbarSearchButton.addEventListener("click", e => {
        window.location.href = "/katzegorien";
     });
 
     window.addEventListener('resize', e => handleNavbarResizing(e));
     document.addEventListener("DOMContentLoaded", e => handleNavbarResizing(e));
 
-    let dropdownIcon = document.getElementById("navbar-dropdown-icon");
-    dropdownIcon.addEventListener("click", e => {
+    navbarButton.addEventListener("click", e => {
         if (dropdownIcon.classList.contains("fa-x")) {
             collapsedState();
         } else if (dropdownIcon.classList.contains("fa-bars")) {

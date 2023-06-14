@@ -2,11 +2,6 @@ html {
     --bg-color-0: 18, 18, 18;
     --bg-color-1: 35, 35, 35;
     --bg-color-2: 55, 55, 55;
-    --color1: #1e3f4f;
-    --color2: #589579;
-    --color3: hsl(0, 45%, 22%);
-    --color4: #16C172;
-    --color5: #214f3d;
     --accent-color1: hsl(203, 20%, 30%);
     --accent-color1-hover: hsl(201, 20%, 40%);
     --accent-color1-active: hsl(202, 20%, 35%);
@@ -17,6 +12,7 @@ html {
     --accent-color-red-hover: hsl(0, 70%, 60%);
     --accent-color-red-active: hsl(0, 70%, 50%);
     --text-color: rgb(200, 200, 200);
+    --navbar-height: 55px;
 }
 
 body {
@@ -163,6 +159,9 @@ GENERAL PURPOSE
     margin-left: 0.35em;
 }
 
+.bg-transparent {
+    background-color: transparent;
+}
 
 .icon {
     width: 16px;
@@ -694,7 +693,7 @@ min-height: 100vh;
 */
 .page-wrapper {
     min-height: 100vh;
-    padding-top: 53px;
+    padding-top: var(--navbar-height);
     padding-bottom: 2em;
 }
 
@@ -756,27 +755,14 @@ NAVBAR
 .navbar {
     display: flex;
     width: 100%;
+    height: var(--navbar-height);
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
-    color: white;
+    padding: 0px 20px;
 }
 
-.navbar-mobile-row {
-    height: 50px;
-    width: 100%;
+.navbar-mobile {
     background-color: transparent;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.navbar-dropdown-button {
-    background-color: transparent;
-}
-
-.navbar-icon {
-    padding: 0em 1em;
 }
 
 .nav-hamburger-icon {
@@ -841,13 +827,13 @@ NAVBAR
 }
 
 @media screen AND (min-width: 951px) {
-    .navbar-mobile-row {
+    .navbar-mobile {
         display: none;
     }
 }
 
 @media screen AND (max-width: 950px) {
-    .navbar {
+    .navbar-body {
         height: 100vh;
     }
 
