@@ -385,11 +385,7 @@ class BeitragTable extends Table {
         $tagSearchQuery = "";
         for ($i = 0; $i < count($tags); $i++) {
             if ($tagSearchQuery != "") {
-                if ($tagsOP == DatabaseOperator::AND) {
-                    $tagSearchQuery .= " AND";
-                } else if ($tagsOP == DatabaseOperator::OR) {
-                    $tagSearchQuery .= " OR";
-                }
+                $tagSearchQuery .= " OR";
             }
 
             $tagSearchQuery .= " kategorie.bezeichnung = :bezeichnung$i";
@@ -416,15 +412,15 @@ class BeitragTable extends Table {
 
         $searchQuery = "SELECT $selectionThing FROM beitrag WHERE $whereStmt $limitQuery";
 
-        //TODO tag suche funktioniert nicht wenn man die tags mit AND verbindet. z.B. HAVING bezeichnung = "test" AND bezeichnung = "test2" funktioniert garnicht.
-        //HAVING mit nur einem tag funktioniert auch nicht richtig.
         if ($tagSearchQuery != "") {
             $whereStmt = $whereStmt != "" ? $whereStmt." AND" : "";
+            $havingStmt = $tagsOP == DatabaseOperator::AND ? "HAVING COUNT(DISTINCT kategorie.bezeichnung) = ".count($tags) : "";
+
             if ($count) {
                 $searchQuery = "SELECT COUNT(*) FROM beitrag WHERE beitrag.id IN
-                                   (SELECT beitrag.id FROM beitrag, kategorie WHERE $whereStmt beitrag.id = kategorie.beitrag_id GROUP BY beitrag.id $limitQuery)";
+                                   (SELECT beitrag.id FROM beitrag, kategorie WHERE $whereStmt beitrag.id = kategorie.beitrag_id GROUP BY beitrag.id $havingStmt $limitQuery)";
             } else {
-                $searchQuery = "SELECT * FROM beitrag, kategorie WHERE $whereStmt beitrag.id = kategorie.beitrag_id GROUP BY beitrag.id $limitQuery";
+                $searchQuery = "SELECT * FROM beitrag, kategorie WHERE $whereStmt beitrag.id = kategorie.beitrag_id GROUP BY beitrag.id $havingStmt $limitQuery";
             }
         }
 
