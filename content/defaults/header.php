@@ -59,16 +59,16 @@ if (isset($_GET["title-search"])) {
                     </form>
                 </div>
                 <?php if (!isLoggedin()): ?>
-                    <div class="navbar-col navbar-row">
-                        <button class="navbar-item-sm button primary-button button-accent2 login-button" onclick='window.location.href="/login";'>
+                    <div class="navbar-col navbar-row row">
+                        <button class="col-sm-auto button primary-button button-accent2 login-button" onclick='window.location.href="/login";'>
                             <div class="row align-items-center login-button-row">
                                 <p class="col-auto">Login</p>
                                 <i class="col-auto fa-solid fa-right-to-bracket"></i>
                             </div>
                         </button>
                     </div>
-                    <div class="navbar-col navbar-row">
-                        <button class="navbar-item-sm button primary-button button-accent2 login-button" onclick='window.location.href="/registrieren";'>
+                    <div class="navbar-col navbar-row row">
+                        <button class="col-sm-auto button primary-button button-accent2 login-button" onclick='window.location.href="/registrieren";'>
                             <div class="row align-items-center login-button-row">
                                 <p class="col-auto">Registrieren</p>
                                 <i class="col-auto fa-solid fa-arrow-up-from-bracket"></i>
@@ -76,16 +76,16 @@ if (isset($_GET["title-search"])) {
                         </button>
                     </div>
                 <?php else: ?>
-                    <div class="navbar-col navbar-row">
-                        <button class="navbar-item-sm button primary-button button-accent login-button" onclick='window.location.href="/user";'>
+                    <div class="navbar-col navbar-row row">
+                        <button class="col-sm-auto button primary-button button-accent login-button" onclick='window.location.href="/user";'>
                             <div class="row align-items-center login-button-row">
                                 <i class="col-auto fa-solid fa-user"></i>
                                 <p class="col-auto"><?php echo getSessionUsername(); ?></p>
                             </div>
                         </button>
                     </div>
-                    <div class="navbar-col navbar-row">
-                        <button class="navbar-item-sm button primary-button button-remove login-button" onclick='window.location.href="/src/application/logout.php?redirect="+window.location.href;'>
+                    <div class="navbar-col navbar-row row">
+                        <button class="col-sm-auto button primary-button button-remove login-button" onclick='window.location.href="/src/application/logout.php?redirect="+window.location.href;'>
                             <div class="row align-items-center login-button-row">
                                 <p class="col-auto">Abmelden</p>
                                 <i class="col-auto fa-solid fa-right-from-bracket"></i>

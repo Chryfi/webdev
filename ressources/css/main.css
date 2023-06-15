@@ -857,12 +857,6 @@ NAVBAR
     }
 }
 
-@media screen AND (max-width: 575px) {
-    .navbar-item-sm {
-        width: 100%;
-    }
-}
-
 
 /*
 FOOTER
@@ -1102,7 +1096,8 @@ BLOG SPOILER
     color: rgb(0, 0, 0);
     background-image: linear-gradient(
       to top,
-      rgba(var(--bg-color-1), 1) 25%,
+      rgba(var(--bg-color-1), 1) 30%,
+      rgba(var(--bg-color-1), 0.65) 65%,
       rgba(var(--bg-color-1), 0) 100%
     );
     padding-left: 12px;
