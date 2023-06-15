@@ -124,10 +124,8 @@ if (isset($_GET["id"]) && $_GET["id"] != "" && is_numeric($_GET["id"])) {
                 <div class="row justify-content-center blog-content-container">
                     <div class="col-md-8">
                         <?php echo $content;?>
-                        <div class="row blog-info-container">
-                            <div class="col-md-5">
-                                <p><i class="col-auto fa-solid fa-user"></i> <?php echo $authorUsername;?> | <?php echo $creationDate;?></p>
-                            </div>
+                        <div class="blog-info-container">
+                            <p><i class="col-auto fa-solid fa-user"></i> <?php echo $authorUsername;?> | <?php echo $creationDate;?></p>
                         </div>
                     </div>
                 </div>
