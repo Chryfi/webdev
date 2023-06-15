@@ -96,6 +96,8 @@ button, input, textarea {
 
 button {
     cursor: pointer;
+    padding: 0;
+    background-color: transparent;
 }
 
 button, select {
@@ -141,6 +143,10 @@ GENERAL PURPOSE
     margin-top: 2em;
 }
 
+.default-box-shadow {
+    box-shadow: 0px 0px 20px black;
+}
+
 .hr {
     margin-top: 1em;
     margin-bottom: 1em;
@@ -157,6 +163,10 @@ GENERAL PURPOSE
 
 .icon-text-right {
     margin-left: 0.35em;
+}
+
+.icon-text-left {
+    margin-right: 0.35em;
 }
 
 .bg-transparent {
@@ -231,6 +241,10 @@ BUTTON STUFF
 
 .button-accent:hover {
     background-color: var(--accent-color1-hover);
+}
+
+.button-accent-hover:hover {
+    background-color: var(--accent-color1);
 }
 
 .button-accent:active {
@@ -712,7 +726,7 @@ DROPDOWN
     width: 100%;
 }
 
-.dropdown-button-classic::after {
+.dropdown-button-arrow::after {
     content: "";
     background-image: url("/ressources/icons/caret-down-solid.svg");
     background-repeat: no-repeat;
@@ -724,7 +738,7 @@ DROPDOWN
     transition: transform 0.2s ease-out;
 }
 
-.dropdown-button-classic:not(.collapsed)::after {
+.dropdown-button-arrow:not(.collapsed)::after {
     transform: rotate(180deg);
 }
 
@@ -776,6 +790,8 @@ NAVBAR
     top: 0;
     z-index: 1000;
     backdrop-filter: blur(2px) saturate(50%);
+    /* for apple support... so much about standardisation >:( */
+    -webkit-backdrop-filter: blur(2px) saturate(50%);
     background-color: hsla(207, 15%, 12%, 1);
     box-shadow: 0px 5px 15px rgb(0, 0, 0);
     transition: background-color 1s, backdrop-filter 1.25s;
@@ -807,12 +823,48 @@ NAVBAR
     color: #ffffff;
 }
 
-.login-button, .login-button * {
+.white-text, .white-text * {
     color: white;
 }
 
-.login-button-row {
+.user-icon {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-dropdown-button {
+    width: auto;
+    background-color: transparent;
+    display: flex;
     column-gap: 0.5em;
+    align-items: center;
+}
+
+.user-info-container {
+    display: inline-block;
+    position: relative;
+}
+
+.user-dopdown-container {
+    position: absolute;
+    margin-top: 8px;
+    width: 200px;
+    left: auto;
+    right: 0;
+}
+
+.user-nav-box {
+    background-color: rgb(var(--bg-color-1));
+    border-radius: 8px;
+    padding: 20px 12px;
+}
+
+.user-nav-row {
+    row-gap: 5px;
 }
 
 .navbar-row {
@@ -826,15 +878,24 @@ NAVBAR
     width: auto;
 }
 
-@media screen AND (min-width: 951px) {
-    .navbar-mobile {
+/* avoid issues with decimal pixels. When we use min-width: 921px, everything between 920 and 921px would be weird */
+@media NOT screen AND (max-width: 920px) {
+    .navbar-mobile, .navbar-username, .navbar-mobile-element {
         display: none;
     }
 }
 
-@media screen AND (max-width: 950px) {
+@media screen AND (max-width: 920px) {
+    .user-dopdown-container {
+        display: none;
+    }
+
     .navbar-body {
-        height: 100vh;
+        min-height: 100vh;
+    }
+
+    .user-dropdown-button::after {
+        display: none;
     }
 
     .navbar-col {

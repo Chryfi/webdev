@@ -75,7 +75,7 @@ if (isset($_GET["id"]) && $_GET["id"] != "" && is_numeric($_GET["id"])) {
                                     </button>
                                 </div>
                                 <div class="col-auto margin-x-1">
-                                    <button class="button primary-button button-remove login-button"
+                                    <button class="button primary-button button-remove white-text"
                                             onclick='window.location.href="/beitragLoeschen?id=<?php echo $id; ?>"'>
                                         <i class="fa-solid fa-trash"></i>
                                     </button>

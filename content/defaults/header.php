@@ -59,35 +59,60 @@ if (isset($_GET["title-search"])) {
                     </form>
                 </div>
                 <?php if (!isLoggedin()): ?>
-                    <div class="navbar-col navbar-row row">
-                        <button class="col-sm-auto button primary-button button-accent2 login-button" onclick='window.location.href="/login";'>
-                            <div class="row align-items-center login-button-row">
-                                <p class="col-auto">Login</p>
+                    <div class="navbar-col navbar-item row">
+                        <button class="col-sm-auto button primary-button button-accent2 white-text" onclick='window.location.href="/login";'>
+                            <div class="row align-items-center">
+                                <p class="col-auto icon-text-left">Login</p>
                                 <i class="col-auto fa-solid fa-right-to-bracket"></i>
                             </div>
                         </button>
                     </div>
-                    <div class="navbar-col navbar-row row">
-                        <button class="col-sm-auto button primary-button button-accent2 login-button" onclick='window.location.href="/registrieren";'>
-                            <div class="row align-items-center login-button-row">
-                                <p class="col-auto">Registrieren</p>
+                    <div class="navbar-col navbar-item row">
+                        <button class="col-sm-auto button primary-button button-accent2 white-text" onclick='window.location.href="/registrieren";'>
+                            <div class="row align-items-center">
+                                <p class="col-auto icon-text-left">Registrieren</p>
                                 <i class="col-auto fa-solid fa-arrow-up-from-bracket"></i>
                             </div>
                         </button>
                     </div>
                 <?php else: ?>
-                    <div class="navbar-col navbar-row row">
-                        <button class="col-sm-auto button primary-button button-accent login-button" onclick='window.location.href="/user";'>
-                            <div class="row align-items-center login-button-row">
-                                <i class="col-auto fa-solid fa-user"></i>
-                                <p class="col-auto"><?php echo getSessionUsername(); ?></p>
+                    <div class="navbar-col navbar-item row">
+                        <div class="user-info-container col-sm-auto">
+                            <button id="user-button" class="dropdown-button user-dropdown-button dropdown-button-arrow collapsed" data-dropdown-target="userdropdown">
+                                <div class="button button-accent user-icon">
+                                    <i class="col-auto fa-solid fa-user"></i>
+                                </div>
+                                <a class="col-auto navbar-username"><?php echo getSessionUsername(); ?></a>
+                            </button>
+                            <div id="userdropdown" class="default-box-shadow user-dopdown-container dropdown-collapse collapsed">
+                                <div class="user-nav-box">
+                                    <ul class="user-nav-row row">
+                                        <li>
+                                            <p class="col-auto">Angemeldet als <?php echo getSessionUsername(); ?></p>
+                                        </li>
+                                        <hr>
+                                        <li>
+                                            <a href="/user" class="navbar-link <?php if(empty($_GET["p"]) || $_GET["p"] == "user") echo "active";?>">Dein Account</a>
+                                        </li>
+                                        <hr>
+                                        <li class="row justify-content-center">
+                                            <button class="col-auto button primary-button button-remove white-text"
+                                                    onclick='window.location.href="/src/application/logout.php?redirect="+window.location.href;'>
+                                                <div class="row align-items-center">
+                                                    <p class="col-auto icon-text-left">Abmelden</p>
+                                                    <i class="col-auto fa-solid fa-right-from-bracket"></i>
+                                                </div>
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
-                        </button>
+                        </div>
                     </div>
-                    <div class="navbar-col navbar-row row">
-                        <button class="col-sm-auto button primary-button button-remove login-button" onclick='window.location.href="/src/application/logout.php?redirect="+window.location.href;'>
-                            <div class="row align-items-center login-button-row">
-                                <p class="col-auto">Abmelden</p>
+                    <div class="navbar-mobile-element navbar-col navbar-item row">
+                        <button class="col-sm-auto button primary-button button-remove white-text" onclick='window.location.href="/src/application/logout.php?redirect="+window.location.href;'>
+                            <div class="row align-items-center">
+                                <p class="col-auto icon-text-left">Abmelden</p>
                                 <i class="col-auto fa-solid fa-right-from-bracket"></i>
                             </div>
                         </button>
@@ -99,6 +124,7 @@ if (isset($_GET["title-search"])) {
 </nav>
 <script>
     let lastWidth = 0;
+    const resizeNavMaxWidth = 921;
     const navbarButton = document.getElementById("navbar-button");
     const navbarCollapse = document.getElementById("navbar-collapse");
     const navbarSearchButton = document.getElementById("navbar-search-button");
@@ -106,6 +132,7 @@ if (isset($_GET["title-search"])) {
     const navbarSearchInput = document.getElementById("navbar-search-title");
     const navbarSearchPageCache = document.getElementById("navbar-search-cache-page");
     const dropdownIcon = document.getElementById("navbar-dropdown-icon");
+    const userButton = document.getElementById("user-button");
 
     const originalSearchValue = navbarSearchInput.value;
     const originalSearchPage = navbarSearchPageCache != null ? navbarSearchPageCache.value : 1;
@@ -127,6 +154,16 @@ if (isset($_GET["title-search"])) {
     window.addEventListener('resize', e => handleNavbarResizing(e));
     document.addEventListener("DOMContentLoaded", e => handleNavbarResizing(e));
 
+    if (userButton != null) {
+        userButton.addEventListener("click", e => {
+            let width = window.innerWidth || document.documentElement.clientWidth;
+
+            if (width < resizeNavMaxWidth) {
+                window.location.href = "/user";
+            }
+        });
+    }
+
     navbarButton.addEventListener("click", e => {
         if (dropdownIcon.classList.contains("fa-x")) {
             collapsedState();
@@ -140,7 +177,7 @@ if (isset($_GET["title-search"])) {
 
         if (lastWidth === width) return;
 
-        if (width < 951) {
+        if (width < resizeNavMaxWidth) {
             navbarButton.classList.add("collapsed");
             navbarCollapse.classList.add("collapsed");
             collapsedState();

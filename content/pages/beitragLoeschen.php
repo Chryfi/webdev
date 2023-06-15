@@ -35,15 +35,15 @@ if (isset($_GET["id"]) && $_GET["id"] != "" && is_numeric($_GET["id"]) && isLogg
                         <div class="row confirmation-row">
                             <div class="col-auto">
                                 <button id="abort-delete-button"
-                                        class="button primary-button button-accent2 login-button">
+                                        class="button primary-button button-accent2 white-text">
                                     Nicht löschen
                                 </button>
                             </div>
                             <div class="col-auto">
-                                <button type="submit" class="button primary-button button-remove login-button"">
-                                <div class="row align-items-center login-button-row">
+                                <button type="submit" class="button primary-button button-remove white-text"">
+                                <div class="row align-items-center">
                                     <i class="col-auto fa-solid fa-trash"></i>
-                                    <p class="col-auto">Löschen</p>
+                                    <p class="col-auto icon-text-right">Löschen</p>
                                 </div>
                                 </button>
                             </div>
