@@ -143,10 +143,6 @@ GENERAL PURPOSE
     margin-top: 2em;
 }
 
-.default-box-shadow {
-    box-shadow: 0px 0px 20px black;
-}
-
 .hr {
     margin-top: 1em;
     margin-bottom: 1em;
@@ -857,9 +853,13 @@ NAVBAR
     right: 0;
 }
 
-.user-nav-box {
-    background-color: rgb(var(--bg-color-1));
+.user-nav-box-container {
+    box-shadow: 0px 0px 20px black;
     border-radius: 8px;
+    background-color: rgb(var(--bg-color-1));
+}
+
+.user-nav-box {
     padding: 20px 12px;
 }
 

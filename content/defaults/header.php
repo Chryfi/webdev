@@ -84,7 +84,7 @@ if (isset($_GET["title-search"])) {
                                 </div>
                                 <a class="col-auto navbar-username"><?php echo getSessionUsername(); ?></a>
                             </button>
-                            <div id="userdropdown" class="default-box-shadow user-dopdown-container dropdown-collapse collapsed">
+                            <div id="userdropdown" class="user-nav-box-container user-dopdown-container dropdown-collapse collapsed">
                                 <div class="user-nav-box">
                                     <ul class="user-nav-row row">
                                         <li>
