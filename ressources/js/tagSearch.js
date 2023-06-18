@@ -146,7 +146,8 @@ class TagSearch {
     onFocusOut() {
         /**
          * When the user clicks on something other than the input,
-         * we need to check if the click was on the search results to pick a tag.
+         * we need to check if the click was on the search results
+         * so the user can still choose a tag.
          */
         if (!this.#tagContainer.isMouseOver) {
             this.endSearch();
