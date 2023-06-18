@@ -12,7 +12,7 @@ $password = $_POST["password"] ?? "";
 /* error messages for the input names */
 $errors = [];
 
-if (isset($_POST["username"]) && !isLoggedin()) {
+if (isset($_POST["login"]) && !isLoggedin()) {
     $requiredPosts = ["username", "password"];
 
     foreach ($requiredPosts as $key) {
@@ -81,7 +81,7 @@ function verifyPassword(User $user, string $password) : bool {
                     </div>
                     <div class="row submit-row justify-content-center">
                         <div class="col-auto">
-                            <button type="submit" class="button button-primary button-dark">Login</button>
+                            <button type="submit" class="button button-primary button-dark" name="login">Login</button>
                         </div>
                     </div>
                 </form>

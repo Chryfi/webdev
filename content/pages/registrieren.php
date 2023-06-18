@@ -15,7 +15,7 @@ $passwordRepeated = $_POST["password-repeated"] ?? "";
 $errors = [];
 $registered = false;
 
-if (isset($_POST["username"])) {
+if (isset($_POST["save"])) {
     $requiredPosts = ["username", "firstname", "surname", "surname", "email", "password", "password-repeated", "birthday"];
 
     /* input validation (also validating if username email etc. already exist) */
@@ -30,7 +30,7 @@ if (isset($_POST["username"])) {
     if (!isset($errors["password"]) && $_POST["password"] != $_POST["password-repeated"]) {
         $errors["password"] = "Die Passwörter stimmen nicht überein.";
         $errors["password-repeated"] = $errors["password"];
-        }
+    }
 
     if (count($errors) == 0) {
         $registered = registerUser($_POST["username"], $_POST["password"], $_POST["email"], $_POST["firstname"], $_POST["surname"], $_POST["birthday"]);
@@ -137,12 +137,12 @@ function validateUserData($key, $value) : ?string {
                 </div>
                 <div class="row submit-row justify-content-center">
                     <div class="col-auto">
-                        <button type="submit" class="button button-primary button-dark">Registrieren</button>
+                        <button type="submit" class="button button-primary button-dark" name="save">Registrieren</button>
                     </div>
                 </div>
             </form>
             <?php else: ?>
-                <h1 class="h1">Registrierung erfolgreich!</h1>
+                <p class="lead text-center"><i class="fa-solid fa-circle-check"></i> Registrierung erfolgreich!</p>
             <?php endif; ?>
         </div>
     </main>
