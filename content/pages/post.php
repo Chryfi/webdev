@@ -19,6 +19,7 @@ $content = $_POST["content"] ?? "";
 $imageName = $_POST["image-name-cache"] ?? "";
 $imageData = $_POST["image-data-cache"] ?? "";
 
+/* check if user can edit the article */
 if (isset($_GET["edit"]) && $_GET["edit"] != ""
     && is_numeric($_GET["edit"]) && isLoggedin())
 {
@@ -32,10 +33,19 @@ if (isset($_GET["edit"]) && $_GET["edit"] != ""
 
         $title = $_POST["title"] ?? $oldBeitrag->getTitle();
         $spoiler = $_POST["spoiler"] ?? $oldBeitrag->getTeaser();
-        $tags = $_POST["tags"] ?? $oldBeitrag->getTags();
         $content = $_POST["content"] ?? $oldBeitrag->getContent();
         $imageName = $_POST["image-name-cache"] ?? "Image";
         $imageData = $_POST["image-data-cache"] ?? (readAsBase64URI($oldBeitrag->getImageName()) ?? "");
+
+        /*
+         * when the user removes all tags, the POST["tags"] will not be set.
+         * For this case check if save has been posted as this indicates here that the user has edited values
+         */
+        if (isset($_POST["tags"]) || isset($_POST["save"])) {
+            $tags = $_POST["tags"] ?? array();
+        } else {
+            $tags = $oldBeitrag->getTags();
+        }
     }
 
     $db->disconnect();
@@ -44,7 +54,7 @@ if (isset($_GET["edit"]) && $_GET["edit"] != ""
 /* error messages for the input names */
 $errors = [];
 
-if (isset($_POST["title"]) && isLoggedin())
+if (isset($_POST["save"]) && isLoggedin())
 {
     $textPosts = ["title", "spoiler", "content"];
 
@@ -169,6 +179,7 @@ function editBeitrag(Beitrag $oldBeitrag, $title, $spoiler, $tags, $content, $im
     return null;
 }
 
+
 function generateThumbnailPath($imageBase64URI) : string {
     $extension = explode('/', mime_content_type($imageBase64URI))[1];
     $fileName = uniqid() . '.' . $extension;
@@ -221,7 +232,7 @@ function validateImage($imageFile) : ?string {
             <?php if (!isLoggedin()): ?>
                 <p class="lead text-center"><i class="fa-solid fa-circle-exclamation"></i> Melde dich zuerst an um einen Blog Beitrag zu erstellen.</p>
             <?php else: ?>
-                <form class="blog-post" method="POST" enctype="multipart/form-data" action="<?php if($isEditMode) echo 'post?edit='.$_GET["edit"]; ?>">
+                <form class="blog-post" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="MAX_FILE_SIZE" value="5000000">
                     <div class="row">
                         <div class="col">
@@ -273,14 +284,14 @@ function validateImage($imageFile) : ?string {
                             <?php outputError("image", $errors);?>
                         </div>
 
-                        <div class="col-sm-5" style="height: 0px">
+                        <div class="col-sm-8 col-md-5" style="height: 0px">
                             <img class="blog-thumbnail-img" id="image-preview" src="<?php echo $imageData;?>">
                         </div>
                     </div>
                     <hr class="hr">
                     <div class="row justify-content-center">
                         <div class="col-auto">
-                            <button type="submit" class="button button-primary button-accent2">Posten</button>
+                            <button type="submit" class="button button-primary button-accent2" name="save">Posten</button>
                         </div>
                     </div>
                 </form>
