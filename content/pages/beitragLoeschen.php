@@ -25,8 +25,14 @@ if (isset($_GET["id"]) && $_GET["id"] != "" && is_numeric($_GET["id"]) && isLogg
 ?>
 
 <div class="page-wrapper">
-    <main class="container-sm display-flex justify-content-center">
-        <div class="round-container register-container col-xl-6 w-100">
+    <header class="container-sm">
+        <div class="header-text">
+            <h1>Löschen</h1>
+            <p class="lead">Lösche deinen ausgewählten Beitrag.</p>
+        </div>
+    </header>
+    <main class="container-sm">
+        <div class="round-container register-container col-xl-6">
             <?php if ($isUserAuthor): ?>
                 <h2 class="h2">Möchtest du den Beitrag wirklich Löschen?</h2>
                 <h1 class="h1 lead">"<?php echo $title; ?>"</h1>
@@ -52,7 +58,7 @@ if (isset($_GET["id"]) && $_GET["id"] != "" && is_numeric($_GET["id"]) && isLogg
                     <input type="hidden" name="delete" value="<?php echo $id; ?>">
                 </form>
             <?php else: ?>
-                <h2 class="h2">Dieser Beitrag existiert nicht oder er gehört dir nicht!</h2>
+                <p class="lead text-center"><i class="fa-solid fa-circle-exclamation"></i> Dieser Beitrag existiert nicht oder er gehört dir nicht!</p>
             <?php endif; ?>
         </div>
     </main>

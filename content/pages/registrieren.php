@@ -80,10 +80,15 @@ function validateUserData($key, $value) : ?string {
 ?>
 
 <div class="page-wrapper">
-    <main class="container-sm display-flex justify-content-center">
-        <div class="round-container register-container col-xl-6 w-100">
+    <header class="container-sm">
+        <div class="header-text">
+            <h1>Registrierung</h1>
+            <p class="lead">Erstelle deinen Account.</p>
+        </div>
+    </header>
+    <main class="container-sm">
+        <div class="round-container register-container col-xl-6">
             <?php if (!$registered): ?>
-            <h2 class="h2">Registrierung</h2>
             <form id="register-form" class="register-form" method="POST">
                 <div class="row">
                     <div class="col">

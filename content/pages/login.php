@@ -47,37 +47,45 @@ function verifyPassword(User $user, string $password) : bool {
 ?>
 
 <div class="page-wrapper">
-    <main class="container-sm display-flex justify-content-center">
-        <div class="round-container register-container col-xl-6 w-100">
+    <header class="container-sm">
+        <div class="header-text">
             <?php if (!isLoggedin()): ?>
-            <h2 class="h2">Login</h2>
-            <form class="register-form" method="POST">
-                <div class="row">
-                    <?php outputError("general", $errors);?>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <p class="lead">Username</p>
-                        <input class="input" type="text" name="username" value="<?php echo $username;?>">
-                        <?php outputError("username", $errors);?>
-                    </div>
-                </div>
-                <div class="row register-gap-row">
-                    <div class="col-md">
-                        <p class="lead">Passwort</p>
-                        <input class="input" type="password" name="password" value="<?php echo $password;?>">
-                        <?php outputError("password", $errors);?>
-                    </div>
-                </div>
-                <div class="row submit-row justify-content-center">
-                    <div class="col-auto">
-                        <button type="submit" class="button button-primary button-dark">Login</button>
-                    </div>
-                </div>
-            </form>
+                <h1>Login</h1>
+                <p class="lead">Logge dich in deinen Account ein.</p>
             <?php else: ?>
-                <h2 class="h2">Willkommen, <?php echo getSessionUsername(); ?></h2>
+                <h1>Willkommen, <?php echo getSessionUsername(); ?></h1>
+                <p class="lead">Du kannst deinen Account <a href="/user">hier</a> einsehen</p>
             <?php endif; ?>
         </div>
+    </header>
+    <main class="container-sm">
+        <?php if (!isLoggedin()): ?>
+            <div class="round-container register-container col-xl-6">
+                <form class="register-form" method="POST">
+                    <div class="row">
+                        <?php outputError("general", $errors);?>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <p class="lead">Username</p>
+                            <input class="input" type="text" name="username" value="<?php echo $username;?>">
+                            <?php outputError("username", $errors);?>
+                        </div>
+                    </div>
+                    <div class="row register-gap-row">
+                        <div class="col-md">
+                            <p class="lead">Passwort</p>
+                            <input class="input" type="password" name="password" value="<?php echo $password;?>">
+                            <?php outputError("password", $errors);?>
+                        </div>
+                    </div>
+                    <div class="row submit-row justify-content-center">
+                        <div class="col-auto">
+                            <button type="submit" class="button button-primary button-dark">Login</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        <?php endif; ?>
     </main>
 </div>

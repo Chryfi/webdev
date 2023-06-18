@@ -16,9 +16,9 @@ $user = getLoggedInUser();
             <?php endif;?>
         </div>
     </header>
-    <main class="container-sm display-flex justify-content-center">
+    <main class="container-sm">
         <?php if (isLoggedin()): ?>
-            <div class="round-container register-form col-xl-6">
+            <div class="round-container register-container register-form col-xl-6">
                 <div class="row">
                     <div class="col">
                         <p class="lead">Username</p>

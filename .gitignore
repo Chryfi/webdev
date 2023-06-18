@@ -3,3 +3,5 @@ credentials
 .idea/
 upload/
 ignore_deployment/
+content/pages/impressum.html
+content/pages/datenschutz.html
