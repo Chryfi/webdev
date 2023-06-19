@@ -796,6 +796,8 @@ NAVBAR
 
 .navbar-container.collapsed {
     backdrop-filter: blur(20px) saturate(180%);
+    /* for apple support... so much about standardisation >:( */
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
     background-color: hsla(207, 15%, 12%, 0.8);
     transition: background-color 0.25s;
 }
