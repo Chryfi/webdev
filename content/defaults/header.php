@@ -92,7 +92,7 @@ if (isset($_GET["title-search"])) {
                                         </li>
                                         <hr>
                                         <li>
-                                            <a href="/user" class="navbar-link <?php if(empty($_GET["p"]) || $_GET["p"] == "user") echo "active";?>">Dein Account</a>
+                                            <a href="/user" class="navbar-link <?php if($_GET["p"] == "user") echo "active";?>">Dein Account</a>
                                         </li>
                                         <hr>
                                         <li class="row justify-content-center">
