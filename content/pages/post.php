@@ -187,6 +187,7 @@ function generateThumbnailPath($imageBase64URI) : string {
 }
 
 function saveThumbnail($imageBase64URI, $path): void {
+    /* data uri syntax data:[<mediatype>][;base64],<data>*/
     $base64Image = explode(',', $imageBase64URI)[1];
     $imageDataDecoded = base64_decode($base64Image);
 
@@ -209,8 +210,8 @@ function readAsBase64URI($path) : ?string {
 }
 
 
-function validateImage($imageFile) : ?string {
-    $extension = explode('/', mime_content_type($imageFile))[1];
+function validateImage($base64URI) : ?string {
+    $extension = explode('/', mime_content_type($base64URI))[1];
 
     if ($extension != "png" && $extension != "jpg" && $extension != "jpeg") {
         return "Ungültiges Dateiformat";
