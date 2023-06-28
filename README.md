@@ -11,3 +11,5 @@ The file will be in the JSON format and should look like this:
       }
 }
 ```
+
+The main database object is created in the function `getKatzenBlogDatabase()` located in `/src/datalayer/database.php`
