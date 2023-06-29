@@ -12,6 +12,6 @@ The file will be in the JSON format and should look like this:
 }
 ```
 
-The main database object is created in the function `getKatzenBlogDatabase()` located in [database.php](./src/datalayer/database.php)
+The main database object is created in the function `getKatzenBlogDatabase()` located in [database.php](./src/datalayer/database.php) where you might need to change the database name.
 There is a SQL dump of the database in the file [webdev_database.sql](./webdev_database.sql) which you can import.
 The website uses PDO to communicate with the database, if you choose a different DBMS than Mysql you will probably need to install the relevant PDO drivers.
